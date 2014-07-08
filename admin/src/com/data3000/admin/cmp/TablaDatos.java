@@ -3,9 +3,7 @@ package com.data3000.admin.cmp;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.zkoss.util.resource.Labels;
@@ -17,23 +15,25 @@ import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 
+import com.data3000.admin.utl.CampoTabla;
+
 public class TablaDatos extends Listbox implements ListitemRenderer<Object> {
 	
 	private Class clase;
 	
 	private ListModelList<Object> modelo;
 	
-	private List<Field> campos;
+	private List<CampoTabla> listaCampos;
 	
 	private Logger logger;
 	
-	private Map<String,Boolean> mapaCampos;
 	
-	public TablaDatos(Class clase){
+	
+	public TablaDatos(Class clase) throws NoSuchFieldException, SecurityException{
 		this(clase,null);
 	}
 	
-	public TablaDatos(Class clase, List<String> listaCampos){
+	public TablaDatos(Class clase, List<CampoTabla> listaCampos) throws NoSuchFieldException, SecurityException{
 		super();
 		
 		logger = Logger.getLogger(this.getClass());
@@ -44,51 +44,55 @@ public class TablaDatos extends Listbox implements ListitemRenderer<Object> {
 		
 		this.clase = clase;
 		
-		if(listaCampos != null){
-			mapaCampos = new HashMap<String, Boolean>();
-			for(String nombreCampo : listaCampos){
-				mapaCampos.put(nombreCampo, Boolean.TRUE);
-			}
-		}
-		
-		
-		campos = new ArrayList<Field>();
-		Field[] camposAux = clase.getDeclaredFields();
-		
 		Listhead cabeceraTabla = new Listhead();
 		cabeceraTabla.setSizable(true);
-		for(Field campo : camposAux){
+		
+		if(listaCampos != null){
+			this.listaCampos = listaCampos;
 			
-			String campoNombre = campo.getName();
-			
-			Boolean siPintar = null;
-			if(mapaCampos == null){
-				siPintar = Boolean.TRUE;
-			} else {
-				siPintar = mapaCampos.get(campoNombre);
-				if(siPintar == null){
-					siPintar = Boolean.FALSE;
+			//mapaCampos = new HashMap<String, Boolean>();
+			for(CampoTabla campo : listaCampos){
+				//mapaCampos.put(nombreCampo, Boolean.TRUE);
+				
+				String nombre = campo.getNombre();
+				
+				if(! campo.isSiAccion()){
+					Field atributo = clase.getDeclaredField(nombre);
+					if(atributo != null){
+						pintarColumnaTabla(cabeceraTabla, atributo);
+						campo.setAtributo(atributo);
+					}
+				} else {
+					pintarColumnaTabla(cabeceraTabla, nombre);
 				}
 				
 			}
-			
-			if(siPintar){
-				Listheader columna = new Listheader();
-				String leyenda = Labels.getLabel(campo.getName());
-				if(leyenda == null || (leyenda != null && leyenda.length() <= 0)){
-					leyenda = campo.getName();
-				}
-				columna.setLabel(leyenda);
-				cabeceraTabla.appendChild(columna);
-				campos.add(campo);
+		} else {
+			this.listaCampos = new ArrayList<CampoTabla>();
+			for(Field atributo : clase.getDeclaredFields()){
+				CampoTabla campo = new CampoTabla(atributo.getName());
+				this.listaCampos.add(campo);
+				pintarColumnaTabla(cabeceraTabla, atributo);
+				campo.setAtributo(atributo);
 			}
 		}
 		
 		this.appendChild(cabeceraTabla);
-		
 	}
 	
+	private void pintarColumnaTabla(Listhead cabeceraTabla, Field campo){
+		pintarColumnaTabla(cabeceraTabla, campo.getName());
+	}
 	
+	private void pintarColumnaTabla(Listhead cabeceraTabla, String nombreCampo){
+			Listheader columna = new Listheader();
+			String leyenda = Labels.getLabel(nombreCampo);
+			if(leyenda == null || (leyenda != null && leyenda.length() <= 0)){
+				leyenda = nombreCampo;
+			}
+			columna.setLabel(leyenda);
+			cabeceraTabla.appendChild(columna);		
+	}
 	
 	
 	public void setDatos(List<Object> datos){
@@ -101,27 +105,37 @@ public class TablaDatos extends Listbox implements ListitemRenderer<Object> {
 	public void render(Listitem item, Object data, int index) throws Exception {
 		
 		item.setValue(data);
-		for(Field campo : campos){
+		for(CampoTabla campo : listaCampos){
 			
-			String nombreCampo = campo.getName();
-			
-			String nombreMetodo = new StringBuilder(campo.getType().equals(Boolean.class) || campo.getType().equals(boolean.class) ? "is" : "get").append(nombreCampo.substring(0, 1).toUpperCase()).append(nombreCampo.substring(1)).toString();
-			
-			try{
+			if(! campo.isSiAccion()){
+				//es un campo del objeto
 				
-				Method metodo = clase.getMethod(nombreMetodo);				
-				Object objeto = metodo.invoke(data);
+				Field atributo = campo.getAtributo();
 				
-				Listcell celda = new Listcell(objeto != null ? objeto.toString() : "");
-				item.appendChild(celda);
+				String nombreCampo = atributo.getName();
 				
+				Class tipo = atributo.getType();
 				
-			} catch(NoSuchMethodError ex){
-				logger.error(new StringBuilder(ex.getClass().getName()).append(": ").append(ex.getMessage()),ex);
+				String nombreMetodo = new StringBuilder(tipo.equals(Boolean.class) || tipo.equals(boolean.class) ? "is" : "get").append(nombreCampo.substring(0, 1).toUpperCase()).append(nombreCampo.substring(1)).toString();
+				
+				try{
+					
+					Method metodo = clase.getMethod(nombreMetodo);				
+					Object objeto = metodo.invoke(data);
+					
+					Listcell celda = new Listcell(objeto != null ? objeto.toString() : "");
+					item.appendChild(celda);
+					
+					
+				} catch(NoSuchMethodError ex){
+					logger.error(new StringBuilder(ex.getClass().getName()).append(": ").append(ex.getMessage()),ex);
+				}
+			} else {
+				//TODO pintar boton accion 
 			}
 			
 			
-		}
+		} 
 		
 		
 	}

@@ -29,15 +29,6 @@ public class TablaDatosCnt extends WindowComposer {
 	
 	private PlataformaNgc plataformaNgc;
 	
-	private Borderlayout border;
-	
-	
-	
-	
-	
-	
-	
-	
 	@Override
 	public void doAfterCompose(Window win) throws Exception{
 		super.doAfterCompose(win);

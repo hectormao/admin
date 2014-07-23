@@ -2,7 +2,7 @@ package com.data3000.admin.dao;
 
 import java.util.List;
 
-
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -78,7 +78,7 @@ public class PlataformaDAO extends PltDAO {
 		
 			StringBuilder hql = new StringBuilder("from ");
 			hql.append(clase.getName());
-			if(condicion != null && condicion.trim().length() > 0){
+			if(StringUtils.isNotBlank(condicion)){
 				hql.append(" where ");
 				hql.append(condicion);
 			}

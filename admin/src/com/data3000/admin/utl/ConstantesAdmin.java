@@ -26,6 +26,11 @@ public class ConstantesAdmin {
 	 */
 	public static final String PARAMETRO_FUNCIONALIDAD = "funcionalidad";
 	
+	/**
+	 * Nombre de la clave que referencia los campos a mostrar en una tabla definidos en un properties
+	 */
+	public static final String NOMBRE_CLAVE_CAMPOS_MOSTRAR_TABLA = "camposMostrar";
+	
 	
 	/************************************************************
 	 * CODIGOS DE ERROR DE LA PLATAFORMA
@@ -68,6 +73,8 @@ public class ConstantesAdmin {
 	public static final String ARG_TABLA_DATOS = "tablaDatos";
 	
 	public static final String ARG_CLASE = "clase";
+	
+	public static final String ARG_CAMPOS_TABLA = "camposTabla";
 
 
 	

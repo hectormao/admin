@@ -19,6 +19,7 @@ import org.zkoss.zul.Window;
 
 import com.data3000.admin.cmp.TablaDatos;
 import com.data3000.admin.ngc.PlataformaNgc;
+import com.data3000.admin.utl.CampoTabla;
 import com.data3000.admin.utl.ConstantesAdmin;
 import com.data3000.admin.utl.WindowComposer;
 
@@ -40,9 +41,12 @@ public class TablaDatosCnt extends WindowComposer {
 		super.doAfterCompose(win);
 		
 		
-		clase = (Class) argumentos.get(ConstantesAdmin.ARG_CLASE);
+
+		Class clase = (Class) argumentos.get(ConstantesAdmin.ARG_CLASE);
+		List<CampoTabla> listaCampos = (List<CampoTabla>) argumentos.get(ConstantesAdmin.ARG_CAMPOS_TABLA);
+
 		
-		tablaDatos = new TablaDatos(clase);
+		tablaDatos = new TablaDatos(clase, listaCampos);
 		dvTabla.appendChild(tablaDatos);
 		tablaDatos.setWidth("100%");
 		tablaDatos.setHeight("100%");

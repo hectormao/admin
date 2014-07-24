@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zul.ListModelList;
@@ -18,14 +19,13 @@ import org.zkoss.zul.ListitemRenderer;
 import com.data3000.admin.utl.CampoTabla;
 
 public class TablaDatos extends Listbox implements ListitemRenderer<Object> {
+	private static final Logger logger = Logger.getLogger(TablaDatos.class);
 	
 	private Class clase;
 	
 	private ListModelList<Object> modelo;
 	
 	private List<CampoTabla> listaCampos;
-	
-	private Logger logger;
 	
 	
 	
@@ -36,12 +36,9 @@ public class TablaDatos extends Listbox implements ListitemRenderer<Object> {
 	public TablaDatos(Class clase, List<CampoTabla> listaCampos) throws NoSuchFieldException, SecurityException{
 		super();
 		
-		logger = Logger.getLogger(this.getClass());
-		
 		modelo = new ListModelList<Object>();
 		this.setModel(modelo);
 		this.setItemRenderer(this);
-		
 		this.clase = clase;
 		
 		Listhead cabeceraTabla = new Listhead();
@@ -53,10 +50,8 @@ public class TablaDatos extends Listbox implements ListitemRenderer<Object> {
 			//mapaCampos = new HashMap<String, Boolean>();
 			for(CampoTabla campo : listaCampos){
 				//mapaCampos.put(nombreCampo, Boolean.TRUE);
-				
 				String nombre = campo.getNombre();
-				
-				if(! campo.isSiAccion()){
+				if(!campo.isSiAccion()){
 					Field atributo = clase.getDeclaredField(nombre);
 					if(atributo != null){
 						pintarColumnaTabla(cabeceraTabla, atributo);
@@ -65,7 +60,6 @@ public class TablaDatos extends Listbox implements ListitemRenderer<Object> {
 				} else {
 					pintarColumnaTabla(cabeceraTabla, nombre);
 				}
-				
 			}
 		} else {
 			this.listaCampos = new ArrayList<CampoTabla>();
@@ -87,7 +81,7 @@ public class TablaDatos extends Listbox implements ListitemRenderer<Object> {
 	private void pintarColumnaTabla(Listhead cabeceraTabla, String nombreCampo){
 			Listheader columna = new Listheader();
 			String leyenda = Labels.getLabel(nombreCampo);
-			if(leyenda == null || (leyenda != null && leyenda.length() <= 0)){
+			if(StringUtils.isBlank(leyenda)){
 				leyenda = nombreCampo;
 			}
 			columna.setLabel(leyenda);
@@ -103,30 +97,22 @@ public class TablaDatos extends Listbox implements ListitemRenderer<Object> {
 
 	@Override
 	public void render(Listitem item, Object data, int index) throws Exception {
-		
 		item.setValue(data);
 		for(CampoTabla campo : listaCampos){
-			
-			if(! campo.isSiAccion()){
+			if(!campo.isSiAccion()){
 				//es un campo del objeto
 				
 				Field atributo = campo.getAtributo();
-				
 				String nombreCampo = atributo.getName();
-				
 				Class tipo = atributo.getType();
-				
 				String nombreMetodo = new StringBuilder(tipo.equals(Boolean.class) || tipo.equals(boolean.class) ? "is" : "get").append(nombreCampo.substring(0, 1).toUpperCase()).append(nombreCampo.substring(1)).toString();
 				
 				try{
-					
 					Method metodo = clase.getMethod(nombreMetodo);				
 					Object objeto = metodo.invoke(data);
 					
 					Listcell celda = new Listcell(objeto != null ? objeto.toString() : "");
 					item.appendChild(celda);
-					
-					
 				} catch(NoSuchMethodError ex){
 					logger.error(new StringBuilder(ex.getClass().getName()).append(": ").append(ex.getMessage()),ex);
 				}

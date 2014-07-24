@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
@@ -104,7 +105,7 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 		tab.setClosable(true);
 		
 		String leyenda = Labels.getLabel(funcionalidad.getNombre());
-		if(leyenda == null || (leyenda != null && leyenda.length() <= 0)){
+		if(StringUtils.isBlank(leyenda)){
 			leyenda = funcionalidad.getNombre();
 		}
 		tab.setTooltip(funcionalidad.getTooltip());
@@ -190,7 +191,7 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 		if(menu != null){
 			
 			String leyenda = Labels.getLabel(menu.getNombre());
-			if(leyenda == null || (leyenda != null && leyenda.length() <= 0)){
+			if(StringUtils.isBlank(leyenda)){
 				leyenda = menu.getNombre();
 			}
 			

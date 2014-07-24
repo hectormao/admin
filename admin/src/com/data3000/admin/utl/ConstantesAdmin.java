@@ -69,6 +69,21 @@ public class ConstantesAdmin {
 	
 	public static final String ARG_CLASE = "clase";
 
+	
+	/**
+	 * Eventos
+	 */
+	public static final String ACCION = "accion";
+	public static final String EVENTO_REFRESCAR = "refrescar";
+
+	/**
+	 * Argumentos
+	 */
+	public static final String OBJETO_PADRE = "padre";
+	public static final String NOMBRE_ATRIBUTO_PADRE = "padre";
+
+	
+
 
 	
 

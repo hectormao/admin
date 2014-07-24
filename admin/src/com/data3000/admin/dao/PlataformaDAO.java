@@ -2,12 +2,13 @@ package com.data3000.admin.dao;
 
 import java.util.List;
 
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
+import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.metadata.ClassMetadata;
 import org.zkoss.zhtml.Tbody;
 
 import com.data3000.admin.bd.PltFormulario;
@@ -91,6 +92,18 @@ public class PlataformaDAO extends PltDAO {
 			throw ex;
 		}
 		
+	}
+
+
+	public String getCondicionId(Object padre) {
+		
+		ClassMetadata meta = sessionFactory.getClassMetadata(padre.getClass());
+		
+		StringBuilder condicion = new StringBuilder(meta.getIdentifierPropertyName());
+		condicion.append(" = ");
+		condicion.append(meta.getIdentifier(padre,(SessionImplementor)sessionFactory.getCurrentSession()));
+		
+		return condicion.toString();
 	}
 	
 }

@@ -2,6 +2,7 @@ package com.data3000.admin.ngc;
 
 import java.util.List;
 import java.util.Map;
+
 import com.data3000.admin.vo.EstructuraMenu;
 import com.data3000.admin.vo.Formulario;
 import com.data3000.admin.vo.Menu;
@@ -30,5 +31,16 @@ public interface PlataformaNgc {
 	 * @return
 	 */
 	public List<Object> getDatos(Class clase) throws Exception;
+	
+	/**
+	 * Obtiene los datos ejecutando la consulta hql
+	 * @param hql
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Object> getDatos(Class clase, String condicion) throws Exception;
+
+
+	public String getCondicionPadre(Object padre);
 
 }

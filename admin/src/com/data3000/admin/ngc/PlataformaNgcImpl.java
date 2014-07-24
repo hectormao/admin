@@ -9,7 +9,6 @@ import com.data3000.admin.bd.PltFormulario;
 import com.data3000.admin.bd.PltMenu;
 import com.data3000.admin.bd.PltUsuario;
 import com.data3000.admin.dao.PlataformaDAO;
-
 import com.data3000.admin.vo.EstructuraMenu;
 import com.data3000.admin.vo.Formulario;
 import com.data3000.admin.vo.Usuario;
@@ -96,6 +95,12 @@ public class PlataformaNgcImpl implements PlataformaNgc {
 	public List<Object> getDatos(Class clase) throws Exception {		
 		return plataformaDAO.getDatos(clase, null);
 	}
+	
+	@Override
+	public List<Object> getDatos(Class clase, String condicion) throws Exception {
+		
+		return plataformaDAO.getDatos(clase, condicion);
+	}
 
 	public PlataformaDAO getPlataformaDAO() {
 		return plataformaDAO;
@@ -104,5 +109,15 @@ public class PlataformaNgcImpl implements PlataformaNgc {
 	public void setPlataformaDAO(PlataformaDAO plataformaDAO) {
 		this.plataformaDAO = plataformaDAO;
 	}
+
+	@Override
+	public String getCondicionPadre(Object padre) {
+		
+		String condicion = plataformaDAO.getCondicionId(padre);
+		
+		return condicion;
+	}
+
+	
 	
 }

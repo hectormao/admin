@@ -19,7 +19,7 @@ public class UsuarioDAO extends PltDAO {
 				tx.begin();
 			}			
 			Criteria criterio = sesion.createCriteria(PltUsuario.class);
-			criterio.add(Restrictions.eq("usuaLogin", login));			
+			criterio.add(Restrictions.eq("usuaLogin", login));
 			return (PltUsuario) criterio.uniqueResult();
 		} catch(Exception ex){
 			sesion.close();

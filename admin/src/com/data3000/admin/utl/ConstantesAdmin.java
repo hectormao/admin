@@ -87,7 +87,7 @@ public class ConstantesAdmin {
 	 * Argumentos
 	 */
 	public static final String OBJETO_PADRE = "padre";
-	public static final String NOMBRE_ATRIBUTO_PADRE = "padre";
+	public static final String NOMBRE_ATRIBUTO_PADRE = "nombrePadre";
 
 	
 

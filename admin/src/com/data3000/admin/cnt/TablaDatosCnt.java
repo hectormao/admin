@@ -42,7 +42,7 @@ public class TablaDatosCnt extends WindowComposer {
 		
 		
 
-		Class clase = (Class) argumentos.get(ConstantesAdmin.ARG_CLASE);
+		clase = (Class) argumentos.get(ConstantesAdmin.ARG_CLASE);
 		List<CampoTabla> listaCampos = (List<CampoTabla>) argumentos.get(ConstantesAdmin.ARG_CAMPOS_TABLA);
 
 		
@@ -99,10 +99,11 @@ public class TablaDatosCnt extends WindowComposer {
 					}
 				}
 			}
-			
+			StringBuilder where = new StringBuilder(nombreAtributo);
+			where.append(".");
 			String condicion = plataformaNgc.getCondicionPadre(padre);
-			
-			datos = plataformaNgc.getDatos(clase, condicion);
+			where.append(condicion);
+			datos = plataformaNgc.getDatos(clase, where.toString());
 		}
 		
 		tablaDatos.setDatos(datos);

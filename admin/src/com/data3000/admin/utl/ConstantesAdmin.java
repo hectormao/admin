@@ -75,6 +75,8 @@ public class ConstantesAdmin {
 	public static final String ARG_CLASE = "clase";
 	
 	public static final String ARG_CAMPOS_TABLA = "camposTabla";
+	
+	public static final String ARG_SELECCION = "objetoSeleccionado";
 
 	
 	/**
@@ -91,12 +93,24 @@ public class ConstantesAdmin {
 
 	
 
-
+	/**
+	 * Formatos de fecha y numeros
+	 */
+	public static final String FORMATO_NUMERO = "0.#";
+	public static final String FORMATO_FECHA = "yyyy-MM-dd HH:mm:ss.S";
+	
 	
 
-
+	/**
+	 * Tipos de formulario
+	 */
 	
-
+	public static final String FORMULARIO_TIPO_INSERTAR = "I";
+	public static final String FORMULARIO_TIPO_BORRAR = "B";
+	public static final String FORMULARIO_TIPO_EDITAR = "E";
+	public static final String FORMULARIO_TIPO_CONSULTAR = "C";
+	public static final String FORMULARIO_TIPO_OTRO = "O";
+	
 
 
 	

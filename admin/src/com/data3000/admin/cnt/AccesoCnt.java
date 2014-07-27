@@ -1,10 +1,15 @@
 package com.data3000.admin.cnt;
 
+
+
 import org.apache.log4j.Logger;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
@@ -24,6 +29,7 @@ public class AccesoCnt extends GenericForwardComposer<Window> {
 	private Window winAcceso;
 	private Textbox txtUsuario;
 	private Textbox txtClave;
+	private Button btnIngresar;
 	
 	 
 	
@@ -33,8 +39,32 @@ public class AccesoCnt extends GenericForwardComposer<Window> {
 		super.doAfterCompose(winIndex);
 		logger = Logger.getLogger(this.getClass());
 		
+		btnIngresar.setAutodisable("self");
+		
+		winAcceso.addEventListener(Events.ON_OK, new EventListener<Event>() {
+
+			@Override
+			public void onEvent(Event arg0) throws Exception {
+				Events.sendEvent(new Event(Events.ON_CLICK,btnIngresar,null));
+				
+			}
+		});
+		
+		
+		
+		/*
+		txtClave.addEventListener(Events.ON_OK, new EventListener<Event>() {
+
+			@Override
+			public void onEvent(Event arg0) throws Exception {
+				onClick$btnIngresar();
+				
+			}
+		});*/
 		
 	} 
+	
+	
 	
 	public void onClick$btnIngresar() throws Exception{
 		

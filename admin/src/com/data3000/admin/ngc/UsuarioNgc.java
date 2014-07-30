@@ -1,5 +1,6 @@
 package com.data3000.admin.ngc;
 
+import com.data3000.admin.bd.PltUsuario;
 import com.data3000.admin.vo.Usuario;
 
 /**
@@ -15,4 +16,19 @@ public interface UsuarioNgc {
 	 * @return
 	 */
 	public Usuario validarAcceso(String login, String clave) throws Exception;
+	
+	/**
+	 * Crea un usuario, de no existir el mismo login
+	 * @param pltUsuario
+	 * @param loginUsuario
+	 * @throws Exception
+	 */
+	public void crearUsuario(PltUsuario pltUsuario, String loginUsuario) throws Exception;
+	
+	/**
+	 * Actualiza un usuario
+	 * @param pltUsuario
+	 * @throws Exception
+	 */
+	public void modificarUsuario(PltUsuario pltUsuario) throws Exception;
 }

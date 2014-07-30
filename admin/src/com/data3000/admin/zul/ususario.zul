@@ -1,0 +1,62 @@
+<?page title="Tipo Documento" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="winUsuario" apply="${usuarioCnt}" border="normal" >
+<hlayout>	
+	<groupbox>
+		<caption label="${labels.data3000.datos.personales}" />
+		<vlayout>	
+<!-- 		NOMBRE COMPLETO -->
+			<hlayout>
+				<div width="150px">
+					<label id="lblNombreCompleto" value="${labels.data3000.nombre.completo}" style="font-weight:bold;"></label>
+				</div>
+				<textbox id="txtNombreCompleto" width="150px" constraint="/.{1,100}/"></textbox>
+			</hlayout>
+<!-- 			CORREO ELECTRÓNICO  -->
+			<hlayout>
+				<div width="150px">
+					<label id="lblCorreo" value="${labels.data3000.correo}" style="font-weight:bold;"></label>
+				</div>
+				<textbox id="txtCorreo" width="150px" constraint="/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$ /"></textbox>
+			</hlayout>
+		</vlayout>
+		
+	</groupbox>	
+	
+	<groupbox>
+		<caption label="${labels.data3000.datos.usuario}" />
+		<vlayout>	
+<!-- 		LOGIN -->
+			<hlayout>
+				<div width="150px">
+					<label id="lblLogin" value="${labels.data3000.login}" style="font-weight:bold;"></label>
+				</div>
+				<textbox id="txtLogin" width="150px" constraint="/.{1,100}/"></textbox>
+			</hlayout>
+<!-- 			CLAVE  -->
+			<hlayout>
+				<div width="150px">
+					<label id="lblClave" value="${labels.data3000.clave}" style="font-weight:bold;"></label>
+				</div>
+				<textbox id="txtClave" width="150px" constraint="/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$ /"></textbox>
+			</hlayout>
+<!-- 			CONFIRMAR CLAVE -->
+			<hlayout>
+				<div width="150px">
+					<label id="lblConfirmarClave" value="${labels.data3000.confirmar.clave}" style="font-weight:bold;"></label>
+				</div>
+				<textbox id="txtConfirmarClave" width="150px" constraint="/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$ /"></textbox>
+			</hlayout>
+		</vlayout>
+		
+	</groupbox>	
+</hlayout>
+<div width="100%" align="center">
+	<hlayout>
+		<button id="btnAceptar" label="${labels.data3000.aceptar}"/>
+		<separator width="20px"/>
+		<button id="btnCancelar" label="${labels.data3000.cancelar}"/>
+	</hlayout>
+	</div>
+</window>
+</zk>

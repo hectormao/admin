@@ -75,6 +75,13 @@ public class UsuarioNgcImpl implements UsuarioNgc {
 		}
 		
 	}
+	
+	@Override
+	public void eliminarUsuario(PltUsuario pltUsuario) throws Exception {
+		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Eliminando Usuario = ").append(pltUsuario.getUsuaLogin()));{
+			usuarioDAO.EliminarUsuario(pltUsuario);
+		}
+	}
 
 	public UsuarioDAO getUsuarioDAO() {
 		return usuarioDAO;
@@ -91,6 +98,8 @@ public class UsuarioNgcImpl implements UsuarioNgc {
 	public void setPlataformaNgc(PlataformaNgc plataformaNgc) {
 		this.plataformaNgc = plataformaNgc;
 	}
+
+	
 
 	
 	

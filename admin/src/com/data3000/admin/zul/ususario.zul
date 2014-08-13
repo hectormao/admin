@@ -2,7 +2,7 @@
 <zk>
 <window id="winUsuario" apply="${usuarioCnt}" border="normal" >
 <hlayout>	
-	<groupbox>
+	<groupbox mold="3d">
 		<caption label="${labels.data3000.datos.personales}" />
 		<vlayout>	
 <!-- 		NOMBRE COMPLETO -->
@@ -23,7 +23,7 @@
 		
 	</groupbox>	
 	
-	<groupbox>
+	<groupbox mold="3d">
 		<caption label="${labels.data3000.datos.usuario}" />
 		<vlayout>	
 <!-- 		LOGIN -->
@@ -57,6 +57,6 @@
 		<separator width="20px"/>
 		<button id="btnCancelar" label="${labels.data3000.cancelar}"/>
 	</hlayout>
-	</div>
+</div>
 </window>
 </zk>

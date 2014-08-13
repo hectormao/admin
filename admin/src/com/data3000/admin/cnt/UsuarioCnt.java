@@ -24,7 +24,7 @@ public class UsuarioCnt extends WindowComposer {
 	
 	
 	
-	
+//	ATRIBUTOS
 	private Window winUsuario;
 	private Textbox txtNombreCompleto;
 	private Textbox txtCorreo;

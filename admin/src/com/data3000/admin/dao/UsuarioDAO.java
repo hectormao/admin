@@ -46,13 +46,25 @@ public class UsuarioDAO extends PltDAO {
 	}
 	
 	/**
-	 * Método para actualizar un usuario
+	 * Método para modificar un usuario
 	 * @param pltUsuario
 	 * @throws Exception
 	 */
 	public void modificarUsuario(PltUsuario pltUsuario)throws Exception{
 		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Modificando Usuario = ").append(pltUsuario.getUsuaLogin()));{
 			super.update(pltUsuario);
+		}
+		
+	}
+	
+	/**
+	 * Metodo para eliminar un usuario
+	 * @param pltUsuario
+	 * @throws Exception
+	 */
+	public void EliminarUsuario(PltUsuario pltUsuario)throws Exception{
+		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Modificando Usuario = ").append(pltUsuario.getUsuaLogin()));{
+			super.delete(pltUsuario);
 		}
 		
 	}

@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -15,10 +16,16 @@ import org.zkoss.zhtml.Tbody;
 
 import com.data3000.admin.bd.PltFormulario;
 import com.data3000.admin.bd.PltMenu;
+import com.data3000.admin.bd.PltRol;
 import com.data3000.admin.bd.PltUsuario;
 import com.data3000.admin.vo.Formulario;
 
 public class PlataformaDAO extends PltDAO {
+	
+	/**
+	 * Log (log4j).
+	 */
+	private Logger logger = Logger.getLogger(this.getClass());
 	
 	/**
 	 * Retorna un listado de funcionalidades a las que tiene permisos un usuario
@@ -106,6 +113,36 @@ public class PlataformaDAO extends PltDAO {
 		condicion.append(meta.getIdentifier(padre,(SessionImplementor)sessionFactory.getCurrentSession()));
 		
 		return condicion.toString();
+	}
+	
+	/**
+	 * Metodo para crear un rol
+	 * @param pltRol
+	 * @throws Exception
+	 */
+	public void crearRol(PltRol pltRol) throws Exception {
+		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Creando Rol = ").append(pltRol.getRolNombre()));
+		super.save(pltRol);
+	}
+	
+	/**
+	 * Metodo para modificar un rol
+	 * @param pltRol
+	 * @throws Exception
+	 */
+	public void modificarRol(PltRol pltRol) throws Exception {
+		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Modificando Rol = ").append(pltRol.getRolNombre()));
+		super.update(pltRol);
+	}
+	
+	
+	/**
+	 * Metodo para eliminar un rol
+	 * @param pltRol
+	 * @throws Exception
+	 */
+	public void eliminarExcepcion(PltRol pltRol)throws Exception{ if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Eliminando Rol = ").append(pltRol.getRolNombre()));
+		super.delete(pltRol);
 	}
 	
 }

@@ -26,9 +26,16 @@ public interface UsuarioNgc {
 	public void crearUsuario(PltUsuario pltUsuario, String loginUsuario) throws Exception;
 	
 	/**
-	 * Actualiza un usuario
+	 * Modifica un usuario
 	 * @param pltUsuario
 	 * @throws Exception
 	 */
 	public void modificarUsuario(PltUsuario pltUsuario) throws Exception;
+	
+	/**
+	 * Elimina un Usuario
+	 * @param pltUsuario
+	 * @throws Exception
+	 */
+	public void eliminarUsuario(PltUsuario pltUsuario) throws Exception;
 }

@@ -13,12 +13,12 @@ public class ConstantesAdmin {
 	/**
 	 * Estado inactivo
 	 */
-	public static final Object ESTADO_INACTIVO = "I";
+	public static final String ESTADO_INACTIVO = "I";
 	
 	/**
 	 * Estado activo
 	 */
-	public static final Object ESTADO_ACTIVO = "A";
+	public static final String ESTADO_ACTIVO = "A";
 	
 	
 	/**
@@ -61,6 +61,16 @@ public class ConstantesAdmin {
 	 * Usuario inactivo
 	 */
 	public static final String ERR0005 = "error.0005";
+	
+	/**
+	 * Usuario ya registrado
+	 */
+	public static final String ERR0006 = "error.0006";
+	
+	/**
+	 * No se ha seleccionado elemento
+	 */
+	public static final String ERR0007 = "error.0007";
 	
 	
 	/**

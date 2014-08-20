@@ -29,5 +29,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="var" path="WEB_LIB/slf4j-api.jar"/>
+	<classpathentry kind="var" path="WEB_LIB/commons-lang3-3.3.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

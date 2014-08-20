@@ -8,6 +8,7 @@ import java.util.Map;
 import com.data3000.admin.bd.PltEnv;
 import com.data3000.admin.bd.PltFormulario;
 import com.data3000.admin.bd.PltMenu;
+import com.data3000.admin.bd.PltRol;
 import com.data3000.admin.bd.PltUsuario;
 import com.data3000.admin.dao.PlataformaDAO;
 import com.data3000.admin.vo.EstructuraMenu;
@@ -125,6 +126,23 @@ public class PlataformaNgcImpl implements PlataformaNgc {
 		PltEnv env = plataformaDAO.getEnv(propiedad);
 		
 		return env != null ? env.getEnvValor() : null;
+	}
+	
+	public void crearRol(PltRol pltRol) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void modificarRol(PltRol pltRol) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void eliminarRol(PltRol pltRol) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

@@ -1,0 +1,36 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="winRolPermisos" apply="${rolPermisosCnt}" border="normal" border="normal">
+<vlayout>
+<!-- 	GRUPO ROLES -->
+	<groupbox mold="3d">
+	<caption label="${labels.data3000.roles}"/>
+		<hlayout>
+			<label  value="${labels.data3000.nombre.rol}" style="font-weight:bold;"></label>
+			<textbox id ="txtNombreRol" width="150px" constraint="/.{1,100}/"></textbox>
+			
+			<separator></separator>
+			
+			<label  value="${labels.data3000.descripcion.rol}" style="font-weight:bold;"></label>
+			<textbox id ="txtDescripcionRol" width="150px" constraint="/.{1,100}/"></textbox>		
+		</hlayout>
+	</groupbox>
+	
+<!-- 	GRUPO PERMISOS -->
+	<groupbox mold="3d">
+	<caption label="${labels.data3000.permisos}"/>
+		<div id="divArbolFormularios"></div>
+	
+	</groupbox>
+
+</vlayout>
+
+<div width="100%" align="center">
+	<hlayout>
+		<button id="btnAceptar" label="${labels.data3000.aceptar}"/>
+		<separator width="20px"/>
+		<button id="btnCancelar" label="${labels.data3000.cancelar}"/>
+	</hlayout>
+</div>
+</window>
+</zk>

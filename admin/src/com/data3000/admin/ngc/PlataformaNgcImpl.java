@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.data3000.admin.bd.PltEnv;
 import com.data3000.admin.bd.PltFormulario;
 import com.data3000.admin.bd.PltMenu;
 import com.data3000.admin.bd.PltUsuario;
@@ -116,6 +117,14 @@ public class PlataformaNgcImpl implements PlataformaNgc {
 		String condicion = plataformaDAO.getCondicionId(padre);
 		
 		return condicion;
+	}
+
+	@Override
+	public String getEnv(String propiedad) {
+		
+		PltEnv env = plataformaDAO.getEnv(propiedad);
+		
+		return env != null ? env.getEnvValor() : null;
 	}
 
 	

@@ -44,6 +44,17 @@ public class WindowComposer extends GenericForwardComposer<Window>{
 		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Usuario: ").append(usuario.getLogin()).append(" Abriendo formulario: ").append(formulario.getNombre()).toString());
 	}
 	
+	public Formulario getFormulario(String nombre){
+		Map<String,Formulario> formularios = (Map<String, Formulario>) session.getAttribute(ConstantesAdmin.SESION_MAPA_FORM);
+		if(formularios == null){
+			return null;
+		}
+		
+		Formulario formulario = formularios.get(nombre);
+		
+		return formulario;
+	}
+	
 	
 	
 }

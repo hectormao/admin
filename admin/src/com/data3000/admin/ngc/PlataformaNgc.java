@@ -43,4 +43,14 @@ public interface PlataformaNgc {
 
 	public String getCondicionPadre(Object padre);
 
+	
+	
+	
+	/**
+	 * Obtiene el valor de una variable del entorno
+	 * @param propiedad
+	 * @return
+	 */
+	public String getEnv(String propiedad);
+
 }

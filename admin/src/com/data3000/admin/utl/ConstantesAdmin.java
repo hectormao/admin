@@ -111,6 +111,9 @@ public class ConstantesAdmin {
 	public static final String FORMULARIO_TIPO_CONSULTAR = "C";
 	public static final String FORMULARIO_TIPO_OTRO = "O";
 	
+	
+	
+	
 
 
 	

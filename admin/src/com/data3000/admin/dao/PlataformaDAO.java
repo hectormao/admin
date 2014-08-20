@@ -9,10 +9,12 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
 import org.zkoss.zhtml.Tbody;
 
+import com.data3000.admin.bd.PltEnv;
 import com.data3000.admin.bd.PltFormulario;
 import com.data3000.admin.bd.PltMenu;
 import com.data3000.admin.bd.PltUsuario;
@@ -106,6 +108,26 @@ public class PlataformaDAO extends PltDAO {
 		condicion.append(meta.getIdentifier(padre,(SessionImplementor)sessionFactory.getCurrentSession()));
 		
 		return condicion.toString();
+	}
+
+
+	public PltEnv getEnv(String propiedad) {
+		Session sesion = sessionFactory.getCurrentSession();
+		Transaction tx = sesion.getTransaction();
+		
+		try{
+			
+			if(! tx.isActive()){
+				tx.begin();
+			}
+		
+			Criteria criteria = sesion.createCriteria(PltEnv.class);
+			criteria.add(Restrictions.eq("envPropiedad", propiedad));
+			return (PltEnv) criteria.uniqueResult();			
+		} catch(Exception ex){
+			sesion.close();
+			return null;
+		}
 	}
 	
 }

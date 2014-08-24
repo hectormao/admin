@@ -56,7 +56,12 @@
                 <comment>Checksum del registro con SHA1</comment>
             </column>
         </property>
-        <set name="pltRelaFormsForFormPadre" table="plt_rela_form" inverse="true" lazy="true" fetch="select">
+        <property name="formIcono" type="string">
+            <column name="form_icono" length="200">
+                <comment>url icono</comment>
+            </column>
+        </property>
+        <set name="pltRelaFormsForFormPadre" table="plt_rela_form" inverse="true" lazy="false" fetch="join">
             <key>
                 <column name="form_padre" precision="10" scale="0" not-null="true">
                     <comment>Identificador del formulario padre</comment>

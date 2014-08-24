@@ -123,6 +123,12 @@ public class ConstantesAdmin {
 	
 	
 	
+	/**
+	 * Tipos de funcionalidades hijas
+	 */
+	public static final String HIJO_BOTON = "B";
+	public static final String HIJO_CELDA = "C";
+	public static final String HIJO_DETALLE = "D";
 	
 
 

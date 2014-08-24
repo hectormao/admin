@@ -18,6 +18,7 @@ import org.zkoss.zhtml.Tbody;
 import com.data3000.admin.bd.PltEnv;
 import com.data3000.admin.bd.PltFormulario;
 import com.data3000.admin.bd.PltMenu;
+import com.data3000.admin.bd.PltRelaForm;
 import com.data3000.admin.bd.PltRol;
 import com.data3000.admin.bd.PltUsuario;
 import com.data3000.admin.vo.Formulario;
@@ -165,6 +166,27 @@ public class PlataformaDAO extends PltDAO {
 	 */
 	public void eliminarExcepcion(PltRol pltRol)throws Exception{ if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Eliminando Rol = ").append(pltRol.getRolNombre()));
 		super.delete(pltRol);
+	}
+
+
+	public List<PltRelaForm> getHijos(PltFormulario formulario) {
+		Session sesion = sessionFactory.getCurrentSession();
+		Transaction tx = sesion.getTransaction();
+		
+		try{
+			
+			if(! tx.isActive()){
+				tx.begin();
+			}
+		
+			Criteria criteria = sesion.createCriteria(PltRelaForm.class);
+			criteria.add(Restrictions.eq("pltFormularioByFormPadre", formulario));
+			criteria.addOrder(Order.asc("relaFormOrden"));
+			return criteria.list();			
+		} catch(Exception ex){
+			sesion.close();
+			return null;
+		}
 	}
 	
 }

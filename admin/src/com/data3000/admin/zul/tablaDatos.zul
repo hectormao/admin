@@ -1,6 +1,6 @@
 <?page title="Tabla Datos" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="Tabla Datos" border="normal" apply="${tablaDatosCnt}" hflex="1" vflex="1">
+<window border="normal" apply="${tablaDatosCnt}" hflex="1" vflex="1">
 	<borderlayout id="border">
 	<north id="norte" border="none">
 		<toolbar id="herramientas">

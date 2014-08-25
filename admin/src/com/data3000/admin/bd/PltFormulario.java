@@ -2,6 +2,8 @@ package com.data3000.admin.bd;
 
 // Generated 12/01/2014 11:11:48 AM by Hibernate Tools 3.4.0.CR1
 
+
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -25,6 +27,7 @@ public class PltFormulario extends Formulario implements java.io.Serializable {
 	private String audiMotiAnul;
 	private String audiChecksum;
 	private String formIcono;
+	private Set<PltFormAtri> pltFormAtris = new HashSet<PltFormAtri>(0);
 	private Set<PltRelaForm> pltRelaFormsForFormPadre = new HashSet<PltRelaForm>(
 			0);
 	private Set<PltRelaForm> pltRelaFormsForFormHijo = new HashSet<PltRelaForm>(
@@ -51,7 +54,9 @@ public class PltFormulario extends Formulario implements java.io.Serializable {
 	public PltFormulario(long formIdn, String formNombre, String formTipo,
 			String formUrl, String formModulo, String audiUsuario,
 			Date audiFechModi, boolean audiSiAnul, String audiMotiAnul,
-			String audiChecksum,String formIcono, Set<PltRelaForm> pltRelaFormsForFormPadre,
+			String audiChecksum,String formIcono, 
+			Set<PltFormAtri> pltFormAtris,
+			Set<PltRelaForm> pltRelaFormsForFormPadre,
 			Set<PltRelaForm> pltRelaFormsForFormHijo, Set<PltMenu> pltMenus,
 			Set<PltPermiso> pltPermisos) {
 		this.formIdn = formIdn;
@@ -69,6 +74,7 @@ public class PltFormulario extends Formulario implements java.io.Serializable {
 		this.pltMenus = pltMenus;
 		this.pltPermisos = pltPermisos;
 		this.formIcono = formIcono;
+		this.pltFormAtris = pltFormAtris;
 	}
 
 	public long getFormIdn() {
@@ -194,6 +200,16 @@ public class PltFormulario extends Formulario implements java.io.Serializable {
 	public void setFormIcono(String formIcono) {
 		this.formIcono = formIcono;
 	}
+	
+	
+
+	public Set<PltFormAtri> getPltFormAtris() {
+		return pltFormAtris;
+	}
+
+	public void setPltFormAtris(Set<PltFormAtri> pltFormAtris) {
+		this.pltFormAtris = pltFormAtris;
+	}
 
 	@Override
 	public String getNombre() {
@@ -224,6 +240,8 @@ public class PltFormulario extends Formulario implements java.io.Serializable {
 	public String getUrlIcono() {
 		return getFormIcono();
 	}
+
+	
 
 	
 

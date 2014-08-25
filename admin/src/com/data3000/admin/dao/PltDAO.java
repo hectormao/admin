@@ -72,12 +72,7 @@ public class PltDAO {
 			if(! tx.isActive()){
 				tx.begin();
 			}
-			
-			try{
-				sesion.update(ob);
-			} catch(NonUniqueObjectException ex){
-				sesion.merge(ob);
-			}
+			sesion.merge(ob);
 			tx.commit();
 		} catch(Exception ex){
 			tx.rollback();

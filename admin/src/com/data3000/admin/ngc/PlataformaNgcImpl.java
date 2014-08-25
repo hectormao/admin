@@ -9,6 +9,7 @@ import java.util.Set;
 import org.hibernate.sql.ForUpdateFragment;
 
 import com.data3000.admin.bd.PltEnv;
+import com.data3000.admin.bd.PltFormAtri;
 import com.data3000.admin.bd.PltFormulario;
 import com.data3000.admin.bd.PltMenu;
 import com.data3000.admin.bd.PltRelaForm;
@@ -41,6 +42,19 @@ public class PlataformaNgcImpl implements PlataformaNgc {
 			if(hijos != null && ! hijos.isEmpty()){
 				hijos.clear();
 			}
+			
+			Map<String,String> mapaAtributos = formulario.getAtributos();
+			if(mapaAtributos != null){
+				mapaAtributos.clear();
+			}
+			
+			
+			Set<PltFormAtri> atributos = ((PltFormulario) formulario).getPltFormAtris();
+			for(PltFormAtri atributo : atributos){
+				formulario.addAtributo(atributo.getFormAtriNombre(), atributo.getFormAtriValor());
+			}
+			
+			
 		}
 		
 		for(Formulario formulario : formularios){

@@ -1,6 +1,7 @@
 package com.data3000.admin.cnt;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,9 +68,26 @@ public class TablaDatosCnt extends WindowComposer {
 				}
 			}
 		}
-		clase = (Class) argumentos.get(ConstantesAdmin.ARG_CLASE);
-		List<CampoTabla> listaCampos = (List<CampoTabla>) argumentos
-				.get(ConstantesAdmin.ARG_CAMPOS_TABLA);
+		
+		List<CampoTabla> listaCampos = null;
+		
+		boolean cargarAlInicio = false;
+		
+		String sClase = formulario.getAtributo(ConstantesAdmin.ARG_CLASE);
+		if(sClase != null){
+			clase = Class.forName(sClase);
+			Method metodo = clase.getMethod("getCamposTabla");
+			listaCampos = (List<CampoTabla>) metodo.invoke(clase);
+			cargarAlInicio = true;
+		} else {
+			clase = (Class) argumentos.get(ConstantesAdmin.ARG_CLASE);
+			listaCampos = (List<CampoTabla>) argumentos.get(ConstantesAdmin.ARG_CAMPOS_TABLA);
+		}
+		
+		
+		
+		
+		
 
 		tablaDatos = new TablaDatos(clase, listaCampos);
 		dvTabla.appendChild(tablaDatos);
@@ -106,6 +124,11 @@ public class TablaDatosCnt extends WindowComposer {
 
 			}
 		});
+		
+		
+		if(cargarAlInicio){
+			refrescarTabla();
+		}
 	}
 
 	private void crearBotonHerramienta(final Formulario hijo) {
@@ -132,6 +155,7 @@ public class TablaDatosCnt extends WindowComposer {
 				if(li != null){
 					valor = li.getValue();
 				}
+				argumentosHijo.put(ConstantesAdmin.ARG_FORMULARIO, hijo);
 				argumentosHijo.put(ConstantesAdmin.ARG_SELECCION, valor);
 				
 				
@@ -149,7 +173,21 @@ public class TablaDatosCnt extends WindowComposer {
 				}
 				
 				winCargar.setTitle(titulo);
+				
+				winCargar.addEventListener(Events.ON_CLOSE, new EventListener<Event>() {
+
+					@Override
+					public void onEvent(Event arg0) throws Exception {
+						String res = (String) arg0.getData();
+						if(res != null && res.equals(ConstantesAdmin.EXITO)){
+							refrescarTabla();
+						}
+					}
+				});
+				
 				winCargar.doModal();
+				
+				
 				
 				
 				
@@ -160,6 +198,11 @@ public class TablaDatosCnt extends WindowComposer {
 		
 	}
 
+	private void refrescarTabla()
+			throws Exception {
+		refrescarTabla(null,null);
+	}
+	
 	private void refrescarTabla(Object padre, String nombreAtributo)
 			throws Exception {
 

@@ -2,6 +2,7 @@ package com.data3000.admin.utl;
 
 
 
+import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -79,13 +80,28 @@ public class WindowComposer extends GenericForwardComposer<Window>{
 						case ConstantesAdmin.FORMULARIO_TIPO_EDITAR:{
 							if(objetoParametro == null){
 								throw new Exception(Labels.getLabel("error.0007"));
+							} else {
+								
+								Boolean siAnulado = null;
+								
+								try{
+									Method metodo = objetoParametro.getClass().getMethod("isAudiSiAnul");
+									siAnulado = (Boolean) metodo.invoke(objetoParametro);
+								} catch(Exception ex){
+									logger.error(new StringBuilder("Error al obtener metodo de anulado para: ").append(objetoParametro.getClass().getName()).append(" - ").append(ex.getClass().getName()).append(": ").append(ex.getMessage()).toString(), ex);
+								}
+								
+								if(siAnulado != null && siAnulado.booleanValue()){
+									throw new Exception(Labels.getLabel("error.0008"));
+								}
+								
 							}
 						}break;
 					
 					}
 					
 				} catch(Exception ex){
-					logger.error(new StringBuilder(), ex);
+					logger.error(new StringBuilder("Error al crear ventana: ").append(formulario.getNombre()).append(" - ").append(ex.getClass().getName()).append(": ").append(ex.getMessage()).toString(), ex);
 					Messagebox.show(ex.getMessage(), "Error", Messagebox.OK, Messagebox.ERROR);
 					Events.sendEvent(Events.ON_CLOSE,estaVentana,null);
 				}

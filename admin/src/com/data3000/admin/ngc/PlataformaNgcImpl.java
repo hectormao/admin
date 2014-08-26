@@ -4,11 +4,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 
 import org.apache.log4j.Logger;
 
+
+import org.hibernate.sql.ForUpdateFragment;
+
+import com.data3000.admin.bd.PltEnv;
+import com.data3000.admin.bd.PltFormAtri;
+
 import com.data3000.admin.bd.PltFormulario;
 import com.data3000.admin.bd.PltMenu;
+import com.data3000.admin.bd.PltRelaForm;
 import com.data3000.admin.bd.PltRol;
 import com.data3000.admin.bd.PltUsuario;
 import com.data3000.admin.dao.PlataformaDAO;
@@ -17,6 +26,7 @@ import com.data3000.admin.exc.PltException;
 import com.data3000.admin.utl.ConstantesAdmin;
 import com.data3000.admin.vo.EstructuraMenu;
 import com.data3000.admin.vo.Formulario;
+import com.data3000.admin.vo.FormularioHijo;
 import com.data3000.admin.vo.Usuario;
 
 public class PlataformaNgcImpl implements PlataformaNgc {
@@ -32,12 +42,49 @@ public class PlataformaNgcImpl implements PlataformaNgc {
 	@Override
 	public Map<String, Formulario> getFuncionalidadesUsuario(Usuario usuario)  throws Exception {
 		
+		Map<Long, Formulario> mapaAux = new HashMap<Long, Formulario>();
+		
 		Map<String, Formulario> mapaFuncionalidades = new HashMap<String, Formulario>();
 		
 		List<Formulario> formularios = plataformaDAO.getFormulariosUsuario((PltUsuario) usuario); 
 		
 		for(Formulario formulario : formularios){
 			mapaFuncionalidades.put(formulario.getNombre(), formulario);
+			mapaAux.put(formulario.getId(), formulario);
+			List<FormularioHijo> hijos = formulario.getHijos();
+			if(hijos != null && ! hijos.isEmpty()){
+				hijos.clear();
+			}
+			
+			Map<String,String> mapaAtributos = formulario.getAtributos();
+			if(mapaAtributos != null){
+				mapaAtributos.clear();
+			}
+			
+			
+			Set<PltFormAtri> atributos = ((PltFormulario) formulario).getPltFormAtris();
+			for(PltFormAtri atributo : atributos){
+				formulario.addAtributo(atributo.getFormAtriNombre(), atributo.getFormAtriValor());
+			}
+			
+			
+		}
+		
+		for(Formulario formulario : formularios){
+			Set<PltRelaForm> hijos = ((PltFormulario)formulario).getPltRelaFormsForFormPadre();
+			for(PltRelaForm relaForm : hijos){
+				Formulario hijo = mapaAux.get(relaForm.getPltFormularioByFormHijo().getFormIdn());
+				if(hijo != null){
+					
+					FormularioHijo formularioHijo = new FormularioHijo();
+					formularioHijo.setHijo(hijo);
+					formularioHijo.setOrden(relaForm.getRelaFormOrden());
+					formularioHijo.setTipo(relaForm.getRelaFormTipo());
+					
+					formulario.addHijo(formularioHijo);
+				}
+			}
+			
 		}
 		
 		return mapaFuncionalidades;
@@ -130,6 +177,13 @@ public class PlataformaNgcImpl implements PlataformaNgc {
 	}
 
 	@Override
+	public String getEnv(String propiedad) {
+		
+		PltEnv env = plataformaDAO.getEnv(propiedad);
+		
+		return env != null ? env.getEnvValor() : null;
+	}
+	
 	public void crearRol(PltRol pltRol) throws Exception {
 		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Creando Rol = ").append(pltRol.getRolNombre()));{
 //			Se veririfica si ya existe un login igual creado

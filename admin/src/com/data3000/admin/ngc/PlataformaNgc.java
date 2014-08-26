@@ -62,4 +62,14 @@ public interface PlataformaNgc {
 	 */
 	public void eliminarRol(PltRol pltRol) throws Exception;
 
+	
+	
+	
+	/**
+	 * Obtiene el valor de una variable del entorno
+	 * @param propiedad
+	 * @return
+	 */
+	public String getEnv(String propiedad);
+
 }

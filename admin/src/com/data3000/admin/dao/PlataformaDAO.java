@@ -2,24 +2,21 @@ package com.data3000.admin.dao;
 
 import java.util.List;
 
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projection;
-import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
-import org.zkoss.zhtml.Tbody;
 
+import com.data3000.admin.bd.PltEnv;
 import com.data3000.admin.bd.PltFormulario;
 import com.data3000.admin.bd.PltMenu;
+import com.data3000.admin.bd.PltRelaForm;
 import com.data3000.admin.bd.PltRol;
 import com.data3000.admin.bd.PltUsuario;
 import com.data3000.admin.vo.Formulario;
@@ -118,6 +115,26 @@ public class PlataformaDAO extends PltDAO {
 		
 		return condicion.toString();
 	}
+
+
+	public PltEnv getEnv(String propiedad) {
+		Session sesion = sessionFactory.getCurrentSession();
+		Transaction tx = sesion.getTransaction();
+		
+		try{
+			
+			if(! tx.isActive()){
+				tx.begin();
+			}
+		
+			Criteria criteria = sesion.createCriteria(PltEnv.class);
+			criteria.add(Restrictions.eq("envPropiedad", propiedad));
+			return (PltEnv) criteria.uniqueResult();			
+		} catch(Exception ex){
+			sesion.close();
+			return null;
+		}
+	}
 	
 	/**
 	 * Metodo para crear un rol
@@ -147,6 +164,27 @@ public class PlataformaDAO extends PltDAO {
 	 */
 	public void eliminarRol(PltRol pltRol)throws Exception{ if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Eliminando Rol = ").append(pltRol.getRolNombre()));
 		super.delete(pltRol);
+	}
+
+
+	public List<PltRelaForm> getHijos(PltFormulario formulario) {
+		Session sesion = sessionFactory.getCurrentSession();
+		Transaction tx = sesion.getTransaction();
+		
+		try{
+			
+			if(! tx.isActive()){
+				tx.begin();
+			}
+		
+			Criteria criteria = sesion.createCriteria(PltRelaForm.class);
+			criteria.add(Restrictions.eq("pltFormularioByFormPadre", formulario));
+			criteria.addOrder(Order.asc("relaFormOrden"));
+			return criteria.list();			
+		} catch(Exception ex){
+			sesion.close();
+			return null;
+		}
 	}
 	
 	/**

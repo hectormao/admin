@@ -1,12 +1,12 @@
 <?page title="Tabla Datos" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="Tabla Datos" border="normal" apply="${tablaDatosCnt}" hflex="1" vflex="1">
+<window border="normal" apply="${tablaDatosCnt}" hflex="1" vflex="1">
 	<borderlayout id="border">
-	<north id="norte" height="20px">
+	<north id="norte" border="none">
 		<toolbar id="herramientas">
 		</toolbar>
 	</north>
-	<center vflex="1">
+	<center vflex="1" border="none">
 		<div id="dvTabla" width="100%" height="100%"></div>
 	</center>
 	</borderlayout>

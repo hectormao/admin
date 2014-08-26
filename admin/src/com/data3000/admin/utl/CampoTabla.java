@@ -1,12 +1,13 @@
 package com.data3000.admin.utl;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Image;
 
-public class CampoTabla {	
+public class CampoTabla implements Serializable{	
 	private String nombre;
 	private boolean siAccion;
 	private EventListener<Event> accion;

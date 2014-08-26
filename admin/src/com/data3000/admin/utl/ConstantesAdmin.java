@@ -127,6 +127,21 @@ public class ConstantesAdmin {
 	public static final String FORMULARIO_TIPO_CONSULTAR = "C";
 	public static final String FORMULARIO_TIPO_OTRO = "O";
 	
+	
+	
+	/**
+	 * Tipos de funcionalidades hijas
+	 */
+	public static final String HIJO_BOTON = "B";
+	public static final String HIJO_CELDA = "C";
+	public static final String HIJO_DETALLE = "D";
+	
+	/**
+	 * Resultados de procesos
+	 */
+	public static final String EXITO = "exito";
+	public static final String FALLO = "fallo";
+	
 
 
 	

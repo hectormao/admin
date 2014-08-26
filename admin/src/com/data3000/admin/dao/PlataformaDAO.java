@@ -9,7 +9,11 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
 import org.zkoss.zhtml.Tbody;
@@ -141,8 +145,54 @@ public class PlataformaDAO extends PltDAO {
 	 * @param pltRol
 	 * @throws Exception
 	 */
-	public void eliminarExcepcion(PltRol pltRol)throws Exception{ if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Eliminando Rol = ").append(pltRol.getRolNombre()));
+	public void eliminarRol(PltRol pltRol)throws Exception{ if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Eliminando Rol = ").append(pltRol.getRolNombre()));
 		super.delete(pltRol);
+	}
+	
+	/**
+	 * Retorna rol por nombre
+	 * @param nombreRol
+	 * @return
+	 * @throws Exception
+	 */
+	public PltRol getRolPorNombre(String nombreRol) throws Exception{	
+		Session sesion = sessionFactory.getCurrentSession();		
+		Transaction tx = sesion.getTransaction();
+		try{
+			if(! tx.isActive()){
+				tx.begin();
+			}			
+			Criteria criteria = sesion.createCriteria(PltRol.class);
+			criteria.add(Restrictions.eq("rolNombre", nombreRol));
+			return (PltRol) criteria.uniqueResult();
+		} catch(Exception ex){
+			sesion.close();
+			throw ex;
+		}
+		
+	}
+	
+	/**
+	 * Retorna listado de formularios creados en el sistema
+	 * @param usuario
+	 * @return
+	 * @throws Exception
+	 */
+	public List<PltFormulario> getFormularios() throws Exception{
+		Session sesion = sessionFactory.getCurrentSession();
+		Transaction tx = sesion.getTransaction();
+		try{
+			
+			if(! tx.isActive()){
+				tx.begin();
+			}
+			Criteria criteria = sesion.createCriteria(PltFormulario.class);			
+			
+			return criteria.list();
+		} catch(Exception ex){
+			sesion.close();
+			throw ex;
+		}
 	}
 	
 }

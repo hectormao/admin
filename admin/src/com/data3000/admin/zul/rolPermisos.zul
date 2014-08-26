@@ -19,7 +19,11 @@
 <!-- 	GRUPO PERMISOS -->
 	<groupbox mold="3d">
 	<caption label="${labels.data3000.permisos}"/>
-		<div id="divArbolFormularios"></div>
+		<div>
+			<tree id="treePermisoRol" width="350px" multiple="true" checkmark="true" rows="10" zclass="z-vfiletree">
+					<treechildren id="tchPermisoRol" />
+			</tree>
+		</div>
 	
 	</groupbox>
 

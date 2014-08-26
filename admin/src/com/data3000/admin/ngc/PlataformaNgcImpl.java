@@ -5,11 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.data3000.admin.bd.PltFormulario;
 import com.data3000.admin.bd.PltMenu;
 import com.data3000.admin.bd.PltRol;
 import com.data3000.admin.bd.PltUsuario;
 import com.data3000.admin.dao.PlataformaDAO;
+import com.data3000.admin.dao.PltDAO;
+import com.data3000.admin.exc.PltException;
+import com.data3000.admin.utl.ConstantesAdmin;
 import com.data3000.admin.vo.EstructuraMenu;
 import com.data3000.admin.vo.Formulario;
 import com.data3000.admin.vo.Usuario;
@@ -18,6 +23,11 @@ public class PlataformaNgcImpl implements PlataformaNgc {
 
 	
 	private PlataformaDAO plataformaDAO;
+	
+	/**
+	 * Log (log4j).
+	 */
+	private Logger logger = Logger.getLogger(this.getClass());
 	
 	@Override
 	public Map<String, Formulario> getFuncionalidadesUsuario(Usuario usuario)  throws Exception {
@@ -121,19 +131,32 @@ public class PlataformaNgcImpl implements PlataformaNgc {
 
 	@Override
 	public void crearRol(PltRol pltRol) throws Exception {
-		// TODO Auto-generated method stub
+		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Creando Rol = ").append(pltRol.getRolNombre()));{
+//			Se veririfica si ya existe un login igual creado
+			if(plataformaDAO.getRolPorNombre(pltRol.getRolNombre()) != null){
+				throw new PltException(ConstantesAdmin.ERR0008);
+			}			
+			//Crear Rol			
+			plataformaDAO.crearRol(pltRol);
+		}
 		
 	}
 
 	@Override
 	public void modificarRol(PltRol pltRol) throws Exception {
-		// TODO Auto-generated method stub
+		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Modificando Rol = ").append(pltRol.getRolNombre()));{
+			//Modificar Rol
+			plataformaDAO.modificarRol(pltRol);
+		}
 		
 	}
 
 	@Override
 	public void eliminarRol(PltRol pltRol) throws Exception {
-		// TODO Auto-generated method stub
+		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Eliminando Rol = ").append(pltRol.getRolNombre()));{
+			//Eliminar Rol
+			plataformaDAO.eliminarRol(pltRol);
+		}
 		
 	}
 

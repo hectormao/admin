@@ -129,7 +129,7 @@ public class UsuarioCnt extends WindowComposer {
 		usuario.setAudiFechModi(new Date());
 		usuario.setAudiChecksum(null);
 		usuario.setAudiMotiAnul(null);
-		usuario.setAudiSiAnul(false);
+		usuario.setAudiSiAnul(Boolean.FALSE);
 		usuario.setAudiUsuario(usuario.getLogin());		
 		
 	}

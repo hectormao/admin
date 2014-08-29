@@ -188,7 +188,7 @@ public class PlataformaNgcImpl implements PlataformaNgc {
 		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Creando Rol = ").append(pltRol.getRolNombre()));{
 //			Se veririfica si ya existe un login igual creado
 			if(plataformaDAO.getRolPorNombre(pltRol.getRolNombre()) != null){
-				throw new PltException(ConstantesAdmin.ERR0008);
+				throw new PltException(ConstantesAdmin.ERR0009);
 			}			
 			//Crear Rol			
 			plataformaDAO.crearRol(pltRol);

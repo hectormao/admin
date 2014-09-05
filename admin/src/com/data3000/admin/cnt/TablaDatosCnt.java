@@ -2,6 +2,7 @@ package com.data3000.admin.cnt;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,18 +12,19 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Borderlayout;
 import org.zkoss.zul.Div;
-import org.zkoss.zul.ListModelList;
+import org.zkoss.zul.East;
 import org.zkoss.zul.Listitem;
-import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.North;
+import org.zkoss.zul.Tab;
+import org.zkoss.zul.Tabpanel;
+import org.zkoss.zul.Tabpanels;
+import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
-import com.data3000.admin.bd.PltFormulario;
 import com.data3000.admin.cmp.TablaDatos;
 import com.data3000.admin.ngc.PlataformaNgc;
 import com.data3000.admin.utl.CampoTabla;
@@ -34,6 +36,7 @@ import com.data3000.admin.vo.FormularioHijo;
 public class TablaDatosCnt extends WindowComposer {
 
 	private Toolbar herramientas;
+	private Borderlayout border;
 	private Div dvTabla;
 	private North norte;
 
@@ -42,11 +45,22 @@ public class TablaDatosCnt extends WindowComposer {
 	private PlataformaNgc plataformaNgc;
 
 	private Class clase;
-
+	
+	private East eastDetalle;
+	private Tabs tabsDetalle;
+	private Tabpanels panelsDetalle;
+	
+	
+	private List<Formulario> listaDetalles;
+	
+	private List<Window> listaWinDetalle;
+	
 	@Override
 	public void doAfterCompose(Window win) throws Exception {
 		super.doAfterCompose(win);
 
+		listaDetalles = new ArrayList<Formulario>();
+		
 		List<FormularioHijo> hijos = formulario.getHijos();
 		if(hijos != null){
 			for (FormularioHijo hijo : hijos) {
@@ -56,11 +70,12 @@ public class TablaDatosCnt extends WindowComposer {
 					crearBotonHerramienta(hijo.getHijo());
 					break;
 				case ConstantesAdmin.HIJO_CELDA:
-					//TODO crear boton como celda de la 
+					//TODO agregar a la lista de celdas 
 					break;
 	
 				case ConstantesAdmin.HIJO_DETALLE:
-					//TODO crear detalle
+					//agregar a la lista 
+					listaDetalles.add(hijo.getHijo());
 					break;
 	
 				default:
@@ -125,11 +140,84 @@ public class TablaDatosCnt extends WindowComposer {
 			}
 		});
 		
+		win.addEventListener(Events.ON_CREATE, new EventListener<Event>() {
+
+			@Override
+			public void onEvent(Event arg0) throws Exception {
+				;
+			}
+		});
 		
+		if(listaDetalles != null && ! listaDetalles.isEmpty()){
+			tablaDatos.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+	
+				@Override
+				public void onEvent(Event arg0) throws Exception {
+					
+					
+					
+					if(! eastDetalle.isVisible()){
+						eastDetalle.setVisible(true);
+						eastDetalle.setOpen(true);						
+						crearHijosDetalle();
+						
+					}
+					
+				}
+			});
+		}
 		if(cargarAlInicio){
 			refrescarTabla();
 		}
 	}
+	
+	private void crearHijosDetalle() throws Exception{
+		listaWinDetalle = new ArrayList<Window>();
+		
+		for(Formulario detalle : listaDetalles){
+			Tabpanel panel = new Tabpanel();
+			Tab tab = new Tab();
+			
+			String nombre = detalle.getNombre();
+			String leyenda = Labels.getLabel(nombre);
+			if(leyenda == null){
+				leyenda = nombre;
+			}
+			
+			tab.setLabel(leyenda);
+			
+						
+			panelsDetalle.appendChild(panel);
+			
+			String url = detalle.getUrl();
+			
+			Map<String,Object> marg = new HashMap<String, Object>();
+			marg.put(ConstantesAdmin.ARG_FORMULARIO,detalle);
+			marg.put(ConstantesAdmin.ARG_USUARIO,usuario);
+			
+			Window winDetalle = null;
+			
+			try{			
+				winDetalle = (Window) Executions.createComponents(url, panel, marg);
+				
+			} catch(Exception ex){
+				java.io.InputStream zulInput = this.getClass().getClassLoader().getResourceAsStream(url) ;
+				java.io.Reader zulReader = new java.io.InputStreamReader(zulInput) ;
+				winDetalle = (Window) Executions.createComponentsDirectly(zulReader,"zul",panel,marg) ;
+			}
+			
+			winDetalle.setBorder("none");
+			winDetalle.doEmbedded();
+			
+			listaWinDetalle.add(winDetalle);
+			
+			tabsDetalle.appendChild(tab);
+			
+		}
+		
+		
+	}
+	
 
 	private void crearBotonHerramienta(final Formulario hijo) {
 		Toolbarbutton boton = new Toolbarbutton();

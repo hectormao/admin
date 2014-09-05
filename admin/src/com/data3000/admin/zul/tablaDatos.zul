@@ -2,13 +2,25 @@
 <zk>
 <window border="normal" apply="${tablaDatosCnt}" hflex="1" vflex="1">
 	<borderlayout id="border">
-	<north id="norte" border="none">
-		<toolbar id="herramientas">
-		</toolbar>
-	</north>
-	<center vflex="1" border="none">
-		<div id="dvTabla" width="100%" height="100%"></div>
-	</center>
+	
+			<north id="norte" border="none">
+				<toolbar id="herramientas">
+				</toolbar>
+			</north>
+			<center vflex="1" border="none">
+				<div id="dvTabla" width="100%" height="100%"></div>
+			</center>
+			<east id="eastDetalle" visible="false" splittable="true" collapsible="true" width="50%">
+				<tabbox orient="bottom" width="100%" height="100%">
+					<tabs id="tabsDetalle" >
+						
+					</tabs>
+					<tabpanels id="panelsDetalle">
+						
+					</tabpanels>
+				</tabbox>
+			</east>
+	
 	</borderlayout>
 </window>
 </zk>

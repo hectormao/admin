@@ -2,10 +2,13 @@ package com.data3000.admin.bd;
 
 // Generated 12/01/2014 11:11:48 AM by Hibernate Tools 3.4.0.CR1
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import com.data3000.admin.utl.CampoTabla;
 import com.data3000.admin.vo.Usuario;
 
 /**
@@ -184,6 +187,20 @@ public class PltUsuario implements Usuario, java.io.Serializable {
 	@Override
 	public String getLogin() {		
 		return getUsuaLogin();
+	}
+	
+	public static List<CampoTabla> getCamposTabla() {
+
+		String[] camposMostrar = new String[] { "usuarioLogin","usuarioNombre", "usuarioCorreo","usuarioEstado", "audiFechModi" };
+
+		List<CampoTabla> camposTabla = new ArrayList<CampoTabla>();
+		for (String campoMostrar : camposMostrar) {
+			CampoTabla campo = new CampoTabla(campoMostrar);
+			camposTabla.add(campo);
+		}
+
+		return camposTabla;
+
 	}
 
 }

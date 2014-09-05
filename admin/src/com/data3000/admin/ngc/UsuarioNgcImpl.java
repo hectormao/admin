@@ -55,23 +55,23 @@ public class UsuarioNgcImpl implements UsuarioNgc {
 	
 	@Override
 	public void crearUsuario(PltUsuario pltUsuario, String loginUsuario) throws Exception {
-		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Creando Usuario = ").append(pltUsuario.getUsuaLogin()));
+		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Creando Usuario = ").append(pltUsuario.getUsuaLogin()));{
 		
-//		Se veririfica si ya existe un login igual creado
-		if(usuarioDAO.getUsuarioPorLogin(pltUsuario.getUsuaLogin()) != null){
-			throw new PltException(ConstantesAdmin.ERR0006);
+	//		Se veririfica si ya existe un login igual creado
+			if(usuarioDAO.getUsuarioPorLogin(pltUsuario.getUsuaLogin()) != null){
+				throw new PltException(ConstantesAdmin.ERR0006);
+			}
+	//		Crear usuario
+			usuarioDAO.crearUsuario(pltUsuario);
 		}
-//		Crear usuario
-		usuarioDAO.crearUsuario(pltUsuario);
 		
 	}
 
 	@Override
 	public void modificarUsuario(PltUsuario pltUsuario) throws Exception {
 		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Modificando Usuario = ").append(pltUsuario.getUsuaLogin()));{
-//			Actualizar usuario
-			usuarioDAO.modificarUsuario(pltUsuario);
-			
+//			Modificar Usuario
+			usuarioDAO.modificarUsuario(pltUsuario);			
 		}
 		
 	}

@@ -73,6 +73,15 @@ public class ConstantesAdmin {
 	public static final String ERR0007 = "error.0007";
 	
 	
+	public static final String ERR0008 = "error.0008";
+	
+	/**
+	 * Rol ya registrado
+	 * 
+	 */
+	public static final String ERR0009 = "error.0009";
+	
+	
 	/**
 	 * Argumentos a los formularios
 	 */

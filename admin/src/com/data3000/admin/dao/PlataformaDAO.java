@@ -2,7 +2,6 @@ package com.data3000.admin.dao;
 
 import java.util.List;
 
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -13,7 +12,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
-import org.zkoss.zhtml.Tbody;
 
 import com.data3000.admin.bd.PltEnv;
 import com.data3000.admin.bd.PltFormulario;
@@ -164,7 +162,7 @@ public class PlataformaDAO extends PltDAO {
 	 * @param pltRol
 	 * @throws Exception
 	 */
-	public void eliminarExcepcion(PltRol pltRol)throws Exception{ if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Eliminando Rol = ").append(pltRol.getRolNombre()));
+	public void eliminarRol(PltRol pltRol)throws Exception{ if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Eliminando Rol = ").append(pltRol.getRolNombre()));
 		super.delete(pltRol);
 	}
 
@@ -186,6 +184,52 @@ public class PlataformaDAO extends PltDAO {
 		} catch(Exception ex){
 			sesion.close();
 			return null;
+		}
+	}
+	
+	/**
+	 * Retorna rol por nombre
+	 * @param nombreRol
+	 * @return
+	 * @throws Exception
+	 */
+	public PltRol getRolPorNombre(String nombreRol) throws Exception{	
+		Session sesion = sessionFactory.getCurrentSession();		
+		Transaction tx = sesion.getTransaction();
+		try{
+			if(! tx.isActive()){
+				tx.begin();
+			}			
+			Criteria criteria = sesion.createCriteria(PltRol.class);
+			criteria.add(Restrictions.eq("rolNombre", nombreRol));
+			return (PltRol) criteria.uniqueResult();
+		} catch(Exception ex){
+			sesion.close();
+			throw ex;
+		}
+		
+	}
+	
+	/**
+	 * Retorna listado de formularios creados en el sistema
+	 * @param usuario
+	 * @return
+	 * @throws Exception
+	 */
+	public List<PltFormulario> getFormularios() throws Exception{
+		Session sesion = sessionFactory.getCurrentSession();
+		Transaction tx = sesion.getTransaction();
+		try{
+			
+			if(! tx.isActive()){
+				tx.begin();
+			}
+			Criteria criteria = sesion.createCriteria(PltFormulario.class);			
+			
+			return criteria.list();
+		} catch(Exception ex){
+			sesion.close();
+			throw ex;
 		}
 	}
 	

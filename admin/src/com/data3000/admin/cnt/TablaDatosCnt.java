@@ -84,6 +84,10 @@ public class TablaDatosCnt extends WindowComposer {
 			}
 		}
 		
+		if(listaDetalles.isEmpty()){
+			eastDetalle.setVisible(false);
+		}
+		
 		List<CampoTabla> listaCampos = null;
 		
 		boolean cargarAlInicio = false;
@@ -156,8 +160,8 @@ public class TablaDatosCnt extends WindowComposer {
 					
 					
 					
-					if(! eastDetalle.isVisible()){
-						eastDetalle.setVisible(true);
+					if(! eastDetalle.isOpen()){
+						//eastDetalle.setVisible(true);
 						eastDetalle.setOpen(true);						
 						crearHijosDetalle();
 						

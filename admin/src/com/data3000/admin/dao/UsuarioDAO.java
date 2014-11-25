@@ -1,14 +1,17 @@
 package com.data3000.admin.dao;
 
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import com.data3000.admin.bd.PltUsuario;
+import com.data3000.admin.vo.Usuario;
 
 public class UsuarioDAO extends PltDAO {
 	
@@ -65,6 +68,25 @@ public class UsuarioDAO extends PltDAO {
 	public void EliminarUsuario(PltUsuario pltUsuario)throws Exception{
 		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Modificando Usuario = ").append(pltUsuario.getUsuaLogin()));{
 			super.delete(pltUsuario);
+		}
+		
+	}
+
+
+	public List<PltUsuario> getusuariosOrdenadosNombre() {
+		
+		Session sesion = sessionFactory.getCurrentSession();		
+		Transaction tx = sesion.getTransaction();
+		try{
+			if(! tx.isActive()){
+				tx.begin();
+			}			
+			Criteria criterio = sesion.createCriteria(PltUsuario.class);
+			criterio.addOrder(Order.asc("usuaNombre"));
+			return  criterio.list();
+		} catch(Exception ex){
+			sesion.close();
+			throw ex;
 		}
 		
 	}

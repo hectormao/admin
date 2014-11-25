@@ -232,5 +232,23 @@ public class PlataformaDAO extends PltDAO {
 			throw ex;
 		}
 	}
+
+
+	public List<PltRol> getRolesOrdenadoNombre() {
+		Session sesion = sessionFactory.getCurrentSession();
+		Transaction tx = sesion.getTransaction();
+		try{
+			
+			if(! tx.isActive()){
+				tx.begin();
+			}
+			Criteria criteria = sesion.createCriteria(PltRol.class);			
+			criteria.addOrder(Order.asc("rolNombre"));
+			return criteria.list();
+		} catch(Exception ex){
+			sesion.close();
+			throw ex;
+		}
+	}
 	
 }

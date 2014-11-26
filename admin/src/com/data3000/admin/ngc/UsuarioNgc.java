@@ -47,6 +47,13 @@ public interface UsuarioNgc {
 	 * @throws Exception
 	 */
 	public List<PltUsuario> getUsuarios() throws Exception;
+
+	/**
+	 * Obtiene los usuarios diferentes al que le llega por parametro
+	 * @param usuario
+	 * @return
+	 */
+	public List<PltUsuario> getUsuariosDiferentesA(PltUsuario usuario);
 	
 	
 	

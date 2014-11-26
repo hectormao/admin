@@ -105,6 +105,12 @@ public class UsuarioNgcImpl implements UsuarioNgc {
 		return usuarioDAO.getusuariosOrdenadosNombre();
 	}
 
+	@Override
+	public List<PltUsuario> getUsuariosDiferentesA(PltUsuario usuario) {
+		
+		return usuarioDAO.getusuariosDiferentesOrdenadosNombre(usuario);
+	}
+
 	
 
 	

@@ -90,5 +90,24 @@ public class UsuarioDAO extends PltDAO {
 		}
 		
 	}
+
+
+	public List<PltUsuario> getusuariosDiferentesOrdenadosNombre(PltUsuario usuario) {
+		
+		Session sesion = sessionFactory.getCurrentSession();		
+		Transaction tx = sesion.getTransaction();
+		try{
+			if(! tx.isActive()){
+				tx.begin();
+			}			
+			Criteria criterio = sesion.createCriteria(PltUsuario.class);
+			criterio.add(Restrictions.ne("usuaIdn", usuario.getUsuaIdn()));
+			criterio.addOrder(Order.asc("usuaNombre"));
+			return  criterio.list();
+		} catch(Exception ex){
+			sesion.close();
+			throw ex;
+		}
+	}
 	
 }

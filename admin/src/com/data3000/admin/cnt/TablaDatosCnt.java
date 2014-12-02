@@ -32,6 +32,7 @@ import com.data3000.admin.utl.ConstantesAdmin;
 import com.data3000.admin.utl.WindowComposer;
 import com.data3000.admin.vo.Formulario;
 import com.data3000.admin.vo.FormularioHijo;
+import com.data3000.admin.vo.RegistroTabla;
 
 public class TablaDatosCnt extends WindowComposer {
 
@@ -317,8 +318,20 @@ public class TablaDatosCnt extends WindowComposer {
 			where.append(condicion);
 			datos = plataformaNgc.getDatos(clase, where.toString());
 		}
+		
+		List<Object> datosAMostrar = new ArrayList<>();
+		for(Object dato : datos){
+			if(dato instanceof RegistroTabla){
+				RegistroTabla registroTabla = (RegistroTabla) dato;
+				if(registroTabla.siMostrar() && registroTabla.siMostrarSegunUsuario(usuario)){
+					datosAMostrar.add(dato);
+				}
+			} else {
+				datosAMostrar.add(dato);
+			}
+		}
 
-		tablaDatos.setDatos(datos);
+		tablaDatos.setDatos(datosAMostrar);
 	}
 
 	public PlataformaNgc getPlataformaNgc() {

@@ -1,5 +1,6 @@
 package com.data3000.admin.ngc;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -97,6 +98,17 @@ public class UsuarioNgcImpl implements UsuarioNgc {
 
 	public void setPlataformaNgc(PlataformaNgc plataformaNgc) {
 		this.plataformaNgc = plataformaNgc;
+	}
+
+	@Override
+	public List<PltUsuario> getUsuarios() throws Exception {		
+		return usuarioDAO.getusuariosOrdenadosNombre();
+	}
+
+	@Override
+	public List<PltUsuario> getUsuariosDiferentesA(PltUsuario usuario) {
+		
+		return usuarioDAO.getusuariosDiferentesOrdenadosNombre(usuario);
 	}
 
 	

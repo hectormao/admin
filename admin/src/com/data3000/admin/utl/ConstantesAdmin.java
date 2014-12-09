@@ -31,6 +31,12 @@ public class ConstantesAdmin {
 	 */
 	public static final String NOMBRE_CLAVE_CAMPOS_MOSTRAR_TABLA = "camposMostrar";
 	
+	/**
+	 * Atributo a colocar en los componenetes para saber que formulario se llama
+	 */
+	public static final String ATRIBUTO_FORMULARIO = "formulario";
+	
+	
 	
 	/************************************************************
 	 * CODIGOS DE ERROR DE LA PLATAFORMA

@@ -3,12 +3,11 @@ package com.data3000.admin.utl;
 
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-
 import org.zkoss.util.resource.Labels;
-
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -219,6 +218,50 @@ public class WindowComposer extends GenericForwardComposer<Window>{
 		
 		
 		return txtNota.getText();
+		
+	}
+	
+	public void abrirFormulario(Formulario formulario, Object seleccion, EventListener<Event> eventoCerrar) throws Exception{
+		
+		Map<String,Object> argumentosHijo = new HashMap<String, Object>();
+		argumentosHijo.putAll(argumentos);
+		
+		argumentosHijo.put(ConstantesAdmin.ARG_FORMULARIO, formulario);
+		argumentosHijo.put(ConstantesAdmin.ARG_SELECCION, seleccion);
+		
+		
+		java.io.InputStream zulInput = this.getClass().getClassLoader().getResourceAsStream(formulario.getUrl()) ;
+		java.io.Reader zulReader = new java.io.InputStreamReader(zulInput) ;
+		
+		
+		Window winFormulario = (Window) Executions.createComponentsDirectly(zulReader,"zul",this.self,argumentosHijo) ;
+		
+		String nombre = formulario.getNombre();
+		
+		String titulo = Labels.getLabel(nombre);
+		if(titulo == null){
+			titulo = nombre;
+		}
+		
+		winFormulario.setTitle(titulo);
+		
+		winFormulario.addEventListener(Events.ON_CLOSE, new EventListener<Event>() {
+
+			@Override
+			public void onEvent(Event arg0) throws Exception {
+				String res = (String) arg0.getData();
+				if(res != null && res.equals(ConstantesAdmin.EXITO)){
+					//refrescarTabla();
+				}
+			}
+		});
+		
+		if(eventoCerrar != null){
+			winFormulario.addEventListener(Events.ON_CLOSE, eventoCerrar);
+		}
+		
+		winFormulario.doModal();
+		
 		
 	}
 	

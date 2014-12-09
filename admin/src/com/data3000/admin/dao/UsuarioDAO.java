@@ -1,14 +1,17 @@
 package com.data3000.admin.dao;
 
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import com.data3000.admin.bd.PltUsuario;
+import com.data3000.admin.vo.Usuario;
 
 public class UsuarioDAO extends PltDAO {
 	
@@ -67,6 +70,44 @@ public class UsuarioDAO extends PltDAO {
 			super.delete(pltUsuario);
 		}
 		
+	}
+
+
+	public List<PltUsuario> getusuariosOrdenadosNombre() {
+		
+		Session sesion = sessionFactory.getCurrentSession();		
+		Transaction tx = sesion.getTransaction();
+		try{
+			if(! tx.isActive()){
+				tx.begin();
+			}			
+			Criteria criterio = sesion.createCriteria(PltUsuario.class);
+			criterio.addOrder(Order.asc("usuaNombre"));
+			return  criterio.list();
+		} catch(Exception ex){
+			sesion.close();
+			throw ex;
+		}
+		
+	}
+
+
+	public List<PltUsuario> getusuariosDiferentesOrdenadosNombre(PltUsuario usuario) {
+		
+		Session sesion = sessionFactory.getCurrentSession();		
+		Transaction tx = sesion.getTransaction();
+		try{
+			if(! tx.isActive()){
+				tx.begin();
+			}			
+			Criteria criterio = sesion.createCriteria(PltUsuario.class);
+			criterio.add(Restrictions.ne("usuaIdn", usuario.getUsuaIdn()));
+			criterio.addOrder(Order.asc("usuaNombre"));
+			return  criterio.list();
+		} catch(Exception ex){
+			sesion.close();
+			throw ex;
+		}
 	}
 	
 }

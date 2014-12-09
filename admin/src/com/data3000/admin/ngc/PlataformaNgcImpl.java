@@ -6,15 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
 import org.apache.log4j.Logger;
-
-
 import org.hibernate.sql.ForUpdateFragment;
 
 import com.data3000.admin.bd.PltEnv;
 import com.data3000.admin.bd.PltFormAtri;
-
 import com.data3000.admin.bd.PltFormulario;
 import com.data3000.admin.bd.PltMenu;
 import com.data3000.admin.bd.PltRelaForm;
@@ -185,33 +181,34 @@ public class PlataformaNgcImpl implements PlataformaNgc {
 	}
 	
 	public void crearRol(PltRol pltRol) throws Exception {
-		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Creando Rol = ").append(pltRol.getRolNombre()));{
+		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Creando Rol = ").append(pltRol.getRolNombre()));
 //			Se veririfica si ya existe un login igual creado
 			if(plataformaDAO.getRolPorNombre(pltRol.getRolNombre()) != null){
 				throw new PltException(ConstantesAdmin.ERR0009);
 			}			
 			//Crear Rol			
 			plataformaDAO.crearRol(pltRol);
-		}
 		
 	}
 
 	@Override
 	public void modificarRol(PltRol pltRol) throws Exception {
-		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Modificando Rol = ").append(pltRol.getRolNombre()));{
+		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Modificando Rol = ").append(pltRol.getRolNombre()));
 			//Modificar Rol
 			plataformaDAO.modificarRol(pltRol);
-		}
-		
 	}
 
 	@Override
 	public void eliminarRol(PltRol pltRol) throws Exception {
-		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Eliminando Rol = ").append(pltRol.getRolNombre()));{
+		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Eliminando Rol = ").append(pltRol.getRolNombre()));
 			//Eliminar Rol
 			plataformaDAO.eliminarRol(pltRol);
-		}
+	}
+
+	@Override
+	public List<PltRol> getRoles() throws Exception {
 		
+		return plataformaDAO.getRolesOrdenadoNombre();
 	}
 
 	

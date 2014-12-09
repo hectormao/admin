@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.data3000.admin.utl.CampoTabla;
+import com.data3000.admin.vo.RegistroTabla;
 import com.data3000.admin.vo.Usuario;
 
 /**

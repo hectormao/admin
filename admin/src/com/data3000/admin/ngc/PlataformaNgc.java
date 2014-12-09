@@ -61,7 +61,13 @@ public interface PlataformaNgc {
 	 * @throws Exception
 	 */
 	public void eliminarRol(PltRol pltRol) throws Exception;
-
+	
+	/**
+	 * Obtiene todos los roles ordenados por su nombre
+	 * @return
+	 * @throws Exception
+	 */
+	public List<PltRol> getRoles() throws Exception;
 	
 	
 	

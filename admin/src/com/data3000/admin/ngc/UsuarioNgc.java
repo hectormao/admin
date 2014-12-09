@@ -1,5 +1,7 @@
 package com.data3000.admin.ngc;
 
+import java.util.List;
+
 import com.data3000.admin.bd.PltUsuario;
 import com.data3000.admin.vo.Usuario;
 
@@ -38,4 +40,21 @@ public interface UsuarioNgc {
 	 * @throws Exception
 	 */
 	public void eliminarUsuario(PltUsuario pltUsuario) throws Exception;
+	
+	/**
+	 * Obtiene todos los usuarios ordenados por su nombre
+	 * @return
+	 * @throws Exception
+	 */
+	public List<PltUsuario> getUsuarios() throws Exception;
+
+	/**
+	 * Obtiene los usuarios diferentes al que le llega por parametro
+	 * @param usuario
+	 * @return
+	 */
+	public List<PltUsuario> getUsuariosDiferentesA(PltUsuario usuario);
+	
+	
+	
 }

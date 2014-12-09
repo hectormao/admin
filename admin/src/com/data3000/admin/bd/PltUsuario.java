@@ -191,7 +191,7 @@ public class PltUsuario implements Usuario, java.io.Serializable {
 	
 	public static List<CampoTabla> getCamposTabla() {
 
-		String[] camposMostrar = new String[] { "usuarioLogin","usuarioNombre", "usuarioCorreo","usuarioEstado", "audiFechModi" };
+		String[] camposMostrar = new String[] { "usuaLogin","usuaNombre", "usuaCorreo", "usuaEstado", "audiUsuario", "audiFechModi" };
 
 		List<CampoTabla> camposTabla = new ArrayList<CampoTabla>();
 		for (String campoMostrar : camposMostrar) {

@@ -2,7 +2,7 @@
 <zk>
 <window id="winUsuario" apply="${usuarioCnt}" border="normal" >
 <hlayout>	
-	<groupbox mold="3d">
+	<groupbox mold="3d" height="125px">
 		<caption label="${labels.data3000.datos.personales}" />
 		<vlayout>	
 <!-- 		NOMBRE COMPLETO -->
@@ -10,14 +10,14 @@
 				<div width="150px">
 					<label id="lblNombreCompleto" value="${labels.data3000.nombre.completo}" style="font-weight:bold;"></label>
 				</div>
-				<textbox id="txtNombreCompleto" width="150px" constraint="/.{1,100}/"></textbox>
+				<textbox id="txtNombreCompleto" width="150px" constraint="no empty:Por favor ingrese su Nombre Completo"></textbox>
 			</hlayout>
 <!-- 			CORREO ELECTRÓNICO  -->
 			<hlayout>
 				<div width="150px">
 					<label id="lblCorreo" value="${labels.data3000.correo}" style="font-weight:bold;"></label>
 				</div>
-				<textbox id="txtCorreo" width="150px" constraint="/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$ /"></textbox>
+				<textbox id="txtCorreo" width="150px" constraint="/.+@.+\.[a-z]+/:Por favor ingrese un Correo Electronico Valido"></textbox>
 			</hlayout>
 		</vlayout>
 		
@@ -31,26 +31,27 @@
 				<div width="150px">
 					<label id="lblLogin" value="${labels.data3000.login}" style="font-weight:bold;"></label>
 				</div>
-				<textbox id="txtLogin" width="150px" constraint="/.{1,100}/"></textbox>
+				<textbox id="txtLogin" width="150px" constraint="no empty:Por favor ingrese un Nombre de Usuario"></textbox>
 			</hlayout>
 <!-- 			CLAVE  -->
 			<hlayout>
 				<div width="150px">
 					<label id="lblClave" value="${labels.data3000.clave}" style="font-weight:bold;"></label>
 				</div>
-				<textbox id="txtClave" width="150px" constraint="/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$ /"></textbox>
+				<textbox id="txtClave" type="password" width="150px" ></textbox>
 			</hlayout>
 <!-- 			CONFIRMAR CLAVE -->
 			<hlayout>
 				<div width="150px">
 					<label id="lblConfirmarClave" value="${labels.data3000.confirmar.clave}" style="font-weight:bold;"></label>
 				</div>
-				<textbox id="txtConfirmarClave" width="150px" constraint="/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$ /"></textbox>
+				<textbox id="txtConfirmarClave" type="password" width="150px" ></textbox>
 			</hlayout>
 		</vlayout>
 		
 	</groupbox>	
 </hlayout>
+<separator width="30px"></separator>
 <div width="100%" align="center">
 	<hlayout>
 		<button id="btnAceptar" label="${labels.data3000.aceptar}"/>

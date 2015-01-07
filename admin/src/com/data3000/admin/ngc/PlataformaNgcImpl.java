@@ -211,6 +211,12 @@ public class PlataformaNgcImpl implements PlataformaNgc {
 		return plataformaDAO.getRolesOrdenadoNombre();
 	}
 
+	@Override
+	public List<PltFormulario> getFormularios() throws Exception {
+		
+		return plataformaDAO.getFormularios();
+	}
+
 	
 	
 }

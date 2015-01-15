@@ -2,6 +2,7 @@ package com.data3000.admin.cnt;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,15 +68,15 @@ public class RolPermisosCnt extends WindowComposer {
 	 */
 	private Logger logger = Logger.getLogger(this.getClass());
 	
-	private List<PltFormulario> listaFormularios = null;
+	private List<PltFormulario> listaFormularios;
 	
 	
-	public void doAfteCompose(Window winUsuario) throws Exception {
+	public void doAfteCompose(Window winRolPermisos) throws Exception {
 
-		super.doAfterCompose(winUsuario);
+		super.doAfterCompose(winRolPermisos);
 		logger = Logger.getLogger(this.getClass());
-		btnAceptar.setAutodisable("self");
-		
+		btnAceptar.setAutodisable("self");	
+				
 	}
 	
 	public void onCreate$winRolPermisos(Event event) throws Exception {
@@ -87,35 +88,53 @@ public class RolPermisosCnt extends WindowComposer {
 				
 				//Arbol de Funcionalidades
 				listaFormularios = plataformaNgc.getFormularios();
-				Map<String,Object> mapaModuloFormulario = null;	
+				Map<String,Object> mapaModuloFormulario = new HashMap<String, Object>();	
 				
-				//Se instancian elementos del arbol
-				Treeitem treeitemPadre = new Treeitem();
-				Treechildren treechildren = new Treechildren();
-				Treeitem treeitem2 = new Treeitem();
-				Treerow treerow = new Treerow();
-				Treecell treecell = new Treecell();
+				Treechildren treechildrenAux = new Treechildren();
+				
+				
 				
 				for(PltFormulario formulario :listaFormularios){
 					
+//					if(mapaModuloFormulario.get(formulario.getFormModulo()) == null){
+//						//Se instancian elementos del arbol
+//						Treeitem treeitemPadre = new Treeitem();
+//						Treechildren treechildren = new Treechildren();
+//						Treeitem treeitem2 = new Treeitem();
+//						Treerow treerow = new Treerow();
+//						Treecell treecell = new Treecell();
+//						
+//						treeitemPadre.setLabel(formulario.getFormModulo());
+//						treecell.setAttribute(ConstantesAdmin.ATRIBUTO_FORMULARIO, formulario);
+//						treecell.setLabel(formulario.getFormNombre());
+//						treerow.appendChild(treecell);
+//						treeitem2.appendChild(treerow);
+//						treechildren.appendChild(treeitem2);
+//						treeitemPadre.appendChild(treechildren);					
+//						tchPermisoRol.appendChild(treeitemPadre);
+//						mapaModuloFormulario.put(formulario.getFormModulo(), formulario);
+//						treechildrenAux = treechildren;
+//					}else{
+//						mapaModuloFormulario.put(formulario.getFormModulo(),formulario);
+//						cargarHijosArbol(treechildrenAux, formulario);
+//					}
+					
 					if(mapaModuloFormulario.get(formulario.getFormModulo()) == null){
-						treeitemPadre.setLabel(Labels.getLabel(formulario.getFormModulo()));
-						treecell.setAttribute(ConstantesAdmin.ATRIBUTO_FORMULARIO, formulario);
-						treecell.setLabel(Labels.getLabel(formulario.getFormNombre()));
-						treerow.appendChild(treecell);
-						treeitem2.appendChild(treerow);
+						Treeitem treeitemPadre = new Treeitem(formulario.getFormModulo());
+						Treechildren treechildren = new Treechildren();
+						Treeitem treeitem2 = new Treeitem(formulario.getFormNombre(),formulario);
+						
 						treechildren.appendChild(treeitem2);
 						treeitemPadre.appendChild(treechildren);					
-						tchPermisoRol.appendChild(treeitemPadre);						
+						tchPermisoRol.appendChild(treeitemPadre);
+						mapaModuloFormulario.put(formulario.getFormModulo(), formulario);
+						treechildrenAux = treechildren;
 					}else{
 						mapaModuloFormulario.put(formulario.getFormModulo(),formulario);
-						cargarHijosArbol(treechildren, formulario);
+						cargarHijosArbol(treechildrenAux, formulario);
 					}
-					
 				}
 				
-				
-
 			} else if (formulario.getTipo().equalsIgnoreCase(ConstantesAdmin.FORMULARIO_TIPO_EDITAR)) {
 
 				pltRol = (PltRol) argumentos.get(ConstantesAdmin.ARG_SELECCION);
@@ -137,14 +156,7 @@ public class RolPermisosCnt extends WindowComposer {
 	}
 	
 	private void cargarHijosArbol(Treechildren treechildren, PltFormulario formulario){
-		Treeitem treeitem = new Treeitem();
-		Treerow treerow = new Treerow();
-		Treecell treecell = new Treecell();
-		
-		treecell.setAttribute(ConstantesAdmin.ATRIBUTO_FORMULARIO, formulario);
-		treecell.setLabel(Labels.getLabel(formulario.getFormNombre()));
-		treerow.appendChild(treecell);
-		treeitem.appendChild(treerow);
+		Treeitem treeitem = new Treeitem(formulario.getNombre(),formulario);
 		treechildren.appendChild(treeitem);
 			
 	}

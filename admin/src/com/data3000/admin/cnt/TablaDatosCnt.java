@@ -56,9 +56,19 @@ public class TablaDatosCnt extends WindowComposer {
 	
 	private List<Window> listaWinDetalle;
 	
+	private Object padre;
+	private String nombreAtributo;
+	
+	private boolean crearHijos;
+	
 	@Override
 	public void doAfterCompose(Window win) throws Exception {
 		super.doAfterCompose(win);
+		
+		crearHijos = true;
+		
+		padre = argumentos.get(ConstantesAdmin.OBJETO_PADRE);
+		nombreAtributo = (String) argumentos.get(ConstantesAdmin.NOMBRE_ATRIBUTO_PADRE);
 
 		listaDetalles = new ArrayList<Formulario>();
 		
@@ -134,9 +144,9 @@ public class TablaDatosCnt extends WindowComposer {
 				
 				if (accion.equals(ConstantesAdmin.EVENTO_REFRESCAR)) {
 
-					Object padre = datos.get(ConstantesAdmin.OBJETO_PADRE);
-					String nombreAtributo = (String) datos.get(ConstantesAdmin.NOMBRE_ATRIBUTO_PADRE);
-					
+					padre = datos.get(ConstantesAdmin.OBJETO_PADRE);
+					nombreAtributo = (String) datos.get(ConstantesAdmin.NOMBRE_ATRIBUTO_PADRE);
+					cerrarDetalle();
 					
 					
 					refrescarTabla(padre, nombreAtributo);
@@ -155,16 +165,24 @@ public class TablaDatosCnt extends WindowComposer {
 		
 		if(listaDetalles != null && ! listaDetalles.isEmpty()){
 			tablaDatos.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
-	
+				
 				@Override
 				public void onEvent(Event arg0) throws Exception {
 					
+					Listitem li = tablaDatos.getSelectedItem();
+					Object seleccion = li != null ? li.getValue() : null;
 					
+					if(crearHijos){
+						crearHijosDetalle(seleccion);
+						crearHijos = false;
+					} else {
+						actualizarHijosDetalle(seleccion);
+					}
 					
 					if(! eastDetalle.isOpen()){
 						//eastDetalle.setVisible(true);
 						eastDetalle.setOpen(true);						
-						crearHijosDetalle();
+						
 						
 					}
 					
@@ -172,16 +190,53 @@ public class TablaDatosCnt extends WindowComposer {
 			});
 		}
 		if(cargarAlInicio){
-			refrescarTabla();
+			refrescarTabla(padre,nombreAtributo);
 		}
 	}
 	
-	private void crearHijosDetalle() throws Exception{
+	private void cerrarDetalle() throws Exception{
+		if(listaWinDetalle == null){
+			return;
+		}
+		
+		if(listaWinDetalle.isEmpty()){
+			return;
+		}
+		
+		for(Window winDetalle : listaWinDetalle){
+			Events.sendEvent(Events.ON_CLOSE, winDetalle, null);
+		}
+		crearHijos = true;
+		eastDetalle.setOpen(false);
+		
+	}
+	
+	
+	private void actualizarHijosDetalle(Object seleccion) throws Exception{
+		if(listaWinDetalle == null){
+			return;
+		}
+		
+		if(listaWinDetalle.isEmpty()){
+			return;
+		}
+		
+		Map<String, Object> datos = new HashMap<>();
+		datos.put(ConstantesAdmin.ACCION,ConstantesAdmin.EVENTO_REFRESCAR);
+		datos.put(ConstantesAdmin.OBJETO_PADRE,seleccion);
+		
+		for(Window winDetalle : listaWinDetalle){
+			Events.sendEvent(Events.ON_USER, winDetalle, datos);
+		}
+		
+	}
+	
+	private void crearHijosDetalle(Object seleccion) throws Exception{
 		listaWinDetalle = new ArrayList<Window>();
 		
 		for(Formulario detalle : listaDetalles){
-			Tabpanel panel = new Tabpanel();
-			Tab tab = new Tab();
+			final Tabpanel panel = new Tabpanel();
+			final Tab tab = new Tab();
 			
 			String nombre = detalle.getNombre();
 			String leyenda = Labels.getLabel(nombre);
@@ -199,6 +254,8 @@ public class TablaDatosCnt extends WindowComposer {
 			Map<String,Object> marg = new HashMap<String, Object>();
 			marg.put(ConstantesAdmin.ARG_FORMULARIO,detalle);
 			marg.put(ConstantesAdmin.ARG_USUARIO,usuario);
+			marg.put(ConstantesAdmin.OBJETO_PADRE,seleccion);
+			
 			
 			Window winDetalle = null;
 			
@@ -213,6 +270,17 @@ public class TablaDatosCnt extends WindowComposer {
 			
 			winDetalle.setBorder("none");
 			winDetalle.doEmbedded();
+			
+			winDetalle.addEventListener(Events.ON_CLOSE, new EventListener<Event>() {
+
+				@Override
+				public void onEvent(Event arg0) throws Exception {
+					Events.sendEvent(Events.ON_CLOSE,panel,null);
+					Events.sendEvent(Events.ON_CLOSE,tab,null);
+					
+				}
+				
+			});
 			
 			listaWinDetalle.add(winDetalle);
 			
@@ -273,7 +341,7 @@ public class TablaDatosCnt extends WindowComposer {
 					public void onEvent(Event arg0) throws Exception {
 						String res = (String) arg0.getData();
 						if(res != null && res.equals(ConstantesAdmin.EXITO)){
-							refrescarTabla();
+							refrescarTabla(padre,nombreAtributo);
 						}
 					}
 				});
@@ -291,10 +359,7 @@ public class TablaDatosCnt extends WindowComposer {
 		
 	}
 
-	private void refrescarTabla()
-			throws Exception {
-		refrescarTabla(null,null);
-	}
+	
 	
 	private void refrescarTabla(Object padre, String nombreAtributo)
 			throws Exception {

@@ -1,3 +1,5 @@
+
 eclipse.preferences.version=1
 visualeditor.custom_web_content_path=/admin/src
-visualeditor.custom_zk_package=zk-bin-6.5.2
+visualeditor.custom_zk_package=zk-bin-7.0.0
+

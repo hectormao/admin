@@ -1,6 +1,6 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="winRolPermisos" apply="${rolPermisosCnt}" border="normal" border="normal">
+<window id="winRolPermisos" apply="${rolPermisosCnt}" border="normal">
 <vlayout>
 <!-- 	GRUPO ROLES -->
 	<groupbox mold="3d">
@@ -20,8 +20,13 @@
 	<groupbox mold="3d">
 	<caption label="${labels.data3000.permisos}"/>
 		<div>
-			<tree id="treePermisoRol" width="350px" multiple="true" checkmark="true" rows="10" zclass="z-vfiletree">
-					<treechildren id="tchPermisoRol" />
+			<tree id="treePermisoRol" width="490px" multiple="true" checkmark="true" rows="10" >
+				<treecols>
+					<treecol>${labels.app.formulario}</treecol>
+				</treecols>
+				<treechildren id="tchPermisoRol" >
+
+				</treechildren>
 			</tree>
 		</div>
 	

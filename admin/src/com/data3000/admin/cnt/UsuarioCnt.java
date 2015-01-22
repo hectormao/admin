@@ -9,6 +9,7 @@ import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
@@ -30,13 +31,15 @@ public class UsuarioCnt extends WindowComposer {
 	private Textbox txtCorreo;
 	private Textbox txtLogin;
 	private Textbox txtClave;
+	private Textbox txtConfirmarClave;
 	private Button btnAceptar;
 	private Button btnCancelar;
+	private Label lblConfirmarClave;
 	
 	/**
 	 * Objeto a insertar
 	 */
-	private PltUsuario usuario;
+	private PltUsuario usu;
 	
 	/**
 	 * Negocio Usuario
@@ -54,7 +57,8 @@ public class UsuarioCnt extends WindowComposer {
 		super.doAfterCompose(winUsuario);
 		logger = Logger.getLogger(this.getClass());
 		btnAceptar.setAutodisable("self");
-		txtClave.setType("password");
+		
+		
 
 	}
 
@@ -63,18 +67,22 @@ public class UsuarioCnt extends WindowComposer {
 			if (logger.isDebugEnabled())logger.debug(new StringBuilder("Formulario = ").append(formulario.getNombre()));
 			if (formulario.getTipo().equalsIgnoreCase(ConstantesAdmin.FORMULARIO_TIPO_INSERTAR)) {
 				// Se instancia nuevo objeto de usuario
-				usuario = new PltUsuario();
+				usu = new PltUsuario();
 
 			} else if (formulario.getTipo().equalsIgnoreCase(ConstantesAdmin.FORMULARIO_TIPO_EDITAR)) {
 
-				usuario = (PltUsuario) argumentos.get(ConstantesAdmin.ARG_SELECCION);
+				usu = (PltUsuario) argumentos.get(ConstantesAdmin.ARG_SELECCION);
 
-				if (usuario == null) {
+				if (usu == null) {
 					throw new PltException(ConstantesAdmin.ERR0007);
 				}
 
-				cargarDatosUsuario(usuario);
+				cargarDatosUsuario(usu);
 
+			}else if(formulario.getTipo().equalsIgnoreCase(ConstantesAdmin.FORMULARIO_TIPO_BORRAR)){
+				usu = (PltUsuario) argumentos.get(ConstantesAdmin.ARG_SELECCION);
+				cargarDatosUsuario(usu);
+				soloConsulta();
 			}
 		} catch (PltException e) {
 			logger.error(new StringBuilder("Error metodo onCreate usuario").append(e.getClass().getName()).append(": ").append(e.getMessage()), e);
@@ -89,12 +97,14 @@ public class UsuarioCnt extends WindowComposer {
 //		Cargar datos en el formulario
 		txtNombreCompleto.setValue(usua.getUsuaNombre());
 		txtCorreo.setValue(usua.getUsuaCorreo());
-		txtLogin.setValue(usua.getUsuaClave());
+		txtLogin.setValue(usua.getUsuaLogin());
 		txtLogin.setReadonly(true);
 		txtLogin.setStyle("background-color:#D8D8D8");
 		txtClave.setValue(usua.getUsuaClave());
 		txtClave.setReadonly(true);
-		txtClave.setStyle("background-color:#D8D8D8");		
+		txtClave.setStyle("background-color:#D8D8D8");
+		txtConfirmarClave.setVisible(Boolean.FALSE);
+		lblConfirmarClave.setVisible(Boolean.FALSE);
 	}
 	
 	public void onClick$btnAceptar(Event evt) throws Exception{
@@ -102,9 +112,9 @@ public class UsuarioCnt extends WindowComposer {
 		establecerDatos();
 		
 		if(formulario.getTipo().equals(ConstantesAdmin.FORMULARIO_TIPO_INSERTAR)){
-			usuarioNgc.crearUsuario(usuario, usuario.getLogin());
+			usuarioNgc.crearUsuario(usu, usu.getLogin());
 		} else if (formulario.getTipo().equalsIgnoreCase(ConstantesAdmin.FORMULARIO_TIPO_EDITAR)) {
-			usuarioNgc.modificarUsuario(usuario);
+			usuarioNgc.modificarUsuario(usu);
 		}
 		
 		
@@ -118,19 +128,19 @@ public class UsuarioCnt extends WindowComposer {
 
 	private void establecerDatos() throws WrongValueException, Exception {
 		EncriptarClave encriptarClave = new EncriptarClave();
-		usuario.setUsuaNombre(txtNombreCompleto.getValue());
-		usuario.setUsuaCorreo(txtClave.getValue());
-		usuario.setUsuaLogin(txtLogin.getValue());		
-		usuario.setUsuaClave(encriptarClave.encryptPassword(txtClave.getValue()));		
-		usuario.setUsuaEstado(ConstantesAdmin.ESTADO_ACTIVO);
-		usuario.setUsuaInteAute(new Short("0"));
-		usuario.setUsuaFechClav(new Date());
-//		Auditoría
-		usuario.setAudiFechModi(new Date());
-		usuario.setAudiChecksum(null);
-		usuario.setAudiMotiAnul(null);
-		usuario.setAudiSiAnul(Boolean.FALSE);
-		usuario.setAudiUsuario(usuario.getLogin());		
+		usu.setUsuaNombre(txtNombreCompleto.getValue());
+		usu.setUsuaCorreo(txtCorreo.getValue());
+		usu.setUsuaLogin(txtLogin.getValue());		
+		usu.setUsuaClave(encriptarClave.encryptPassword(txtClave.getValue()));		
+		usu.setUsuaEstado(ConstantesAdmin.ESTADO_ACTIVO);
+		usu.setUsuaInteAute(new Short("0"));
+		usu.setUsuaFechClav(new Date());
+//		Auditoria
+		usu.setAudiFechModi(new Date());
+		usu.setAudiChecksum(null);
+		usu.setAudiMotiAnul(null);
+		usu.setAudiSiAnul(Boolean.FALSE);
+		usu.setAudiUsuario(usuario.getLogin());		
 		
 	}
 

@@ -34,13 +34,13 @@ public class PltUsuario extends RegistroTabla implements Usuario, java.io.Serial
 	
 	public static List<CampoTabla> getCamposTabla() {
 		
-		String[] camposMostrar = new String[] { "usuarioLogin","usuarioNombre", "usuarioCorreo","usuarioEstado", "audiFechModi" };
+		String[] camposMostrar = new String[] { "usuaLogin","usuaNombre", "usuaCorreo", "usuaEstado", "audiUsuario", "audiFechModi" };
 
 		List<CampoTabla> camposTabla = new ArrayList<CampoTabla>();
 		for (String campoMostrar : camposMostrar) {
 			CampoTabla campo = new CampoTabla(campoMostrar);
 			camposTabla.add(campo);
-		}		
+		}
 		
 		return camposTabla;
 	}

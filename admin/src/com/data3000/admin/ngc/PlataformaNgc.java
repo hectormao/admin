@@ -3,6 +3,7 @@ package com.data3000.admin.ngc;
 import java.util.List;
 import java.util.Map;
 
+import com.data3000.admin.bd.PltFormulario;
 import com.data3000.admin.bd.PltRol;
 import com.data3000.admin.vo.EstructuraMenu;
 import com.data3000.admin.vo.Formulario;
@@ -77,5 +78,12 @@ public interface PlataformaNgc {
 	 * @return
 	 */
 	public String getEnv(String propiedad);
+	
+	/**
+	 * Obtiene lista de todos formularios/funcionalidades del sistema
+	 * @return
+	 * @throws Exception
+	 */
+	public List<PltFormulario> getFormularios() throws Exception;
 
 }

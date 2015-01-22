@@ -224,7 +224,8 @@ public class PlataformaDAO extends PltDAO {
 			if(! tx.isActive()){
 				tx.begin();
 			}
-			Criteria criteria = sesion.createCriteria(PltFormulario.class);			
+			Criteria criteria = sesion.createCriteria(PltFormulario.class);
+			criteria.addOrder(Order.asc("formModulo"));
 			
 			return criteria.list();
 		} catch(Exception ex){

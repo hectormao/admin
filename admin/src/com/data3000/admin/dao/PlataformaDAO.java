@@ -50,8 +50,12 @@ public class PlataformaDAO extends PltDAO {
 			
 			return query.list();
 		} catch(Exception ex){
-			sesion.close();
+			
 			throw ex;
+		}finally{
+			if(sesion.isOpen()){
+				sesion.close();
+			}
 		}
 	}
 	
@@ -71,8 +75,12 @@ public class PlataformaDAO extends PltDAO {
 			
 			return criterio.list();
 		} catch(Exception ex){
-			sesion.close();
+			
 			throw ex;
+		}finally{
+			if(sesion.isOpen()){
+				sesion.close();
+			}
 		}
 	}
 	
@@ -98,8 +106,12 @@ public class PlataformaDAO extends PltDAO {
 			List<Object> resultado = query.list();
 			return resultado;			
 		} catch(Exception ex){
-			sesion.close();
+			
 			throw ex;
+		}finally{
+			if(sesion.isOpen()){
+				sesion.close();
+			}
 		}
 		
 	}
@@ -108,6 +120,9 @@ public class PlataformaDAO extends PltDAO {
 	public String getCondicionId(Object padre) {
 		
 		ClassMetadata meta = sessionFactory.getClassMetadata(padre.getClass());
+		if(meta == null){
+			meta = sessionFactory.getClassMetadata(padre.getClass().getGenericSuperclass().getClass());
+		}
 		
 		StringBuilder condicion = new StringBuilder(meta.getIdentifierPropertyName());
 		condicion.append(" = ");
@@ -131,8 +146,12 @@ public class PlataformaDAO extends PltDAO {
 			criteria.add(Restrictions.eq("envPropiedad", propiedad));
 			return (PltEnv) criteria.uniqueResult();			
 		} catch(Exception ex){
-			sesion.close();
+			
 			return null;
+		}finally{
+			if(sesion.isOpen()){
+				sesion.close();
+			}
 		}
 	}
 	
@@ -182,8 +201,12 @@ public class PlataformaDAO extends PltDAO {
 			criteria.addOrder(Order.asc("relaFormOrden"));
 			return criteria.list();			
 		} catch(Exception ex){
-			sesion.close();
+			
 			return null;
+		}finally{
+			if(sesion.isOpen()){
+				sesion.close();
+			}
 		}
 	}
 	
@@ -204,8 +227,12 @@ public class PlataformaDAO extends PltDAO {
 			criteria.add(Restrictions.eq("rolNombre", nombreRol));
 			return (PltRol) criteria.uniqueResult();
 		} catch(Exception ex){
-			sesion.close();
+			
 			throw ex;
+		}finally{
+			if(sesion.isOpen()){
+				sesion.close();
+			}
 		}
 		
 	}
@@ -229,8 +256,12 @@ public class PlataformaDAO extends PltDAO {
 			
 			return criteria.list();
 		} catch(Exception ex){
-			sesion.close();
+			
 			throw ex;
+		}finally{
+			if(sesion.isOpen()){
+				sesion.close();
+			}
 		}
 	}
 
@@ -247,8 +278,12 @@ public class PlataformaDAO extends PltDAO {
 			criteria.addOrder(Order.asc("rolNombre"));
 			return criteria.list();
 		} catch(Exception ex){
-			sesion.close();
+			
 			throw ex;
+		}finally{
+			if(sesion.isOpen()){
+				sesion.close();
+			}
 		}
 	}
 	

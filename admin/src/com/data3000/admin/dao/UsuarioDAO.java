@@ -31,8 +31,12 @@ public class UsuarioDAO extends PltDAO {
 			criterio.add(Restrictions.eq("usuaLogin", login));
 			return (PltUsuario) criterio.uniqueResult();
 		} catch(Exception ex){
-			sesion.close();
+			
 			throw ex;
+		}finally{
+			if(sesion.isOpen()){
+				sesion.close();
+			}
 		}
 	}
 	
@@ -85,8 +89,12 @@ public class UsuarioDAO extends PltDAO {
 			criterio.addOrder(Order.asc("usuaNombre"));
 			return  criterio.list();
 		} catch(Exception ex){
-			sesion.close();
+			
 			throw ex;
+		}finally{
+			if(sesion.isOpen()){
+				sesion.close();
+			}
 		}
 		
 	}
@@ -105,8 +113,12 @@ public class UsuarioDAO extends PltDAO {
 			criterio.addOrder(Order.asc("usuaNombre"));
 			return  criterio.list();
 		} catch(Exception ex){
-			sesion.close();
+			
 			throw ex;
+		}finally{
+			if(sesion.isOpen()){
+				sesion.close();
+			}
 		}
 	}
 	

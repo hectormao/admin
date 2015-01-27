@@ -30,6 +30,10 @@ public class PltDAO {
 		} catch(Exception ex){
 			tx.rollback();
 			throw ex;
+		}finally{
+			if(sesion.isOpen()){
+				sesion.close();
+			}
 		}
 	}
 
@@ -54,6 +58,10 @@ public class PltDAO {
 		} catch(Exception ex){
 			tx.rollback();
 			throw ex;
+		}finally{
+			if(sesion.isOpen()){
+				sesion.close();
+			}
 		}
 	}
 
@@ -77,6 +85,10 @@ public class PltDAO {
 		} catch(Exception ex){
 			tx.rollback();
 			throw ex;
+		}finally{
+			if(sesion.isOpen()){
+				sesion.close();
+			}
 		}
 	}
 
@@ -105,6 +117,10 @@ public class PltDAO {
 		} catch(Exception ex){
 			tx.rollback();
 			throw ex;
+		}finally{
+			if(sesion.isOpen()){
+				sesion.close();
+			}
 		}
 	}
 

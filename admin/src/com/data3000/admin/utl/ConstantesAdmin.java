@@ -152,6 +152,9 @@ public class ConstantesAdmin {
 	public static final String FALLO = "fallo";
 	
 
-
+	/**
+	 * Metodo Anulado
+	 */
+	public static final String METODO_ANULADO = "isAudiSiAnul"; 
 	
 }

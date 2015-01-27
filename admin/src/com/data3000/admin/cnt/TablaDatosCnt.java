@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.criteria.From;
+
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -27,6 +29,7 @@ import org.zkoss.zul.Window;
 
 import com.data3000.admin.cmp.TablaDatos;
 import com.data3000.admin.ngc.PlataformaNgc;
+import com.data3000.admin.utl.CampoEvento;
 import com.data3000.admin.utl.CampoTabla;
 import com.data3000.admin.utl.ConstantesAdmin;
 import com.data3000.admin.utl.WindowComposer;
@@ -54,12 +57,16 @@ public class TablaDatosCnt extends WindowComposer {
 	
 	private List<Formulario> listaDetalles;
 	
+	private List<FormularioHijo> listaCeldas;
+	
 	private List<Window> listaWinDetalle;
 	
 	private Object padre;
 	private String nombreAtributo;
 	
 	private boolean crearHijos;
+	
+	private boolean mostrarAnulados = false;
 	
 	@Override
 	public void doAfterCompose(Window win) throws Exception {
@@ -71,6 +78,7 @@ public class TablaDatosCnt extends WindowComposer {
 		nombreAtributo = (String) argumentos.get(ConstantesAdmin.NOMBRE_ATRIBUTO_PADRE);
 
 		listaDetalles = new ArrayList<Formulario>();
+		listaCeldas = new ArrayList<FormularioHijo>();
 		
 		List<FormularioHijo> hijos = formulario.getHijos();
 		if(hijos != null){
@@ -81,7 +89,8 @@ public class TablaDatosCnt extends WindowComposer {
 					crearBotonHerramienta(hijo.getHijo());
 					break;
 				case ConstantesAdmin.HIJO_CELDA:
-					//TODO agregar a la lista de celdas 
+					//agregar a la lista de celdas
+					listaCeldas.add(hijo);
 					break;
 	
 				case ConstantesAdmin.HIJO_DETALLE:
@@ -115,11 +124,39 @@ public class TablaDatosCnt extends WindowComposer {
 		}
 		
 		
-		
+		if(! listaCeldas.isEmpty()){			
+			for(FormularioHijo formHijo : listaCeldas){
+				
+				Formulario form = formHijo.getHijo();
+				String url = form.getUrl();
+				CampoEvento campoEvento;
+				if(url.trim().toLowerCase().endsWith(".zul")){
+					campoEvento = crearCampoEventoZul(form);
+				} else {
+					campoEvento = crearCampoEvento(form);
+				}
+				
+				int orden = formHijo.getOrden();
+				
+				if(orden < 0){
+					orden = 1;
+				}
+				
+				orden --;
+				if(orden >= listaCampos.size()){
+					listaCampos.add(campoEvento);
+				} else {
+					listaCampos.add(orden,campoEvento);
+				}
+				
+				
+			}
+			
+		}
 		
 		
 
-		tablaDatos = new TablaDatos(clase, listaCampos);
+		tablaDatos = new TablaDatos(clase, listaCampos, argumentos);
 		dvTabla.appendChild(tablaDatos);
 		tablaDatos.setWidth("100%");
 		tablaDatos.setHeight("100%");
@@ -192,6 +229,78 @@ public class TablaDatosCnt extends WindowComposer {
 		if(cargarAlInicio){
 			refrescarTabla(padre,nombreAtributo);
 		}
+	}
+	
+	private CampoEvento crearCampoEvento(Formulario form) throws Exception{
+		
+		Class clase = Class.forName(form.getUrl());
+		
+		CampoEvento campoEvento = (CampoEvento) clase.newInstance();
+		campoEvento.setFormulario(form);
+		campoEvento.setNombre(form.getNombre());
+		campoEvento.setUsuario(usuario);
+		
+		
+		return campoEvento;
+	}
+
+	private CampoEvento crearCampoEventoZul(final Formulario form) {
+		
+		final Window estaVentana = this.self;
+		
+		CampoEvento campoEvento = new CampoEvento() {
+			
+			@Override
+			public void ejecutar() throws Exception {
+				
+				
+				Map<String,Object> argumentosHijo = new HashMap<String, Object>();
+				argumentosHijo.putAll(argumentos);
+				Listitem li = tablaDatos.getSelectedItem();
+				Object valor = null;
+				if(li != null){
+					valor = li.getValue();
+				}
+				argumentosHijo.put(ConstantesAdmin.ARG_FORMULARIO, form);
+				argumentosHijo.put(ConstantesAdmin.ARG_SELECCION, valor);
+				
+				
+				java.io.InputStream zulInput = this.getClass().getClassLoader().getResourceAsStream(form.getUrl()) ;
+				java.io.Reader zulReader = new java.io.InputStreamReader(zulInput) ;
+				
+				
+				Window winCargar = (Window) Executions.createComponentsDirectly(zulReader,"zul",estaVentana,argumentosHijo) ;
+				
+				String nombre = form.getNombre();
+				
+				String titulo = Labels.getLabel(nombre);
+				if(titulo == null){
+					titulo = nombre;
+				}
+				
+				winCargar.setTitle(titulo);
+				
+				winCargar.addEventListener(Events.ON_CLOSE, new EventListener<Event>() {
+
+					@Override
+					public void onEvent(Event arg0) throws Exception {
+						String res = (String) arg0.getData();
+						if(res != null && res.equals(ConstantesAdmin.EXITO)){
+							refrescarTabla(padre,nombreAtributo);
+						}
+					}
+				});
+				
+				winCargar.doModal(); 
+				
+			}
+		};
+		
+		campoEvento.setFormulario(form);
+		campoEvento.setNombre(formulario.getNombre());
+		campoEvento.setUsuario(usuario);
+		
+		return campoEvento;
 	}
 	
 	private void cerrarDetalle() throws Exception{
@@ -364,6 +473,9 @@ public class TablaDatosCnt extends WindowComposer {
 	private void refrescarTabla(Object padre, String nombreAtributo)
 			throws Exception {
 
+		
+		
+		
 		List<Object> datos = null;
 
 		if (padre == null) {
@@ -371,7 +483,9 @@ public class TablaDatosCnt extends WindowComposer {
 		} else {
 			if (nombreAtributo == null) {
 				for (Field atributo : clase.getDeclaredFields()) {
-					if (atributo.getType().equals(padre.getClass())) {
+					
+					
+					if (atributo.getType().equals(padre.getClass().getGenericSuperclass()) || atributo.getType().equals(padre.getClass())) {
 						nombreAtributo = atributo.getName();
 						break;
 					}
@@ -386,13 +500,29 @@ public class TablaDatosCnt extends WindowComposer {
 		
 		List<Object> datosAMostrar = new ArrayList<>();
 		for(Object dato : datos){
-			if(dato instanceof RegistroTabla){
-				RegistroTabla registroTabla = (RegistroTabla) dato;
-				if(registroTabla.siMostrar() && registroTabla.siMostrarSegunUsuario(usuario)){
+			
+			boolean siMostrar = true; 
+			
+			try{
+				
+				if(! mostrarAnulados){
+					Method metodo = dato.getClass().getMethod(ConstantesAdmin.METODO_ANULADO);
+					siMostrar = ! (boolean) metodo.invoke(dato);					
+				}
+				
+			} catch(Exception ex){
+				;
+			}
+			
+			if(siMostrar){
+				if(dato instanceof RegistroTabla){
+					RegistroTabla registroTabla = (RegistroTabla) dato;
+					if(registroTabla.siMostrar() && registroTabla.siMostrarSegunUsuario(usuario)){
+						datosAMostrar.add(dato);
+					}
+				} else {
 					datosAMostrar.add(dato);
 				}
-			} else {
-				datosAMostrar.add(dato);
 			}
 		}
 
@@ -406,5 +536,15 @@ public class TablaDatosCnt extends WindowComposer {
 	public void setPlataformaNgc(PlataformaNgc plataformaNgc) {
 		this.plataformaNgc = plataformaNgc;
 	}
+
+	public boolean isMostrarAnulados() {
+		return mostrarAnulados;
+	}
+
+	public void setMostrarAnulados(boolean mostrarAnulados) {
+		this.mostrarAnulados = mostrarAnulados;
+	}
+	
+	
 
 }

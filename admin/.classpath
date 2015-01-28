@@ -30,6 +30,5 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="var" path="WEB_LIB/zcommons-el.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

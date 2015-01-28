@@ -27,6 +27,10 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.North;
 import org.zkoss.zul.South;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Tree;
+import org.zkoss.zul.Treecell;
+import org.zkoss.zul.Treeitem;
+import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Window;
 import org.zkoss.zul.impl.InputElement;
 
@@ -157,7 +161,21 @@ public class WindowComposer extends GenericForwardComposer<Window>{
 					}
 				}
 			}
-		} 
+		} else if(componente instanceof Tree){
+			Tree arbol = (Tree) componente;
+			for(Treeitem ti : arbol.getItems()){
+				Treerow tr = (Treerow) ti.getFirstChild();
+				
+				for(Object obj : tr.getChildren()){
+					if(obj instanceof Treecell){
+						Treecell celda = (Treecell) obj;
+						Component componenteCelda = celda.getFirstChild();
+						deshabilitarComponente(componenteCelda);
+					}
+				}
+				
+			}
+		}
 	}
 	
 	
@@ -245,16 +263,7 @@ public class WindowComposer extends GenericForwardComposer<Window>{
 		
 		winFormulario.setTitle(titulo);
 		
-		winFormulario.addEventListener(Events.ON_CLOSE, new EventListener<Event>() {
-
-			@Override
-			public void onEvent(Event arg0) throws Exception {
-				String res = (String) arg0.getData();
-				if(res != null && res.equals(ConstantesAdmin.EXITO)){
-					//refrescarTabla();
-				}
-			}
-		});
+		
 		
 		if(eventoCerrar != null){
 			winFormulario.addEventListener(Events.ON_CLOSE, eventoCerrar);

@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.data3000.admin.bd.PltFormulario;
+import com.data3000.admin.bd.PltPermiso;
 import com.data3000.admin.bd.PltRol;
+import com.data3000.admin.bd.PltUsuaRol;
+import com.data3000.admin.bd.PltUsuario;
 import com.data3000.admin.vo.EstructuraMenu;
 import com.data3000.admin.vo.Formulario;
 import com.data3000.admin.vo.Menu;
@@ -61,7 +64,7 @@ public interface PlataformaNgc {
 	 * @param pltRol
 	 * @throws Exception
 	 */
-	public void eliminarRol(PltRol pltRol) throws Exception;
+	public void anularRol(PltRol pltRol) throws Exception;
 	
 	/**
 	 * Obtiene todos los roles ordenados por su nombre
@@ -85,5 +88,47 @@ public interface PlataformaNgc {
 	 * @throws Exception
 	 */
 	public List<PltFormulario> getFormularios() throws Exception;
-
+	
+	/**
+	 * Metodo para crear permisos
+	 * @param permiso
+	 * @throws Exception
+	 */
+	public void crearPermiso(PltPermiso permiso) throws Exception;
+	
+	/**
+	 * Metodo para eliminar todos los permisos asociados a un rol
+	 * @param rol
+	 */
+	public void eliminarPermisos(PltRol rol);
+	
+	/**
+	 * Obtiene la lista de permisos de un rol
+	 * @param rol
+	 * @return
+	 * @throws Exception
+	 */
+	public List<PltPermiso> getFormulariosConPermisos(PltRol rol) throws Exception;
+	
+	/**
+	 * Metodo para asociar roles a usuario
+	 * @param pltUsuaRol
+	 * @throws Exception
+	 */
+	public void asociarUsuarioRol(PltUsuaRol pltUsuaRol) throws Exception;
+	
+	
+	/**
+	 * Metodo que retorna los roles asociados a un usuario
+	 * @param usuario
+	 * @return
+	 * @throws Exception
+	 */
+	public List<PltUsuaRol> getRolesUsuario(PltUsuario usuario) throws Exception;
+	
+	/**
+	 * Metodo que elimina los roles asociados a un usuario
+	 * @param usuario
+	 */
+	public void eliminarRolesUsuario(PltUsuario usuario);
 }

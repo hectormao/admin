@@ -8,16 +8,21 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.internal.CriteriaImpl.CriterionEntry;
 import org.hibernate.metadata.ClassMetadata;
 
 import com.data3000.admin.bd.PltEnv;
 import com.data3000.admin.bd.PltFormulario;
 import com.data3000.admin.bd.PltMenu;
+import com.data3000.admin.bd.PltPermiso;
 import com.data3000.admin.bd.PltRelaForm;
 import com.data3000.admin.bd.PltRol;
+import com.data3000.admin.bd.PltUsuaRol;
 import com.data3000.admin.bd.PltUsuario;
 import com.data3000.admin.vo.Formulario;
 
@@ -158,15 +163,21 @@ public class PlataformaDAO extends PltDAO {
 	
 	
 	/**
-	 * Metodo para eliminar un rol
+	 * Metodo para anular un rol
 	 * @param pltRol
 	 * @throws Exception
 	 */
-	public void eliminarRol(PltRol pltRol)throws Exception{ if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Eliminando Rol = ").append(pltRol.getRolNombre()));
-		super.delete(pltRol);
+	public void anularRol(PltRol pltRol)throws Exception{ 
+		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Anulando Rol = ").append(pltRol.getRolNombre()));
+		super.update(pltRol);
 	}
 
 
+	/**
+	 * Metodo que retorna los hijos de un formulario
+	 * @param formulario
+	 * @return
+	 */
 	public List<PltRelaForm> getHijos(PltFormulario formulario) {
 		Session sesion = sessionFactory.getCurrentSession();
 		Transaction tx = sesion.getTransaction();
@@ -224,10 +235,17 @@ public class PlataformaDAO extends PltDAO {
 			if(! tx.isActive()){
 				tx.begin();
 			}
-			Criteria criteria = sesion.createCriteria(PltFormulario.class);
-			criteria.addOrder(Order.asc("formModulo"));
+			String hql = "from PltFormulario form order by form.formModulo, form.formNombre";
 			
-			return criteria.list();
+			Query query = sesion.createQuery(hql);
+			List<PltFormulario> resultado = query.list();
+//			Criteria criteria = sesion.createCriteria(PltFormulario.class,"formulario");
+//			criteria.addOrder(Order.asc("formulario.formModulo"));
+//			criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
+			
+			
+			return resultado;
 		} catch(Exception ex){
 			sesion.close();
 			throw ex;
@@ -235,6 +253,10 @@ public class PlataformaDAO extends PltDAO {
 	}
 
 
+	/**
+	 * Metodo para obtener roles ordenados por nombre
+	 * @return
+	 */
 	public List<PltRol> getRolesOrdenadoNombre() {
 		Session sesion = sessionFactory.getCurrentSession();
 		Transaction tx = sesion.getTransaction();
@@ -251,5 +273,143 @@ public class PlataformaDAO extends PltDAO {
 			throw ex;
 		}
 	}
+	
+	/**
+	 * Metodo para crear un permiso
+	 * @param permiso
+	 * @throws Exception 
+	 */
+	public void crearPermiso(PltPermiso permiso) throws Exception{
+		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Creando Permiso para formulario = ").append(permiso.getPltFormulario().getNombre()));
+		super.save(permiso);		
+	}
+	
+	/**
+	 * Metodo que elimina los permisos de un rol
+	 * @param rol
+	 */
+	public void eliminarPermisos(PltRol rol){
+		
+		Session sesion = sessionFactory.getCurrentSession();
+		Transaction tx = sesion.getTransaction();
+		try{
+			
+			if(! tx.isActive()){
+				tx.begin();
+			}
+			
+			String hql = "delete from PltPermiso perm where perm.pltRol = :rol)";
+			
+			Query query = sesion.createQuery(hql);
+			query.setEntity("rol", rol);
+			
+			query.executeUpdate();
+			
+			tx.commit();
+			
+		} catch(Exception ex){
+			tx.rollback();
+			sesion.close();
+			throw ex;
+		}finally{
+			if(sesion.isOpen()){
+				sesion.close();
+			}
+			
+		}
+	}
+	
+	/**
+	 * Retorna listado de formularios creados en el sistema
+	 * @param usuario
+	 * @return
+	 * @throws Exception
+	 */
+	public List<PltPermiso> getFormulariosConPermisos(PltRol rol) throws Exception{
+		Session sesion = sessionFactory.getCurrentSession();
+		Transaction tx = sesion.getTransaction();
+		try{
+			
+			if(! tx.isActive()){
+				tx.begin();
+			}
+			Criteria criteria = sesion.createCriteria(PltPermiso.class,"permiso");
+			criteria.add(Restrictions.eq("permiso.pltRol", rol));
+			
+			return criteria.list();
+		} catch(Exception ex){
+			sesion.close();
+			throw ex;
+		}
+	}
+	/**
+	 * Metodo para asociar un rol a un usuario
+	 * @param permiso
+	 * @throws Exception 
+	 */
+	public void asociarUsuarioRol(PltUsuaRol pltUsuaRol) throws Exception{
+		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Asociando Rol para usuario = ").append(pltUsuaRol.getPltUsuario().getLogin()));
+		super.save(pltUsuaRol);		
+	}
+	
+	/**
+	 * Metodo que retorna todos los roles asociados a un usuario
+	 * @param usuario
+	 * @return
+	 * @throws Exception
+	 */
+	public List<PltUsuaRol> getRolesUsuario(PltUsuario usuario) throws Exception{
+		Session sesion = sessionFactory.getCurrentSession();
+		Transaction tx = sesion.getTransaction();
+		try{
+			
+			if(! tx.isActive()){
+				tx.begin();
+			}
+			Criteria criteria = sesion.createCriteria(PltUsuaRol.class,"pltUsuaRol");
+			criteria.add(Restrictions.eq("pltUsuaRol.pltUsuario", usuario));
+			
+			return criteria.list();
+		} catch(Exception ex){
+			sesion.close();
+			throw ex;
+		}
+	}
+	
+	/**
+	 * Metodo que elimina los roles asociados a un usuario
+	 * @param usuario
+	 */
+	public void eliminarRolesUsuario(PltUsuario usuario){
+		
+		Session sesion = sessionFactory.getCurrentSession();
+		Transaction tx = sesion.getTransaction();
+		try{
+			
+			if(! tx.isActive()){
+				tx.begin();
+			}
+			
+			String hql = "delete from PltUsuaRol usuaRol where usuaRol.pltUsuario = :usuario)";
+			
+			Query query = sesion.createQuery(hql);
+			query.setEntity("usuario", usuario);
+			
+			query.executeUpdate();
+			
+			tx.commit();
+			
+		} catch(Exception ex){
+			tx.rollback();
+			sesion.close();
+			throw ex;
+		}finally{
+			if(sesion.isOpen()){
+				sesion.close();
+			}
+			
+		}
+	}
+	
 	
 }

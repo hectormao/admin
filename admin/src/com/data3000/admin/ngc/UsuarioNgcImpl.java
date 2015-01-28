@@ -78,9 +78,9 @@ public class UsuarioNgcImpl implements UsuarioNgc {
 	}
 	
 	@Override
-	public void eliminarUsuario(PltUsuario pltUsuario) throws Exception {
-		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Eliminando Usuario = ").append(pltUsuario.getUsuaLogin()));{
-			usuarioDAO.EliminarUsuario(pltUsuario);
+	public void anularUsuario(PltUsuario pltUsuario) throws Exception {
+		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Anulando Usuario = ").append(pltUsuario.getUsuaLogin()));{
+			usuarioDAO.anularUsuario(pltUsuario);
 		}
 	}
 

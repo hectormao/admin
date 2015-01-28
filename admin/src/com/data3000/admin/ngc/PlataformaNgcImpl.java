@@ -13,8 +13,10 @@ import com.data3000.admin.bd.PltEnv;
 import com.data3000.admin.bd.PltFormAtri;
 import com.data3000.admin.bd.PltFormulario;
 import com.data3000.admin.bd.PltMenu;
+import com.data3000.admin.bd.PltPermiso;
 import com.data3000.admin.bd.PltRelaForm;
 import com.data3000.admin.bd.PltRol;
+import com.data3000.admin.bd.PltUsuaRol;
 import com.data3000.admin.bd.PltUsuario;
 import com.data3000.admin.dao.PlataformaDAO;
 import com.data3000.admin.dao.PltDAO;
@@ -199,10 +201,10 @@ public class PlataformaNgcImpl implements PlataformaNgc {
 	}
 
 	@Override
-	public void eliminarRol(PltRol pltRol) throws Exception {
-		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Eliminando Rol = ").append(pltRol.getRolNombre()));
+	public void anularRol(PltRol pltRol) throws Exception {
+		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Anulando Rol = ").append(pltRol.getRolNombre()));
 			//Eliminar Rol
-			plataformaDAO.eliminarRol(pltRol);
+			plataformaDAO.anularRol(pltRol);
 	}
 
 	@Override
@@ -215,6 +217,44 @@ public class PlataformaNgcImpl implements PlataformaNgc {
 	public List<PltFormulario> getFormularios() throws Exception {
 		
 		return plataformaDAO.getFormularios();
+	}
+
+	@Override
+	public void crearPermiso(PltPermiso permiso) throws Exception {
+		plataformaDAO.crearPermiso(permiso);
+		
+	}
+
+	@Override
+	public void eliminarPermisos(PltRol rol) {
+		plataformaDAO.eliminarPermisos(rol);
+		
+	}
+
+	@Override
+	public List<PltPermiso> getFormulariosConPermisos(PltRol rol)
+			throws Exception {
+			
+		return plataformaDAO.getFormulariosConPermisos(rol);
+	}
+
+	@Override
+	public void asociarUsuarioRol(PltUsuaRol pltUsuaRol) throws Exception {
+		plataformaDAO.asociarUsuarioRol(pltUsuaRol);
+		
+	}
+
+	@Override
+	public List<PltUsuaRol> getRolesUsuario(PltUsuario usuario)
+			throws Exception {
+		
+		return plataformaDAO.getRolesUsuario(usuario);
+	}
+
+	@Override
+	public void eliminarRolesUsuario(PltUsuario usuario) {
+		plataformaDAO.eliminarRolesUsuario(usuario);
+		
 	}
 
 	

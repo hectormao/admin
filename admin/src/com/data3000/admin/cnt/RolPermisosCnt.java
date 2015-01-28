@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.hibernate.mapping.Array;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zk.ui.Component;
@@ -16,6 +17,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Cell;
 import org.zkoss.zul.Div;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treecell;
@@ -70,6 +72,8 @@ public class RolPermisosCnt extends WindowComposer {
 	
 	private List<PltFormulario> listaFormularios;
 	
+	private List<PltPermiso> listaPermisosRol;
+	
 	
 	public void doAfteCompose(Window winRolPermisos) throws Exception {
 
@@ -82,58 +86,14 @@ public class RolPermisosCnt extends WindowComposer {
 	public void onCreate$winRolPermisos(Event event) throws Exception {
 		try {
 			if (logger.isDebugEnabled())logger.debug(new StringBuilder("Formulario = ").append(formulario.getNombre()));
+			//Se crea el arbol con los formularios
+			cargarItemsArbol();
+			
 			if (formulario.getTipo().equalsIgnoreCase(ConstantesAdmin.FORMULARIO_TIPO_INSERTAR)) {
 				// Se instancia nuevo objeto de rol
 				pltRol = new PltRol();
 				
-				//Arbol de Funcionalidades
-				listaFormularios = plataformaNgc.getFormularios();
-				Map<String,Object> mapaModuloFormulario = new HashMap<String, Object>();	
 				
-				Treechildren treechildrenAux = new Treechildren();
-				
-				
-				
-				for(PltFormulario formulario :listaFormularios){
-					
-//					if(mapaModuloFormulario.get(formulario.getFormModulo()) == null){
-//						//Se instancian elementos del arbol
-//						Treeitem treeitemPadre = new Treeitem();
-//						Treechildren treechildren = new Treechildren();
-//						Treeitem treeitem2 = new Treeitem();
-//						Treerow treerow = new Treerow();
-//						Treecell treecell = new Treecell();
-//						
-//						treeitemPadre.setLabel(formulario.getFormModulo());
-//						treecell.setAttribute(ConstantesAdmin.ATRIBUTO_FORMULARIO, formulario);
-//						treecell.setLabel(formulario.getFormNombre());
-//						treerow.appendChild(treecell);
-//						treeitem2.appendChild(treerow);
-//						treechildren.appendChild(treeitem2);
-//						treeitemPadre.appendChild(treechildren);					
-//						tchPermisoRol.appendChild(treeitemPadre);
-//						mapaModuloFormulario.put(formulario.getFormModulo(), formulario);
-//						treechildrenAux = treechildren;
-//					}else{
-//						mapaModuloFormulario.put(formulario.getFormModulo(),formulario);
-//						cargarHijosArbol(treechildrenAux, formulario);
-//					}
-					
-					if(mapaModuloFormulario.get(formulario.getFormModulo()) == null){
-						Treeitem treeitemPadre = new Treeitem(formulario.getFormModulo());
-						Treechildren treechildren = new Treechildren();
-						Treeitem treeitem2 = new Treeitem(formulario.getFormNombre(),formulario);
-						
-						treechildren.appendChild(treeitem2);
-						treeitemPadre.appendChild(treechildren);					
-						tchPermisoRol.appendChild(treeitemPadre);
-						mapaModuloFormulario.put(formulario.getFormModulo(), formulario);
-						treechildrenAux = treechildren;
-					}else{
-						mapaModuloFormulario.put(formulario.getFormModulo(),formulario);
-						cargarHijosArbol(treechildrenAux, formulario);
-					}
-				}
 				
 			} else if (formulario.getTipo().equalsIgnoreCase(ConstantesAdmin.FORMULARIO_TIPO_EDITAR)) {
 
@@ -144,7 +104,13 @@ public class RolPermisosCnt extends WindowComposer {
 				}
 
 				cargarDatosRolPermisos(pltRol);
+				
 
+			}else if(formulario.getTipo().equalsIgnoreCase(ConstantesAdmin.FORMULARIO_TIPO_BORRAR)){
+				pltRol = (PltRol) argumentos.get(ConstantesAdmin.ARG_SELECCION);
+				cargarDatosRolPermisos(pltRol);
+				soloConsulta();
+				
 			}
 		} catch (PltException e) {
 			logger.error(new StringBuilder("Error metodo onCreate rolPermisos").append(e.getClass().getName()).append(": ").append(e.getMessage()), e);
@@ -155,16 +121,88 @@ public class RolPermisosCnt extends WindowComposer {
 
 	}
 	
+	public void cargarItemsArbol() throws Exception{
+		//Arbol de Formularios
+		listaFormularios = plataformaNgc.getFormularios();
+		Map<String,Object> mapaModuloFormulario = new HashMap<String, Object>();	
+		
+		Treechildren treechildrenAux = new Treechildren();
+		
+		for(PltFormulario formulario : listaFormularios){
+			
+//			if(mapaModuloFormulario.get(formulario.getFormModulo()) == null){
+//				//Se instancian elementos del arbol
+//				Treeitem treeitemPadre = new Treeitem();
+//				Treechildren treechildren = new Treechildren();
+//				Treeitem treeitem2 = new Treeitem();
+//				Treerow treerow = new Treerow();
+//				Treecell treecell = new Treecell();
+//				
+//				treeitemPadre.setLabel(formulario.getFormModulo());
+//				treecell.setAttribute(ConstantesAdmin.ATRIBUTO_FORMULARIO, formulario);
+//				treecell.setLabel(formulario.getFormNombre());
+//				treerow.appendChild(treecell);
+//				treeitem2.appendChild(treerow);
+//				treechildren.appendChild(treeitem2);
+//				treeitemPadre.appendChild(treechildren);					
+//				tchPermisoRol.appendChild(treeitemPadre);
+//				mapaModuloFormulario.put(formulario.getFormModulo(), formulario);
+//				treechildrenAux = treechildren;
+//			}else{
+//				mapaModuloFormulario.put(formulario.getFormModulo(),formulario);
+//				cargarHijosArbol(treechildrenAux, formulario);
+//			}
+			
+			if(mapaModuloFormulario.get(formulario.getFormModulo()) == null){
+				Treeitem treeitemPadre = new Treeitem(Labels.getLabel(formulario.getFormModulo()));
+				Treechildren treechildren = new Treechildren();
+				Treeitem treeitem2 = new Treeitem(Labels.getLabel(formulario.getFormNombre()),formulario);
+				
+				treechildren.appendChild(treeitem2);
+				treeitemPadre.appendChild(treechildren);					
+				tchPermisoRol.appendChild(treeitemPadre);
+				mapaModuloFormulario.put(formulario.getFormModulo(), formulario);
+				treechildrenAux = treechildren;
+			}else{
+//				mapaModuloFormulario.put(Labels.getLabel(formulario.getFormModulo()),formulario);
+				cargarHijosArbol(treechildrenAux, formulario);
+			}
+		}
+	}
+	
+	
 	private void cargarHijosArbol(Treechildren treechildren, PltFormulario formulario){
-		Treeitem treeitem = new Treeitem(formulario.getNombre(),formulario);
+		Treeitem treeitem = new Treeitem(Labels.getLabel(formulario.getNombre()),formulario);
 		treechildren.appendChild(treeitem);
 			
 	}
 	
-	private void cargarDatosRolPermisos(PltRol rol){
+	
+	private void cargarDatosRolPermisos(PltRol rol) throws Exception{
 //		Cargar datos en el formulario
 		txtNombreRol.setValue(rol.getRolNombre());
-		txtDescripcionRol.setValue(rol.getRolDescripcion());		
+		txtDescripcionRol.setValue(rol.getRolDescripcion());
+		
+		//Lista de los formularios que tiene permiso el rol
+		listaPermisosRol = plataformaNgc.getFormulariosConPermisos(pltRol);
+		seleccionarFormulariosConPermisos(listaPermisosRol);
+		
+	}
+	
+	public void seleccionarFormulariosConPermisos(List<PltPermiso> listaPermisos){
+		Map<String, Object> mapaPermisos = new HashMap<String, Object>();
+		for(PltPermiso permisos : listaPermisos){
+			mapaPermisos.put(permisos.getPltFormulario().getNombre(), permisos.getPltFormulario());
+		}
+		for(Treeitem item : treePermisoRol.getItems()){
+			if(item.getValue() != null){
+				PltFormulario formulario = item.getValue();
+				if(mapaPermisos.get(formulario.getNombre()) != null){
+					item.setSelected(Boolean.TRUE);
+				}
+			}			
+		}
+		
 	}
 	
 	public void onClick$btnAceptar(Event evt) throws Exception{
@@ -173,13 +211,42 @@ public class RolPermisosCnt extends WindowComposer {
 		
 		if(formulario.getTipo().equals(ConstantesAdmin.FORMULARIO_TIPO_INSERTAR)){			
 			plataformaNgc.crearRol(pltRol);
+			asociarFormularioRol(pltRol);
+			
 		} else if (formulario.getTipo().equalsIgnoreCase(ConstantesAdmin.FORMULARIO_TIPO_EDITAR)) {
 			plataformaNgc.modificarRol(pltRol);
+			//Se eliminan todos los permisos asociados a un rol
+			plataformaNgc.eliminarPermisos(pltRol);
+			//Se asocian formularios seleccionados al rol
+			asociarFormularioRol(pltRol);
+		}else if(formulario.getTipo().equals(ConstantesAdmin.FORMULARIO_TIPO_BORRAR)){
+			String nota = solicitarNota();
+			
+			pltRol.setAudiFechModi(new Date());
+			pltRol.setAudiMotiAnul(nota);
+			pltRol.setAudiSiAnul(Boolean.TRUE);
+			pltRol.setAudiUsuario(usuario.getLogin());
+			plataformaNgc.anularRol(pltRol);
+			
 		}
 		
 		
+		
 		Events.sendEvent(new Event(Events.ON_CLOSE,this.self,null));
-	}	
+	}
+	
+	public void asociarFormularioRol(PltRol rol) throws Exception{
+		if(treePermisoRol.getSelectedItems() != null){
+			for(Treeitem item : treePermisoRol.getSelectedItems() ){
+				PltPermiso permiso = new PltPermiso();
+				permiso.setPltRol(rol);
+				permiso.setPltFormulario((PltFormulario) item.getValue());
+				permiso.setAudiUsuario(usuario.getLogin());
+				permiso.setAudiFechModi(new Date());
+				plataformaNgc.crearPermiso(permiso);
+			}
+		}
+	}
 
 	public void onClick$btnCancelar(Event evt) throws Exception{
 		Events.sendEvent(new Event(Events.ON_CLOSE,this.self,null));
@@ -195,6 +262,11 @@ public class RolPermisosCnt extends WindowComposer {
 		pltRol.setAudiMotiAnul(null);
 		pltRol.setAudiSiAnul(Boolean.FALSE);
 		pltRol.setAudiUsuario(usuario.getLogin());
+		
+//		Asociar formularios a rol
+		
+		
+		
 		
 	}
 

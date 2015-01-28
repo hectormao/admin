@@ -39,7 +39,7 @@ public interface UsuarioNgc {
 	 * @param pltUsuario
 	 * @throws Exception
 	 */
-	public void eliminarUsuario(PltUsuario pltUsuario) throws Exception;
+	public void anularUsuario(PltUsuario pltUsuario) throws Exception;
 	
 	/**
 	 * Obtiene todos los usuarios ordenados por su nombre

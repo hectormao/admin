@@ -15,6 +15,7 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.East;
 import org.zkoss.zul.Listitem;
@@ -43,6 +44,7 @@ public class TablaDatosCnt extends WindowComposer {
 	private Borderlayout border;
 	private Div dvTabla;
 	private North norte;
+	private Checkbox chkSiAnulado;
 
 	private TablaDatos tablaDatos;
 
@@ -545,6 +547,12 @@ public class TablaDatosCnt extends WindowComposer {
 		this.mostrarAnulados = mostrarAnulados;
 	}
 	
-	
+	public void onCheck$chkSiAnulado(Event evt) throws Exception{
+		
+		
+		setMostrarAnulados(chkSiAnulado.isChecked());
+		refrescarTabla(padre, nombreAtributo);
+		
+	}
 
 }

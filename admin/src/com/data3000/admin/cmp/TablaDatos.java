@@ -115,10 +115,45 @@ public class TablaDatos extends Listbox implements ListitemRenderer<Object> {
 		modelo.addAll(datos);		
 	}
 	
+	private boolean siAnulado(Object obj){
+		try{
+			Method metodoSiAnulado = obj.getClass().getDeclaredMethod("isAudiSiAnul");
+			
+			return (boolean) metodoSiAnulado.invoke(obj);
+
+		} catch(Exception ex){
+			return false;
+		}
+	}
+	
+	private String getMotivoAnulacion(Object obj){
+		try{
+			Method metodoSiAnulado = obj.getClass().getDeclaredMethod("getAudiMotiAnul");
+			
+			return (String) metodoSiAnulado.invoke(obj);
+
+		} catch(Exception ex){
+			return null;
+		}
+	}
 
 	@Override
 	public void render(final Listitem item, Object data, int index) throws Exception {
 		item.setValue(data);
+		
+		if(siAnulado(data)){
+			item.setSclass("registro-anulado");
+			
+			String motivo = getMotivoAnulacion(data);
+			if(motivo != null){
+			
+				item.setTooltiptext(Labels.getLabel("app.tooltipAnulado", new Object[]{motivo}));
+			}
+		}
+		
+		
+		
+		
 		for(CampoTabla campo : listaCampos){
 			if(! (campo instanceof CampoEvento)){
 				//es un campo del objeto

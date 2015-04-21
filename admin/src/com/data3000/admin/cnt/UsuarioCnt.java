@@ -205,7 +205,7 @@ public class UsuarioCnt extends WindowComposer {
 		}
 		
 		
-		Events.sendEvent(new Event(Events.ON_CLOSE,this.self,null));
+		Events.sendEvent(new Event(Events.ON_CLOSE,this.self,usu));
 	}
 	
 	public void onClick$btnCancelar(Event evt) throws Exception{

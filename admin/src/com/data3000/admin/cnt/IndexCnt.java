@@ -20,11 +20,14 @@ import org.zkoss.zul.Menubar;
 import org.zkoss.zul.Menuitem;
 import org.zkoss.zul.Menupopup;
 import org.zkoss.zul.North;
+import org.zkoss.zul.South;
 import org.zkoss.zul.Tab;
 import org.zkoss.zul.Tabbox;
 import org.zkoss.zul.Tabpanel;
 import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
+import org.zkoss.zul.Toolbar;
+import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
 import com.data3000.admin.ngc.PlataformaNgc;
@@ -75,6 +78,8 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 	private void lanzarEscritorio() throws Exception {
 		
 		Borderlayout areaTrabajo = new Borderlayout();
+		winIndex.setWidth("100%");
+		winIndex.setHeight("100%");
 		winIndex.appendChild(areaTrabajo);
 		areaTrabajo.setWidth("100%");
 		areaTrabajo.setHeight("100%");
@@ -88,6 +93,42 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 		Menubar menuBar = new Menubar();		
 		norte.appendChild(menuBar);
 		cargarMenu(menuBar);
+		
+		
+		South sur = new South();
+		Toolbar toolbar = new Toolbar();
+		
+		//Boton usuario conectado
+		Toolbarbutton btnUsuarioConectado = new Toolbarbutton();
+		btnUsuarioConectado.setImage("img/iconos/usuario.png");
+		btnUsuarioConectado.setLabel(usuario.getLogin());
+		btnUsuarioConectado.setTooltip(usuario.getLogin());
+		toolbar.appendChild(btnUsuarioConectado);
+		
+		//Boton cerrar sesion
+		Toolbarbutton btnCerrarSesion = new Toolbarbutton();
+		btnCerrarSesion.setTooltiptext("${labels.app.cerrarSesion}");
+		btnCerrarSesion.setImage("img/iconos/cerrarSesion.png");
+		//Evento para cerrar la sesion del usuario
+		btnCerrarSesion.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+
+			@Override
+			public void onEvent(Event arg0) throws Exception {
+				if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Cerrando sesión"));
+				
+				// Eliminar el usuario de los atributos en sesión
+				session.removeAttribute(ConstantesAdmin.SESION_USUARIO);
+				// Invalidar la sesión del usuario actual
+		        session.invalidate();
+		        // Redireccionar la página para volver a la ventana de autenticación
+		        Executions.sendRedirect("/index.zul");
+				
+			}
+		});
+		toolbar.appendChild(btnCerrarSesion);
+				
+		sur.appendChild(toolbar);
+		areaTrabajo.appendChild(sur);
 		
 		
 	}
@@ -244,6 +285,7 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 			logger.error(Labels.getLabel(ConstantesAdmin.ERR0001),ex);
 		}
 	}
+
 
 	public PlataformaNgc getPlataformaNgc() {
 		return plataformaNgc;

@@ -30,5 +30,6 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="var" path="WEB_LIB"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

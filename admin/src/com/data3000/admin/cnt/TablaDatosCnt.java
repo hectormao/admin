@@ -262,9 +262,10 @@ public class TablaDatosCnt extends WindowComposer {
 				Object valor = null;
 				if(li != null){
 					valor = li.getValue();
+					argumentosHijo.put(ConstantesAdmin.ARG_SELECCION, valor);
 				}
 				argumentosHijo.put(ConstantesAdmin.ARG_FORMULARIO, form);
-				argumentosHijo.put(ConstantesAdmin.ARG_SELECCION, valor);
+				
 				
 				
 				java.io.InputStream zulInput = this.getClass().getClassLoader().getResourceAsStream(form.getUrl()) ;
@@ -299,7 +300,7 @@ public class TablaDatosCnt extends WindowComposer {
 		};
 		
 		campoEvento.setFormulario(form);
-		campoEvento.setNombre(formulario.getNombre());
+		campoEvento.setNombre(form.getNombre());
 		campoEvento.setUsuario(usuario);
 		
 		return campoEvento;

@@ -1,6 +1,5 @@
 package com.data3000.admin.bd;
-
-// Generated 12/01/2014 11:11:48 AM by Hibernate Tools 3.4.0.CR1
+// Generated 11/03/2017 08:16:33 AM by Hibernate Tools 3.5.0.Final
 
 import java.util.Date;
 
@@ -21,8 +20,8 @@ public class PltUsuaRol implements java.io.Serializable {
 	public PltUsuaRol() {
 	}
 
-	public PltUsuaRol(long usuaRolIdn, PltRol pltRol, PltUsuario pltUsuario,
-			String audiUsuario, Date audiFechModi, boolean audiSiAnul) {
+	public PltUsuaRol(long usuaRolIdn, PltRol pltRol, PltUsuario pltUsuario, String audiUsuario, Date audiFechModi,
+			boolean audiSiAnul) {
 		this.usuaRolIdn = usuaRolIdn;
 		this.pltRol = pltRol;
 		this.pltUsuario = pltUsuario;
@@ -31,9 +30,8 @@ public class PltUsuaRol implements java.io.Serializable {
 		this.audiSiAnul = audiSiAnul;
 	}
 
-	public PltUsuaRol(long usuaRolIdn, PltRol pltRol, PltUsuario pltUsuario,
-			String audiUsuario, Date audiFechModi, boolean audiSiAnul,
-			String audiMotiAnul, String audiChecksum) {
+	public PltUsuaRol(long usuaRolIdn, PltRol pltRol, PltUsuario pltUsuario, String audiUsuario, Date audiFechModi,
+			boolean audiSiAnul, String audiMotiAnul, String audiChecksum) {
 		this.usuaRolIdn = usuaRolIdn;
 		this.pltRol = pltRol;
 		this.pltUsuario = pltUsuario;

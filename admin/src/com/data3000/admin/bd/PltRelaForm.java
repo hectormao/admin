@@ -1,6 +1,5 @@
 package com.data3000.admin.bd;
-
-// Generated 12/01/2014 11:11:48 AM by Hibernate Tools 3.4.0.CR1
+// Generated 11/03/2017 08:16:33 AM by Hibernate Tools 3.5.0.Final
 
 import java.util.Date;
 
@@ -10,8 +9,8 @@ import java.util.Date;
 public class PltRelaForm implements java.io.Serializable {
 
 	private long relaFormIdn;
-	private PltFormulario pltFormularioByFormHijo;
 	private PltFormulario pltFormularioByFormPadre;
+	private PltFormulario pltFormularioByFormHijo;
 	private short relaFormOrden;
 	private String relaFormTipo;
 	private String audiUsuario;
@@ -23,13 +22,11 @@ public class PltRelaForm implements java.io.Serializable {
 	public PltRelaForm() {
 	}
 
-	public PltRelaForm(long relaFormIdn, PltFormulario pltFormularioByFormHijo,
-			PltFormulario pltFormularioByFormPadre, short relaFormOrden,
-			String relaFormTipo, String audiUsuario, Date audiFechModi,
-			boolean audiSiAnul) {
+	public PltRelaForm(long relaFormIdn, PltFormulario pltFormularioByFormPadre, PltFormulario pltFormularioByFormHijo,
+			short relaFormOrden, String relaFormTipo, String audiUsuario, Date audiFechModi, boolean audiSiAnul) {
 		this.relaFormIdn = relaFormIdn;
-		this.pltFormularioByFormHijo = pltFormularioByFormHijo;
 		this.pltFormularioByFormPadre = pltFormularioByFormPadre;
+		this.pltFormularioByFormHijo = pltFormularioByFormHijo;
 		this.relaFormOrden = relaFormOrden;
 		this.relaFormTipo = relaFormTipo;
 		this.audiUsuario = audiUsuario;
@@ -37,13 +34,12 @@ public class PltRelaForm implements java.io.Serializable {
 		this.audiSiAnul = audiSiAnul;
 	}
 
-	public PltRelaForm(long relaFormIdn, PltFormulario pltFormularioByFormHijo,
-			PltFormulario pltFormularioByFormPadre, short relaFormOrden,
-			String relaFormTipo, String audiUsuario, Date audiFechModi,
-			boolean audiSiAnul, String audiMotiAnul, String audiChecksum) {
+	public PltRelaForm(long relaFormIdn, PltFormulario pltFormularioByFormPadre, PltFormulario pltFormularioByFormHijo,
+			short relaFormOrden, String relaFormTipo, String audiUsuario, Date audiFechModi, boolean audiSiAnul,
+			String audiMotiAnul, String audiChecksum) {
 		this.relaFormIdn = relaFormIdn;
-		this.pltFormularioByFormHijo = pltFormularioByFormHijo;
 		this.pltFormularioByFormPadre = pltFormularioByFormPadre;
+		this.pltFormularioByFormHijo = pltFormularioByFormHijo;
 		this.relaFormOrden = relaFormOrden;
 		this.relaFormTipo = relaFormTipo;
 		this.audiUsuario = audiUsuario;
@@ -61,21 +57,20 @@ public class PltRelaForm implements java.io.Serializable {
 		this.relaFormIdn = relaFormIdn;
 	}
 
+	public PltFormulario getPltFormularioByFormPadre() {
+		return this.pltFormularioByFormPadre;
+	}
+
+	public void setPltFormularioByFormPadre(PltFormulario pltFormularioByFormPadre) {
+		this.pltFormularioByFormPadre = pltFormularioByFormPadre;
+	}
+
 	public PltFormulario getPltFormularioByFormHijo() {
 		return this.pltFormularioByFormHijo;
 	}
 
 	public void setPltFormularioByFormHijo(PltFormulario pltFormularioByFormHijo) {
 		this.pltFormularioByFormHijo = pltFormularioByFormHijo;
-	}
-
-	public PltFormulario getPltFormularioByFormPadre() {
-		return this.pltFormularioByFormPadre;
-	}
-
-	public void setPltFormularioByFormPadre(
-			PltFormulario pltFormularioByFormPadre) {
-		this.pltFormularioByFormPadre = pltFormularioByFormPadre;
 	}
 
 	public short getRelaFormOrden() {

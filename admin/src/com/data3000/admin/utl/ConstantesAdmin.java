@@ -99,7 +99,7 @@ public class ConstantesAdmin {
 	
 	public static final String ARG_CLASE = "clase";
 	
-	public static final String ARG_CAMPOS_TABLA = "camposTabla";
+	
 	
 	public static final String ARG_SELECCION = "objetoSeleccionado";
 

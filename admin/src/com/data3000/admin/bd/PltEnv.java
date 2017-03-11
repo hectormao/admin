@@ -1,6 +1,5 @@
 package com.data3000.admin.bd;
-
-// Generated 29/07/2014 09:40:50 PM by Hibernate Tools 3.4.0.CR1
+// Generated 11/03/2017 08:16:33 AM by Hibernate Tools 3.5.0.Final
 
 import java.util.Date;
 
@@ -22,8 +21,8 @@ public class PltEnv implements java.io.Serializable {
 	public PltEnv() {
 	}
 
-	public PltEnv(long envIdn, String envPropiedad, String envValor,
-			String audiUsuario, Date audiFechModi, boolean audiSiAnul) {
+	public PltEnv(long envIdn, String envPropiedad, String envValor, String audiUsuario, Date audiFechModi,
+			boolean audiSiAnul) {
 		this.envIdn = envIdn;
 		this.envPropiedad = envPropiedad;
 		this.envValor = envValor;
@@ -32,9 +31,8 @@ public class PltEnv implements java.io.Serializable {
 		this.audiSiAnul = audiSiAnul;
 	}
 
-	public PltEnv(long envIdn, String envPropiedad, String envValor,
-			String envDescripcion, String audiUsuario, Date audiFechModi,
-			boolean audiSiAnul, String audiMotiAnul, String audiChecksum) {
+	public PltEnv(long envIdn, String envPropiedad, String envValor, String envDescripcion, String audiUsuario,
+			Date audiFechModi, boolean audiSiAnul, String audiMotiAnul, String audiChecksum) {
 		this.envIdn = envIdn;
 		this.envPropiedad = envPropiedad;
 		this.envValor = envValor;

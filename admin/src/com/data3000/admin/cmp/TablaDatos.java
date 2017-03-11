@@ -66,10 +66,10 @@ public class TablaDatos extends Listbox implements ListitemRenderer<Object> {
 				//mapaCampos.put(nombreCampo, Boolean.TRUE);
 				String nombre = campo.getNombre();
 				if(! (campo instanceof CampoEvento)){
-					Field atributo = clase.getDeclaredField(nombre);
+					Field atributo = campo.getAtributo();
 					if(atributo != null){
 						pintarColumnaTabla(cabeceraTabla, atributo);
-						campo.setAtributo(atributo);
+						
 					}
 				} else {
 					pintarColumnaTabla(cabeceraTabla, nombre, "columna-boton");

@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 29/07/2014 09:40:50 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 11/03/2017 08:16:33 AM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
     <class name="com.data3000.admin.bd.PltEnv" table="plt_env" schema="data3000">
         <comment>Tabla que almacena los propiedades de ambiente de la plataforma</comment>
         <id name="envIdn" type="long">
             <column name="env_idn" precision="10" scale="0" />
+            
              <generator class="sequence" >
             	<param name="sequence">SQN_PLT_ENV</param>
             </generator>

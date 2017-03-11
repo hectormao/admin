@@ -28,6 +28,8 @@ import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
+import com.data3000.admin.ant.Columna;
+import com.data3000.admin.ant.Tabla;
 import com.data3000.admin.cmp.TablaDatos;
 import com.data3000.admin.ngc.PlataformaNgc;
 import com.data3000.admin.utl.CampoEvento;
@@ -117,14 +119,45 @@ public class TablaDatosCnt extends WindowComposer {
 		String sClase = formulario.getAtributo(ConstantesAdmin.ARG_CLASE);
 		if(sClase != null){
 			clase = Class.forName(sClase);
-			Method metodo = clase.getMethod("getCamposTabla");
-			listaCampos = (List<CampoTabla>) metodo.invoke(clase);
+			
 			cargarAlInicio = true;
 		} else {
 			clase = (Class) argumentos.get(ConstantesAdmin.ARG_CLASE);
-			listaCampos = (List<CampoTabla>) argumentos.get(ConstantesAdmin.ARG_CAMPOS_TABLA);
+			
 		}
 		
+		if(clase.isAnnotationPresent(Tabla.class)){
+			
+			listaCampos = new ArrayList<>();
+			
+			for(Field campo : clase.getDeclaredFields()){
+				if(campo.isAnnotationPresent(Columna.class)){
+					Columna columna = (Columna) campo.getAnnotation(Columna.class);
+					
+					CampoTabla campoTabla = new CampoTabla(campo.getName());
+					campoTabla.setAtributo(campo);
+					campoTabla.setOrden(columna.orden());
+						
+					int idx = 0;
+					while(idx < listaCampos.size()){
+						if(columna.orden() < listaCampos.get(idx).getOrden()){
+							listaCampos.add(idx, campoTabla);
+							break;
+						}
+						
+						idx ++;
+					}
+					
+					if(idx >= listaCampos.size()){
+						listaCampos.add(campoTabla);
+					}
+						
+					
+					
+				}
+			}
+			
+		}
 		
 		if(! listaCeldas.isEmpty()){			
 			for(FormularioHijo formHijo : listaCeldas){

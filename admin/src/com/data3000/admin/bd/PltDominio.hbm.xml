@@ -1,13 +1,16 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 7/03/2017 07:43:31 PM by Hibernate Tools 3.5.0.Final -->
+<!-- Generated 11/03/2017 08:16:33 AM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
-    <class name="com.data3000.admin.bd.PltDominio" table="plt_dominio" schema="data3000">
+    <class name="com.data3000.data3000lib.bd.PltDominio" table="plt_dominio" schema="data3000">
         <comment>dominios del sistema y sus valores</comment>
         <id name="dominioIdn" type="long">
             <column name="dominio_idn" precision="10" scale="0" />
-            <generator class="assigned" />
+            <column name="usua_rol_idn" precision="10" scale="0" />
+             <generator class="sequence" >
+            	<param name="sequence">SQN_PLT_DOMINIO</param>
+            </generator>
         </id>
         <property name="dominioNombre" type="string">
             <column name="dominio_nombre" length="32" not-null="true">

@@ -1,5 +1,5 @@
 package com.data3000.admin.bd;
-// Generated 7/03/2017 07:43:31 PM by Hibernate Tools 3.5.0.Final
+// Generated 11/03/2017 08:16:33 AM by Hibernate Tools 3.5.0.Final
 
 import java.util.Date;
 

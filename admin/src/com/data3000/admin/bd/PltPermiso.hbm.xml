@@ -1,22 +1,23 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 12/01/2014 11:11:48 AM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 11/03/2017 08:16:33 AM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
-    <class name="com.data3000.admin.bd.PltPermiso" table="plt_permiso">
+    <class name="com.data3000.data3000lib.bd.PltPermiso" table="plt_permiso" schema="data3000">
         <comment>Tabla que almacena los permisos de acceso a los formularios de la plataforma</comment>
         <id name="permIdn" type="long">
             <column name="perm_idn" precision="10" scale="0" />
+            <column name="usua_rol_idn" precision="10" scale="0" />
              <generator class="sequence" >
             	<param name="sequence">SQN_PLT_PERMISO</param>
             </generator>
         </id>
-        <many-to-one name="pltRol" class="com.data3000.admin.bd.PltRol" fetch="select">
+        <many-to-one name="pltRol" class="com.data3000.data3000lib.bd.PltRol" fetch="select">
             <column name="rol_idn" precision="10" scale="0" not-null="true">
                 <comment>identificador del rol al que se le esta asignando el permisos</comment>
             </column>
         </many-to-one>
-        <many-to-one name="pltFormulario" class="com.data3000.admin.bd.PltFormulario" fetch="select">
+        <many-to-one name="pltFormulario" class="com.data3000.data3000lib.bd.PltFormulario" fetch="select">
             <column name="form_idn" precision="10" scale="0" not-null="true">
                 <comment>identificador del formulario al que se le da permisos de acceso al rol</comment>
             </column>

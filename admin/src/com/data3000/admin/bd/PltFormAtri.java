@@ -1,6 +1,5 @@
 package com.data3000.admin.bd;
-
-// Generated 24/08/2014 11:13:50 AM by Hibernate Tools 3.4.0.CR1
+// Generated 11/03/2017 08:16:33 AM by Hibernate Tools 3.5.0.Final
 
 import java.util.Date;
 
@@ -22,9 +21,8 @@ public class PltFormAtri implements java.io.Serializable {
 	public PltFormAtri() {
 	}
 
-	public PltFormAtri(long formAtriIdn, PltFormulario pltFormulario,
-			String formAtriNombre, String formAtriValor, String audiUsuario,
-			Date audiFechModi, boolean audiSiAnul) {
+	public PltFormAtri(long formAtriIdn, PltFormulario pltFormulario, String formAtriNombre, String formAtriValor,
+			String audiUsuario, Date audiFechModi, boolean audiSiAnul) {
 		this.formAtriIdn = formAtriIdn;
 		this.pltFormulario = pltFormulario;
 		this.formAtriNombre = formAtriNombre;
@@ -34,10 +32,8 @@ public class PltFormAtri implements java.io.Serializable {
 		this.audiSiAnul = audiSiAnul;
 	}
 
-	public PltFormAtri(long formAtriIdn, PltFormulario pltFormulario,
-			String formAtriNombre, String formAtriValor, String audiUsuario,
-			Date audiFechModi, boolean audiSiAnul, String audiMotiAnul,
-			String audiChecksum) {
+	public PltFormAtri(long formAtriIdn, PltFormulario pltFormulario, String formAtriNombre, String formAtriValor,
+			String audiUsuario, Date audiFechModi, boolean audiSiAnul, String audiMotiAnul, String audiChecksum) {
 		this.formAtriIdn = formAtriIdn;
 		this.pltFormulario = pltFormulario;
 		this.formAtriNombre = formAtriNombre;

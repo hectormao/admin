@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 12/01/2014 11:11:48 AM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 11/03/2017 08:16:33 AM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
-    <class name="com.data3000.admin.bd.PltRol" table="plt_rol">
+    <class name="com.data3000.data3000lib.bd.PltRol" table="plt_rol" schema="data3000">
         <comment>Tabla que almacena los roles de usuario de la plataforma</comment>
         <id name="rolIdn" type="long">
             <column name="rol_idn" precision="10" scale="0" />
+            <column name="usua_rol_idn" precision="10" scale="0" />
              <generator class="sequence" >
             	<param name="sequence">SQN_PLT_ROL</param>
             </generator>
@@ -46,13 +47,13 @@
                 <comment>Checksum del registro con SHA1</comment>
             </column>
         </property>
-        <set name="pltPermisos" table="plt_permiso" inverse="true" lazy="true" fetch="select">
+        <set name="docAcls" table="doc_acl" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="rol_idn" precision="10" scale="0" not-null="true">
-                    <comment>identificador del rol al que se le esta asignando el permisos</comment>
+                <column name="rol_idn" precision="10" scale="0">
+                    <comment>Rol al que se le asigna el permiso</comment>
                 </column>
             </key>
-            <one-to-many class="com.data3000.admin.bd.PltPermiso" />
+            <one-to-many class="com.data3000.data3000lib.bd.DocAcl" />
         </set>
         <set name="pltUsuaRols" table="plt_usua_rol" inverse="true" lazy="true" fetch="select">
             <key>
@@ -60,7 +61,15 @@
                     <comment>identificador del rol asignado a un usuario</comment>
                 </column>
             </key>
-            <one-to-many class="com.data3000.admin.bd.PltUsuaRol" />
+            <one-to-many class="com.data3000.data3000lib.bd.PltUsuaRol" />
+        </set>
+        <set name="pltPermisos" table="plt_permiso" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="rol_idn" precision="10" scale="0" not-null="true">
+                    <comment>identificador del rol al que se le esta asignando el permisos</comment>
+                </column>
+            </key>
+            <one-to-many class="com.data3000.data3000lib.bd.PltPermiso" />
         </set>
     </class>
 </hibernate-mapping>

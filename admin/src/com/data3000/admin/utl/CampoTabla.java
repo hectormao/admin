@@ -10,6 +10,7 @@ import org.zkoss.zul.Image;
 public class CampoTabla implements Serializable{	
 	private String nombre;	
 	private Field atributo;
+	private int orden;
 	
 	
 	
@@ -36,6 +37,14 @@ public class CampoTabla implements Serializable{
 
 	public void setAtributo(Field atributo) {
 		this.atributo = atributo;
+	}
+
+	public int getOrden() {
+		return orden;
+	}
+
+	public void setOrden(int orden) {
+		this.orden = orden;
 	}
 	
 	

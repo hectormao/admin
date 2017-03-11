@@ -1,12 +1,8 @@
 package com.data3000.admin.bd;
-
-// Generated 12/01/2014 11:11:48 AM by Hibernate Tools 3.4.0.CR1
-
-
+// Generated 11/03/2017 08:16:33 AM by Hibernate Tools 3.5.0.Final
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import com.data3000.admin.vo.Formulario;
@@ -27,20 +23,17 @@ public class PltFormulario extends Formulario implements java.io.Serializable {
 	private String audiMotiAnul;
 	private String audiChecksum;
 	private String formIcono;
-	private Set<PltFormAtri> pltFormAtris = new HashSet<PltFormAtri>(0);
-	private Set<PltRelaForm> pltRelaFormsForFormPadre = new HashSet<PltRelaForm>(
-			0);
-	private Set<PltRelaForm> pltRelaFormsForFormHijo = new HashSet<PltRelaForm>(
-			0);
-	private Set<PltMenu> pltMenus = new HashSet<PltMenu>(0);
 	private Set<PltPermiso> pltPermisos = new HashSet<PltPermiso>(0);
+	private Set<PltMenu> pltMenus = new HashSet<PltMenu>(0);
+	private Set<PltRelaForm> pltRelaFormsForFormPadre = new HashSet<PltRelaForm>(0);
+	private Set<PltFormAtri> pltFormAtris = new HashSet<PltFormAtri>(0);
+	private Set<PltRelaForm> pltRelaFormsForFormHijo = new HashSet<PltRelaForm>(0);
 
 	public PltFormulario() {
 	}
 
-	public PltFormulario(long formIdn, String formNombre, String formTipo,
-			String formUrl, String formModulo, String audiUsuario,
-			Date audiFechModi, boolean audiSiAnul) {
+	public PltFormulario(long formIdn, String formNombre, String formTipo, String formUrl, String formModulo,
+			String audiUsuario, Date audiFechModi, boolean audiSiAnul) {
 		this.formIdn = formIdn;
 		this.formNombre = formNombre;
 		this.formTipo = formTipo;
@@ -51,14 +44,11 @@ public class PltFormulario extends Formulario implements java.io.Serializable {
 		this.audiSiAnul = audiSiAnul;
 	}
 
-	public PltFormulario(long formIdn, String formNombre, String formTipo,
-			String formUrl, String formModulo, String audiUsuario,
-			Date audiFechModi, boolean audiSiAnul, String audiMotiAnul,
-			String audiChecksum,String formIcono, 
-			Set<PltFormAtri> pltFormAtris,
-			Set<PltRelaForm> pltRelaFormsForFormPadre,
-			Set<PltRelaForm> pltRelaFormsForFormHijo, Set<PltMenu> pltMenus,
-			Set<PltPermiso> pltPermisos) {
+	public PltFormulario(long formIdn, String formNombre, String formTipo, String formUrl, String formModulo,
+			String audiUsuario, Date audiFechModi, boolean audiSiAnul, String audiMotiAnul, String audiChecksum,
+			String formIcono, Set<PltPermiso> pltPermisos, Set<PltMenu> pltMenus,
+			Set<PltRelaForm> pltRelaFormsForFormPadre, Set<PltFormAtri> pltFormAtris,
+			Set<PltRelaForm> pltRelaFormsForFormHijo) {
 		this.formIdn = formIdn;
 		this.formNombre = formNombre;
 		this.formTipo = formTipo;
@@ -69,12 +59,12 @@ public class PltFormulario extends Formulario implements java.io.Serializable {
 		this.audiSiAnul = audiSiAnul;
 		this.audiMotiAnul = audiMotiAnul;
 		this.audiChecksum = audiChecksum;
-		this.pltRelaFormsForFormPadre = pltRelaFormsForFormPadre;
-		this.pltRelaFormsForFormHijo = pltRelaFormsForFormHijo;
-		this.pltMenus = pltMenus;
-		this.pltPermisos = pltPermisos;
 		this.formIcono = formIcono;
+		this.pltPermisos = pltPermisos;
+		this.pltMenus = pltMenus;
+		this.pltRelaFormsForFormPadre = pltRelaFormsForFormPadre;
 		this.pltFormAtris = pltFormAtris;
+		this.pltRelaFormsForFormHijo = pltRelaFormsForFormHijo;
 	}
 
 	public long getFormIdn() {
@@ -157,22 +147,20 @@ public class PltFormulario extends Formulario implements java.io.Serializable {
 		this.audiChecksum = audiChecksum;
 	}
 
-	public Set<PltRelaForm> getPltRelaFormsForFormPadre() {
-		return this.pltRelaFormsForFormPadre;
+	public String getFormIcono() {
+		return this.formIcono;
 	}
 
-	public void setPltRelaFormsForFormPadre(
-			Set<PltRelaForm> pltRelaFormsForFormPadre) {
-		this.pltRelaFormsForFormPadre = pltRelaFormsForFormPadre;
+	public void setFormIcono(String formIcono) {
+		this.formIcono = formIcono;
 	}
 
-	public Set<PltRelaForm> getPltRelaFormsForFormHijo() {
-		return this.pltRelaFormsForFormHijo;
+	public Set<PltPermiso> getPltPermisos() {
+		return this.pltPermisos;
 	}
 
-	public void setPltRelaFormsForFormHijo(
-			Set<PltRelaForm> pltRelaFormsForFormHijo) {
-		this.pltRelaFormsForFormHijo = pltRelaFormsForFormHijo;
+	public void setPltPermisos(Set<PltPermiso> pltPermisos) {
+		this.pltPermisos = pltPermisos;
 	}
 
 	public Set<PltMenu> getPltMenus() {
@@ -183,67 +171,64 @@ public class PltFormulario extends Formulario implements java.io.Serializable {
 		this.pltMenus = pltMenus;
 	}
 
-	public Set<PltPermiso> getPltPermisos() {
-		return this.pltPermisos;
+	public Set<PltRelaForm> getPltRelaFormsForFormPadre() {
+		return this.pltRelaFormsForFormPadre;
 	}
 
-	public void setPltPermisos(Set<PltPermiso> pltPermisos) {
-		this.pltPermisos = pltPermisos;
+	public void setPltRelaFormsForFormPadre(Set<PltRelaForm> pltRelaFormsForFormPadre) {
+		this.pltRelaFormsForFormPadre = pltRelaFormsForFormPadre;
 	}
-	
-	
-
-	public String getFormIcono() {
-		return formIcono;
-	}
-
-	public void setFormIcono(String formIcono) {
-		this.formIcono = formIcono;
-	}
-	
-	
 
 	public Set<PltFormAtri> getPltFormAtris() {
-		return pltFormAtris;
+		return this.pltFormAtris;
 	}
 
 	public void setPltFormAtris(Set<PltFormAtri> pltFormAtris) {
 		this.pltFormAtris = pltFormAtris;
 	}
 
+	public Set<PltRelaForm> getPltRelaFormsForFormHijo() {
+		return this.pltRelaFormsForFormHijo;
+	}
+
+	public void setPltRelaFormsForFormHijo(Set<PltRelaForm> pltRelaFormsForFormHijo) {
+		this.pltRelaFormsForFormHijo = pltRelaFormsForFormHijo;
+	}
+
+	@Override
+	public Long getId() {
+		
+		return getFormIdn();
+	}
+
 	@Override
 	public String getNombre() {
+		
 		return getFormNombre();
 	}
 
 	@Override
 	public String getTooltip() {
+		
 		return getFormNombre();
 	}
 
 	@Override
 	public String getUrl() {
-		return getFormUrl();
-	}
-
-	@Override
-	public String getTipo() {
+		
 		return getFormTipo();
 	}
 
 	@Override
-	public Long getId() {		
-		return getFormIdn();
+	public String getTipo() {
+		
+		return getFormTipo();
 	}
 
 	@Override
 	public String getUrlIcono() {
-		return getFormIcono();
+		
+		return getFormUrl();
 	}
-
-	
-
-	
-
 
 }

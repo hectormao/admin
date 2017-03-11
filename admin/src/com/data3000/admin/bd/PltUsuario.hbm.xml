@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 11/03/2017 08:16:33 AM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
-    <class name="com.data3000.data3000lib.bd.PltUsuario" table="plt_usuario" schema="data3000">
+    <class name="com.data3000.admin.bd.PltUsuario" table="plt_usuario" schema="data3000">
         <comment>Tabla que almacena los usuarios de la plataforma</comment>
         <id name="usuaIdn" type="long">
             <column name="usua_idn" precision="10" scale="0" />
@@ -78,31 +78,8 @@
                     <comment>identificador del usuario al que se le asigna el rol</comment>
                 </column>
             </key>
-            <one-to-many class="com.data3000.data3000lib.bd.PltUsuaRol" />
+            <one-to-many class="com.data3000.admin.bd.PltUsuaRol" />
         </set>
-        <set name="docSistArches" table="doc_sist_arch" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="usua_idn" precision="10" scale="0" not-null="true">
-                    <comment>Id del usuario propietario (creador) del directorio</comment>
-                </column>
-            </key>
-            <one-to-many class="com.data3000.data3000lib.bd.DocSistArch" />
-        </set>
-        <set name="docArchivos" table="doc_archivo" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="usua_idn" precision="10" scale="0" not-null="true">
-                    <comment>Id del usuario propietario del archivo</comment>
-                </column>
-            </key>
-            <one-to-many class="com.data3000.data3000lib.bd.DocArchivo" />
-        </set>
-        <set name="docAcls" table="doc_acl" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="usua_idn" precision="10" scale="0">
-                    <comment>Usuario al que se le asigna el permiso, el permiso sobre el usuario prevalece sobre el del rol</comment>
-                </column>
-            </key>
-            <one-to-many class="com.data3000.data3000lib.bd.DocAcl" />
-        </set>
+        
     </class>
 </hibernate-mapping>

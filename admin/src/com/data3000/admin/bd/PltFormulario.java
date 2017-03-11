@@ -216,7 +216,7 @@ public class PltFormulario extends Formulario implements java.io.Serializable {
 	@Override
 	public String getUrl() {
 		
-		return getFormTipo();
+		return getFormUrl();
 	}
 
 	@Override
@@ -228,7 +228,7 @@ public class PltFormulario extends Formulario implements java.io.Serializable {
 	@Override
 	public String getUrlIcono() {
 		
-		return getFormUrl();
+		return getFormIcono();
 	}
 
 }

@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 11/03/2017 08:16:33 AM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
-    <class name="com.data3000.data3000lib.bd.PltFormulario" table="plt_formulario" schema="data3000">
+    <class name="com.data3000.admin.bd.PltFormulario" table="plt_formulario" schema="data3000">
         <comment>Tabla que almacena los formularios/funcionalidades de la plataforma</comment>
         <id name="formIdn" type="long">
             <column name="form_idn" precision="10" scale="0" />
@@ -68,7 +68,7 @@
                     <comment>identificador del formulario al que se le da permisos de acceso al rol</comment>
                 </column>
             </key>
-            <one-to-many class="com.data3000.data3000lib.bd.PltPermiso" />
+            <one-to-many class="com.data3000.admin.bd.PltPermiso" />
         </set>
         <set name="pltMenus" table="plt_menu" inverse="true" lazy="true" fetch="select">
             <key>
@@ -76,31 +76,31 @@
                     <comment>identificador del formulario que ejecutara el menu</comment>
                 </column>
             </key>
-            <one-to-many class="com.data3000.data3000lib.bd.PltMenu" />
+            <one-to-many class="com.data3000.admin.bd.PltMenu" />
         </set>
-        <set name="pltRelaFormsForFormPadre" table="plt_rela_form" inverse="true" lazy="true" fetch="select">
+        <set name="pltRelaFormsForFormPadre" table="plt_rela_form" inverse="true" lazy="false" fetch="join">
             <key>
                 <column name="form_padre" precision="10" scale="0" not-null="true">
                     <comment>Identificador del formulario padre</comment>
                 </column>
             </key>
-            <one-to-many class="com.data3000.data3000lib.bd.PltRelaForm" />
+            <one-to-many class="com.data3000.admin.bd.PltRelaForm" />
         </set>
-        <set name="pltFormAtris" table="plt_form_atri" inverse="true" lazy="true" fetch="select">
+        <set name="pltFormAtris" table="plt_form_atri" inverse="true" lazy="false" fetch="join">
             <key>
                 <column name="form_idn" precision="10" scale="0" not-null="true">
                     <comment>llave foranea con el formulario al que pertenece el atributo</comment>
                 </column>
             </key>
-            <one-to-many class="com.data3000.data3000lib.bd.PltFormAtri" />
+            <one-to-many class="com.data3000.admin.bd.PltFormAtri" />
         </set>
-        <set name="pltRelaFormsForFormHijo" table="plt_rela_form" inverse="true" lazy="true" fetch="select">
+        <set name="pltRelaFormsForFormHijo" table="plt_rela_form" inverse="true" lazy="false" fetch="join">
             <key>
                 <column name="form_hijo" precision="10" scale="0" not-null="true">
                     <comment>Identificador del formulario hijo</comment>
                 </column>
             </key>
-            <one-to-many class="com.data3000.data3000lib.bd.PltRelaForm" />
+            <one-to-many class="com.data3000.admin.bd.PltRelaForm" />
         </set>
     </class>
 </hibernate-mapping>

@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 11/03/2017 08:16:33 AM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
-    <class name="com.data3000.data3000lib.bd.PltEnv" table="plt_env" schema="data3000">
+    <class name="com.data3000.admin.bd.PltEnv" table="plt_env" schema="data3000">
         <comment>Tabla que almacena los propiedades de ambiente de la plataforma</comment>
         <id name="envIdn" type="long">
             <column name="env_idn" precision="10" scale="0" />

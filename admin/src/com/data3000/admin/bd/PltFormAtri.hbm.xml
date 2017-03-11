@@ -7,7 +7,7 @@
         <comment>Tabla que almacena los atributos (informaci&#195;&#179;n adicional) de los formularios/funcionalidades de la plataforma</comment>
         <id name="formAtriIdn" type="long">
             <column name="form_atri_idn" precision="10" scale="0" />
-            <column name="usua_rol_idn" precision="10" scale="0" />
+            
              <generator class="sequence" >
             	<param name="sequence">SQN_PLT_FORM_ATRI</param>
             </generator>

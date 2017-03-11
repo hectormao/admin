@@ -7,7 +7,7 @@
         <comment>Tabla que almacena la relacion entre los formularios</comment>
         <id name="relaFormIdn" type="long">
             <column name="rela_form_idn" precision="10" scale="0" />
-            <column name="usua_rol_idn" precision="10" scale="0" />
+            
              <generator class="sequence" >
             	<param name="sequence">SQN_PLT_RELA_FORM</param>
             </generator>

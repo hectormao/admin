@@ -7,7 +7,7 @@
         <comment>dominios del sistema y sus valores</comment>
         <id name="dominioIdn" type="long">
             <column name="dominio_idn" precision="10" scale="0" />
-            <column name="usua_rol_idn" precision="10" scale="0" />
+            
              <generator class="sequence" >
             	<param name="sequence">SQN_PLT_DOMINIO</param>
             </generator>

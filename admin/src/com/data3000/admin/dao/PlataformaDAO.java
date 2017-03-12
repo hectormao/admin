@@ -16,6 +16,7 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.internal.CriteriaImpl.CriterionEntry;
 import org.hibernate.metadata.ClassMetadata;
 
+import com.data3000.admin.bd.PltDominio;
 import com.data3000.admin.bd.PltEnv;
 import com.data3000.admin.bd.PltFormulario;
 import com.data3000.admin.bd.PltMenu;
@@ -24,6 +25,7 @@ import com.data3000.admin.bd.PltRelaForm;
 import com.data3000.admin.bd.PltRol;
 import com.data3000.admin.bd.PltUsuaRol;
 import com.data3000.admin.bd.PltUsuario;
+import com.data3000.admin.vo.Dominio;
 import com.data3000.admin.vo.Formulario;
 
 public class PlataformaDAO extends PltDAO {
@@ -373,8 +375,11 @@ public class PlataformaDAO extends PltDAO {
 			
 			return criteria.list();
 		} catch(Exception ex){
-			sesion.close();
 			throw ex;
+		}finally {
+			if(sesion.isOpen()){
+				sesion.close();
+			}
 		}
 	}
 	/**
@@ -405,9 +410,12 @@ public class PlataformaDAO extends PltDAO {
 			criteria.add(Restrictions.eq("pltUsuaRol.pltUsuario", usuario));
 			
 			return criteria.list();
-		} catch(Exception ex){
-			sesion.close();
+		} catch(Exception ex){			
 			throw ex;
+		} finally {
+			if(sesion.isOpen()){
+				sesion.close();
+			}
 		}
 	}
 	
@@ -443,6 +451,29 @@ public class PlataformaDAO extends PltDAO {
 				sesion.close();
 			}
 			
+		}
+	}
+
+
+	public List<Dominio> getDominio(String nombreDominio) {
+		Session sesion = sessionFactory.getCurrentSession();
+		Transaction tx = sesion.getTransaction();
+		try{
+			
+			if(! tx.isActive()){
+				tx.begin();
+			}
+			Criteria criteria = sesion.createCriteria(PltDominio.class);
+			criteria.add(Restrictions.eq("dominioNombre", nombreDominio));
+			criteria.addOrder(Order.asc("dominioLeyenda"));
+			
+			return criteria.list();
+		} catch(Exception ex){			
+			throw ex;
+		} finally {
+			if(sesion.isOpen()){
+				sesion.close();
+			}
 		}
 	}
 	

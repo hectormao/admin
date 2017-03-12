@@ -3,13 +3,16 @@ package com.data3000.admin.utl;
 
 
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -18,6 +21,8 @@ import org.zkoss.zul.Borderlayout;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Center;
 import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
@@ -34,6 +39,8 @@ import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Window;
 import org.zkoss.zul.impl.InputElement;
 
+import com.data3000.admin.ngc.PlataformaNgc;
+import com.data3000.admin.vo.Dominio;
 import com.data3000.admin.vo.Formulario;
 import com.data3000.admin.vo.Usuario;
 
@@ -47,10 +54,14 @@ public class WindowComposer extends GenericForwardComposer<Window>{
 	
 	private Logger logger;
 	
+	protected PlataformaNgc plataformaNgc;
+	
 	@Override
 	public void doAfterCompose(Window win) throws Exception{
 		
 		super.doAfterCompose(win);
+		
+		llenarCombosDominio(win);
 		
 		logger = Logger.getLogger(this.getClass());
 		
@@ -116,6 +127,69 @@ public class WindowComposer extends GenericForwardComposer<Window>{
 		
 		
 		if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Usuario: ").append(usuario.getLogin()).append(" Abriendo formulario: ").append(formulario.getNombre()).toString());
+	}
+	
+	private void llenarCombosDominio(Component comp){
+		Collection<Component> hijos = comp.getFellows();
+		for(Component hijo : hijos){
+			if(hijo instanceof Combobox){
+				String nombreDominio = (String) hijo.getAttribute(ConstantesAdmin.DOMINIO);
+				if(nombreDominio != null){
+					llenarComboDominio((Combobox) hijo, nombreDominio);
+				}
+			}
+		}
+	}
+	
+	protected void llenarComboDominio(Combobox combo, String nombreDominio){
+		List<Dominio> dominio = plataformaNgc.getDominio(nombreDominio);
+		if(dominio != null){
+			for(Dominio item : dominio){
+				Comboitem ci = new Comboitem(item.getLeyenda());
+				ci.setValue(item);
+				
+				combo.appendChild(ci);
+			}
+		}
+	}
+	
+	protected void seleccionarComboDominio(Combobox combo, String valor){
+		
+		if(valor != null){
+			for(Comboitem ci : combo.getItems()){
+				Dominio dominio = ci.getValue();
+				if(dominio.getValor().equals(valor)){
+					combo.setSelectedItem(ci);
+					break;
+				}
+			}
+		}
+		
+	}
+	
+	protected String getSeleccionComboDominio(Combobox combo, boolean requerido){
+		
+		Comboitem ci = combo.getSelectedItem();
+		if(ci != null){
+			Dominio dominio = ci.getValue();
+			if(dominio != null){
+				return dominio.getValor();
+			} else {
+				if(requerido){
+					throw new WrongValueException(combo, Labels.getLabel("error.1007"));
+				}
+				return null;
+			}
+			
+			
+		} else {
+			if(requerido){
+				throw new WrongValueException(combo, Labels.getLabel("error.1007"));
+			}
+			
+			return null;
+		}
+		
 	}
 	
 	public Formulario getFormulario(String nombre){
@@ -273,6 +347,16 @@ public class WindowComposer extends GenericForwardComposer<Window>{
 		
 		
 	}
+
+	public PlataformaNgc getPlataformaNgc() {
+		return plataformaNgc;
+	}
+
+	public void setPlataformaNgc(PlataformaNgc plataformaNgc) {
+		this.plataformaNgc = plataformaNgc;
+	}
+	
+	
 	
 	
 }

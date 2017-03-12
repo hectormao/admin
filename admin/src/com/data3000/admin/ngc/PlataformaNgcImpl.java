@@ -22,6 +22,7 @@ import com.data3000.admin.dao.PlataformaDAO;
 import com.data3000.admin.dao.PltDAO;
 import com.data3000.admin.exc.PltException;
 import com.data3000.admin.utl.ConstantesAdmin;
+import com.data3000.admin.vo.Dominio;
 import com.data3000.admin.vo.EstructuraMenu;
 import com.data3000.admin.vo.Formulario;
 import com.data3000.admin.vo.FormularioHijo;
@@ -255,6 +256,12 @@ public class PlataformaNgcImpl implements PlataformaNgc {
 	public void eliminarRolesUsuario(PltUsuario usuario) {
 		plataformaDAO.eliminarRolesUsuario(usuario);
 		
+	}
+
+	@Override
+	public List<Dominio> getDominio(String nombreDominio) {
+		
+		return plataformaDAO.getDominio(nombreDominio);
 	}
 
 	

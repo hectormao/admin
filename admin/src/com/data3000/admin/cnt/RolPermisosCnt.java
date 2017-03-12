@@ -60,10 +60,7 @@ public class RolPermisosCnt extends WindowComposer {
 	private PltRol pltRol;
 	private PltPermiso pltPermiso;
 	
-	/**
-	 * Negocio Plataforma
-	 */
-	private PlataformaNgc plataformaNgc;
+	
 	
 	/**
 	 * Log (log4j)
@@ -269,15 +266,5 @@ public class RolPermisosCnt extends WindowComposer {
 		
 		
 	}
-
-	public PlataformaNgc getPlataformaNgc() {
-		return plataformaNgc;
-	}
-
-	public void setPlataformaNgc(PlataformaNgc plataformaNgc) {
-		this.plataformaNgc = plataformaNgc;
-	}
-	
-	
 
 }

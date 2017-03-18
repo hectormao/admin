@@ -60,10 +60,7 @@ public class UsuarioCnt extends WindowComposer {
 	 */
 	private UsuarioNgc usuarioNgc;
 	
-	/**
-	 * Negocio plataforma
-	 */
-	private PlataformaNgc plataformaNgc;
+	
 	
 	/**
 	 * Log (log4j)
@@ -252,19 +249,6 @@ public class UsuarioCnt extends WindowComposer {
 		this.usuarioNgc = usuarioNgc;
 	}
 
-	public PlataformaNgc getPlataformaNgc() {
-		return plataformaNgc;
-	}
-
-	public void setPlataformaNgc(PlataformaNgc plataformaNgc) {
-		this.plataformaNgc = plataformaNgc;
-	}
-
-	
-	
-	
-	
-	
 	
 
 }

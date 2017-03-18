@@ -8,6 +8,7 @@ import com.data3000.admin.bd.PltPermiso;
 import com.data3000.admin.bd.PltRol;
 import com.data3000.admin.bd.PltUsuaRol;
 import com.data3000.admin.bd.PltUsuario;
+import com.data3000.admin.vo.Dominio;
 import com.data3000.admin.vo.EstructuraMenu;
 import com.data3000.admin.vo.Formulario;
 import com.data3000.admin.vo.Menu;
@@ -131,4 +132,12 @@ public interface PlataformaNgc {
 	 * @param usuario
 	 */
 	public void eliminarRolesUsuario(PltUsuario usuario);
+
+	
+	/**
+	 * Obtiene los valores posibles de un dominio
+	 * @param nombreDominio
+	 * @return
+	 */
+	public List<Dominio> getDominio(String nombreDominio);
 }

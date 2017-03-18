@@ -50,7 +50,7 @@ public class TablaDatosCnt extends WindowComposer {
 
 	private TablaDatos tablaDatos;
 
-	private PlataformaNgc plataformaNgc;
+	
 
 	private Class clase;
 	
@@ -67,6 +67,7 @@ public class TablaDatosCnt extends WindowComposer {
 	
 	private Object padre;
 	private String nombreAtributo;
+	private boolean filtrarSiPadreNull;
 	
 	private boolean crearHijos;
 	
@@ -80,6 +81,12 @@ public class TablaDatosCnt extends WindowComposer {
 		
 		padre = argumentos.get(ConstantesAdmin.OBJETO_PADRE);
 		nombreAtributo = (String) argumentos.get(ConstantesAdmin.NOMBRE_ATRIBUTO_PADRE);
+		Boolean aux = (Boolean) argumentos.get(ConstantesAdmin.FILTRAR_PADRE_NULL);
+		if(aux != null){
+			filtrarSiPadreNull = aux.booleanValue();
+		} else {
+			filtrarSiPadreNull = false;
+		}
 
 		listaDetalles = new ArrayList<Formulario>();
 		listaCeldas = new ArrayList<FormularioHijo>();
@@ -218,10 +225,18 @@ public class TablaDatosCnt extends WindowComposer {
 
 					padre = datos.get(ConstantesAdmin.OBJETO_PADRE);
 					nombreAtributo = (String) datos.get(ConstantesAdmin.NOMBRE_ATRIBUTO_PADRE);
+					
+					Boolean aux = (Boolean) argumentos.get(ConstantesAdmin.FILTRAR_PADRE_NULL);
+					if(aux != null){
+						filtrarSiPadreNull = aux.booleanValue();
+					} else {
+						filtrarSiPadreNull = false;
+					}
+					
 					cerrarDetalle();
 					
 					
-					refrescarTabla(padre, nombreAtributo);
+					refrescarTabla(padre, nombreAtributo, filtrarSiPadreNull);
 				}
 
 			}
@@ -262,7 +277,7 @@ public class TablaDatosCnt extends WindowComposer {
 			});
 		}
 		if(cargarAlInicio){
-			refrescarTabla(padre,nombreAtributo);
+			refrescarTabla(padre,nombreAtributo, filtrarSiPadreNull);
 		}
 	}
 	
@@ -322,7 +337,7 @@ public class TablaDatosCnt extends WindowComposer {
 					public void onEvent(Event arg0) throws Exception {
 						String res = (String) arg0.getData();
 						if(res != null && res.equals(ConstantesAdmin.EXITO)){
-							refrescarTabla(padre,nombreAtributo);
+							refrescarTabla(padre,nombreAtributo, filtrarSiPadreNull);
 						}
 					}
 				});
@@ -486,7 +501,7 @@ public class TablaDatosCnt extends WindowComposer {
 					public void onEvent(Event arg0) throws Exception {
 						String res = (String) arg0.getData();
 						if(res != null && res.equals(ConstantesAdmin.EXITO)){
-							refrescarTabla(padre,nombreAtributo);
+							refrescarTabla(padre,nombreAtributo, filtrarSiPadreNull);
 						}
 					}
 				});
@@ -506,7 +521,7 @@ public class TablaDatosCnt extends WindowComposer {
 
 	
 	
-	private void refrescarTabla(Object padre, String nombreAtributo)
+	private void refrescarTabla(Object padre, String nombreAtributo, boolean filtrarSiPadreNull)
 			throws Exception {
 
 		
@@ -514,12 +529,15 @@ public class TablaDatosCnt extends WindowComposer {
 		
 		List<Object> datos = null;
 
-		if (padre == null) {
+		if (padre == null && ! filtrarSiPadreNull) {
 			datos = plataformaNgc.getDatos(clase);
+		} else if(padre == null && filtrarSiPadreNull){
+			StringBuilder where = new StringBuilder(nombreAtributo);
+			where.append(" is null");
+			datos = plataformaNgc.getDatos(clase, where.toString());
 		} else {
 			if (nombreAtributo == null) {
-				for (Field atributo : clase.getDeclaredFields()) {
-					
+				for (Field atributo : clase.getDeclaredFields()) {					
 					
 					if (atributo.getType().equals(padre.getClass().getGenericSuperclass()) || atributo.getType().equals(padre.getClass())) {
 						nombreAtributo = atributo.getName();
@@ -565,13 +583,7 @@ public class TablaDatosCnt extends WindowComposer {
 		tablaDatos.setDatos(datosAMostrar);
 	}
 
-	public PlataformaNgc getPlataformaNgc() {
-		return plataformaNgc;
-	}
-
-	public void setPlataformaNgc(PlataformaNgc plataformaNgc) {
-		this.plataformaNgc = plataformaNgc;
-	}
+	
 
 	public boolean isMostrarAnulados() {
 		return mostrarAnulados;
@@ -585,7 +597,7 @@ public class TablaDatosCnt extends WindowComposer {
 		
 		
 		setMostrarAnulados(chkSiAnulado.isChecked());
-		refrescarTabla(padre, nombreAtributo);
+		refrescarTabla(padre, nombreAtributo,filtrarSiPadreNull);
 		
 	}
 

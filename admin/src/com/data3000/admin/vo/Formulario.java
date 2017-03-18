@@ -38,7 +38,24 @@ public abstract class Formulario {
 			hijos = new ArrayList<FormularioHijo>();
 		}
 		
-		hijos.add(hijo);
+		
+		int idx = 0;
+		while(idx < hijos.size()){
+			if(hijo.getOrden() < hijos.get(idx).getOrden()){
+				break;
+			}
+			idx ++;
+		}
+		
+		if(idx < hijos.size()){
+			hijos.add(idx, hijo);
+		} else {
+			hijos.add(hijo);
+		}
+		
+		
+	
+		
 		
 	}
 	

@@ -115,6 +115,7 @@ public class ConstantesAdmin {
 	 */
 	public static final String OBJETO_PADRE = "padre";
 	public static final String NOMBRE_ATRIBUTO_PADRE = "nombrePadre";
+	public static final String FILTRAR_PADRE_NULL = "filtrarPadreNull";
 
 	
 
@@ -155,6 +156,8 @@ public class ConstantesAdmin {
 	/**
 	 * Metodo Anulado
 	 */
-	public static final String METODO_ANULADO = "isAudiSiAnul"; 
+	public static final String METODO_ANULADO = "isAudiSiAnul";
+
+	public static final String DOMINIO = "dominio"; 
 	
 }

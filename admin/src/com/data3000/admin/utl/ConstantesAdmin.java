@@ -98,6 +98,7 @@ public class ConstantesAdmin {
 	public static final String ARG_TABLA_DATOS = "tablaDatos";
 	
 	public static final String ARG_CLASE = "clase";
+	public static final String ARG_WHERE = "where";
 	
 	
 	

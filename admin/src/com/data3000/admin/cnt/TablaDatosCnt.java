@@ -73,6 +73,8 @@ public class TablaDatosCnt extends WindowComposer {
 	
 	private boolean mostrarAnulados = false;
 	
+	private String argumentoWhere;
+	
 	@Override
 	public void doAfterCompose(Window win) throws Exception {
 		super.doAfterCompose(win);
@@ -130,6 +132,16 @@ public class TablaDatosCnt extends WindowComposer {
 			cargarAlInicio = true;
 		} else {
 			clase = (Class) argumentos.get(ConstantesAdmin.ARG_CLASE);
+			
+		}
+		
+		String sArgumento = formulario.getAtributo(ConstantesAdmin.ARG_WHERE);
+		if(sArgumento != null){
+			argumentoWhere = sArgumento;
+			
+			
+		} else {
+			argumentoWhere = (String) argumentos.get(ConstantesAdmin.ARG_WHERE);
 			
 		}
 		
@@ -528,13 +540,23 @@ public class TablaDatosCnt extends WindowComposer {
 		
 		
 		List<Object> datos = null;
+		
+		StringBuilder where = new StringBuilder();
+		if(argumentoWhere != null){
+			where.append("(");
+			where.append(argumentoWhere);
+			where.append(")");
+		}
+		
 
-		if (padre == null && ! filtrarSiPadreNull) {
-			datos = plataformaNgc.getDatos(clase);
-		} else if(padre == null && filtrarSiPadreNull){
-			StringBuilder where = new StringBuilder(nombreAtributo);
-			where.append(" is null");
-			datos = plataformaNgc.getDatos(clase, where.toString());
+		if(padre == null && filtrarSiPadreNull){
+			if(where.length() > 0){
+				where.append(" and ");
+			}
+			where.append("(");
+			where.append(nombreAtributo);
+			where.append(" is null)");
+			
 		} else {
 			if (nombreAtributo == null) {
 				for (Field atributo : clase.getDeclaredFields()) {					
@@ -545,13 +567,20 @@ public class TablaDatosCnt extends WindowComposer {
 					}
 				}
 			}
-			StringBuilder where = new StringBuilder(nombreAtributo);
+			
+			if(where.length() > 0){
+				where.append(" and ");
+			}
+			
+			where.append("(");
+			where.append(nombreAtributo);
 			where.append(".");
 			String condicion = plataformaNgc.getCondicionPadre(padre);
 			where.append(condicion);
-			datos = plataformaNgc.getDatos(clase, where.toString());
+			where.append(")");
+			
 		}
-		
+		datos = plataformaNgc.getDatos(clase, where.toString());
 		List<Object> datosAMostrar = new ArrayList<>();
 		for(Object dato : datos){
 			

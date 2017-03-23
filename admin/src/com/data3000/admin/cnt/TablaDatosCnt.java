@@ -73,6 +73,8 @@ public class TablaDatosCnt extends WindowComposer {
 	
 	private boolean mostrarAnulados = false;
 	
+	private String argumentoWhere;
+	
 	@Override
 	public void doAfterCompose(Window win) throws Exception {
 		super.doAfterCompose(win);
@@ -133,6 +135,16 @@ public class TablaDatosCnt extends WindowComposer {
 			
 		}
 		
+		String sArgumento = formulario.getAtributo(ConstantesAdmin.ARG_WHERE);
+		if(sArgumento != null){
+			argumentoWhere = sArgumento;
+			
+			
+		} else {
+			argumentoWhere = (String) argumentos.get(ConstantesAdmin.ARG_WHERE);
+			
+		}
+		
 		if(clase.isAnnotationPresent(Tabla.class)){
 			
 			listaCampos = new ArrayList<>();
@@ -140,25 +152,40 @@ public class TablaDatosCnt extends WindowComposer {
 			for(Field campo : clase.getDeclaredFields()){
 				if(campo.isAnnotationPresent(Columna.class)){
 					Columna columna = (Columna) campo.getAnnotation(Columna.class);
+					boolean mostrar = false; 
 					
-					CampoTabla campoTabla = new CampoTabla(campo.getName());
-					campoTabla.setAtributo(campo);
-					campoTabla.setOrden(columna.orden());
-						
-					int idx = 0;
-					while(idx < listaCampos.size()){
-						if(columna.orden() < listaCampos.get(idx).getOrden()){
-							listaCampos.add(idx, campoTabla);
-							break;
+					String[] aplica = columna.aplica();
+					if(aplica.length == 0 ){
+						mostrar = true;
+					} else {
+						String nombreFormulario = formulario.getNombre();
+						for(String aplicaFormulario : aplica){
+							if(aplicaFormulario.equals(nombreFormulario)){
+								mostrar = true;
+								break;
+							}
+						}
+					}
+					
+					if(mostrar){
+						CampoTabla campoTabla = new CampoTabla(campo.getName());
+						campoTabla.setAtributo(campo);
+						campoTabla.setOrden(columna.orden());
+							
+						int idx = 0;
+						while(idx < listaCampos.size()){
+							if(columna.orden() < listaCampos.get(idx).getOrden()){
+								listaCampos.add(idx, campoTabla);
+								break;
+							}
+							
+							idx ++;
 						}
 						
-						idx ++;
-					}
-					
-					if(idx >= listaCampos.size()){
-						listaCampos.add(campoTabla);
-					}
-						
+						if(idx >= listaCampos.size()){
+							listaCampos.add(campoTabla);
+						}
+					}	
 					
 					
 				}
@@ -528,13 +555,23 @@ public class TablaDatosCnt extends WindowComposer {
 		
 		
 		List<Object> datos = null;
+		
+		StringBuilder where = new StringBuilder();
+		if(argumentoWhere != null){
+			where.append("(");
+			where.append(argumentoWhere);
+			where.append(")");
+		}
+		
 
-		if (padre == null && ! filtrarSiPadreNull) {
-			datos = plataformaNgc.getDatos(clase);
-		} else if(padre == null && filtrarSiPadreNull){
-			StringBuilder where = new StringBuilder(nombreAtributo);
-			where.append(" is null");
-			datos = plataformaNgc.getDatos(clase, where.toString());
+		if(padre == null && filtrarSiPadreNull){
+			if(where.length() > 0){
+				where.append(" and ");
+			}
+			where.append("(");
+			where.append(nombreAtributo);
+			where.append(" is null)");
+			
 		} else {
 			if (nombreAtributo == null) {
 				for (Field atributo : clase.getDeclaredFields()) {					
@@ -545,13 +582,20 @@ public class TablaDatosCnt extends WindowComposer {
 					}
 				}
 			}
-			StringBuilder where = new StringBuilder(nombreAtributo);
+			
+			if(where.length() > 0){
+				where.append(" and ");
+			}
+			
+			where.append("(");
+			where.append(nombreAtributo);
 			where.append(".");
 			String condicion = plataformaNgc.getCondicionPadre(padre);
 			where.append(condicion);
-			datos = plataformaNgc.getDatos(clase, where.toString());
+			where.append(")");
+			
 		}
-		
+		datos = plataformaNgc.getDatos(clase, where.toString());
 		List<Object> datosAMostrar = new ArrayList<>();
 		for(Object dato : datos){
 			

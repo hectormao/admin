@@ -10,5 +10,6 @@ import java.lang.annotation.Target;
 public @interface Columna {
 	
 	public int orden() default 0;
+	public String[] aplica() default {};
 
 }

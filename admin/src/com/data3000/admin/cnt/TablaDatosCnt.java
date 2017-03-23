@@ -152,25 +152,40 @@ public class TablaDatosCnt extends WindowComposer {
 			for(Field campo : clase.getDeclaredFields()){
 				if(campo.isAnnotationPresent(Columna.class)){
 					Columna columna = (Columna) campo.getAnnotation(Columna.class);
+					boolean mostrar = false; 
 					
-					CampoTabla campoTabla = new CampoTabla(campo.getName());
-					campoTabla.setAtributo(campo);
-					campoTabla.setOrden(columna.orden());
-						
-					int idx = 0;
-					while(idx < listaCampos.size()){
-						if(columna.orden() < listaCampos.get(idx).getOrden()){
-							listaCampos.add(idx, campoTabla);
-							break;
+					String[] aplica = columna.aplica();
+					if(aplica.length == 0 ){
+						mostrar = true;
+					} else {
+						String nombreFormulario = formulario.getNombre();
+						for(String aplicaFormulario : aplica){
+							if(aplicaFormulario.equals(nombreFormulario)){
+								mostrar = true;
+								break;
+							}
+						}
+					}
+					
+					if(mostrar){
+						CampoTabla campoTabla = new CampoTabla(campo.getName());
+						campoTabla.setAtributo(campo);
+						campoTabla.setOrden(columna.orden());
+							
+						int idx = 0;
+						while(idx < listaCampos.size()){
+							if(columna.orden() < listaCampos.get(idx).getOrden()){
+								listaCampos.add(idx, campoTabla);
+								break;
+							}
+							
+							idx ++;
 						}
 						
-						idx ++;
-					}
-					
-					if(idx >= listaCampos.size()){
-						listaCampos.add(campoTabla);
-					}
-						
+						if(idx >= listaCampos.size()){
+							listaCampos.add(campoTabla);
+						}
+					}	
 					
 					
 				}

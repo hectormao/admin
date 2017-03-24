@@ -229,7 +229,7 @@ public class RolPermisosCnt extends WindowComposer {
 		
 		
 		
-		Events.sendEvent(new Event(Events.ON_CLOSE,this.self,null));
+		Events.sendEvent(new Event(Events.ON_CLOSE,this.self,pltRol));
 	}
 	
 	public void asociarFormularioRol(PltRol rol) throws Exception{

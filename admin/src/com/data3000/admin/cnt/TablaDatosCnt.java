@@ -526,8 +526,12 @@ public class TablaDatosCnt extends WindowComposer {
 
 					@Override
 					public void onEvent(Event arg0) throws Exception {
-						String res = (String) arg0.getData();
-						if(res != null && res.equals(ConstantesAdmin.EXITO)){
+						Object res = arg0.getData();
+						if(res instanceof String){
+							if(((String)res).equals(ConstantesAdmin.EXITO)){
+								refrescarTabla(padre,nombreAtributo, filtrarSiPadreNull);
+							}
+						} else if(res != null) {
 							refrescarTabla(padre,nombreAtributo, filtrarSiPadreNull);
 						}
 					}
@@ -572,7 +576,7 @@ public class TablaDatosCnt extends WindowComposer {
 			where.append(nombreAtributo);
 			where.append(" is null)");
 			
-		} else {
+		} else if(padre != null) {
 			if (nombreAtributo == null) {
 				for (Field atributo : clase.getDeclaredFields()) {					
 					
@@ -582,6 +586,7 @@ public class TablaDatosCnt extends WindowComposer {
 					}
 				}
 			}
+			
 			
 			if(where.length() > 0){
 				where.append(" and ");
@@ -593,6 +598,7 @@ public class TablaDatosCnt extends WindowComposer {
 			String condicion = plataformaNgc.getCondicionPadre(padre);
 			where.append(condicion);
 			where.append(")");
+			
 			
 		}
 		datos = plataformaNgc.getDatos(clase, where.toString());

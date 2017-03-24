@@ -12,12 +12,12 @@
             	<param name="sequence">SQN_PLT_USUA_ROL</param>
             </generator>
         </id>
-        <many-to-one name="pltRol" class="com.data3000.admin.bd.PltRol" fetch="select">
+        <many-to-one name="pltRol" class="com.data3000.admin.bd.PltRol" fetch="join" lazy="false">
             <column name="rol_idn" precision="10" scale="0" not-null="true">
                 <comment>identificador del rol asignado a un usuario</comment>
             </column>
         </many-to-one>
-        <many-to-one name="pltUsuario" class="com.data3000.admin.bd.PltUsuario" fetch="select">
+        <many-to-one name="pltUsuario" class="com.data3000.admin.bd.PltUsuario" fetch="join" lazy="false">
             <column name="usua_idn" precision="10" scale="0" not-null="true">
                 <comment>identificador del usuario al que se le asigna el rol</comment>
             </column>

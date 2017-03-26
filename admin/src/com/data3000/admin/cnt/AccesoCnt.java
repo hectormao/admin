@@ -8,10 +8,12 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Timer;
 import org.zkoss.zul.Window;
 
 import com.data3000.admin.exc.PltException;
@@ -30,14 +32,16 @@ public class AccesoCnt extends GenericForwardComposer<Window> {
 	private Textbox txtUsuario;
 	private Textbox txtClave;
 	private Button btnIngresar;
+	private Timer tmrUpdate;
 	
 	 
 	
 	@Override
-	public void doAfterCompose(Window winIndex) throws Exception{
+	public void doAfterCompose(Window winAcceso) throws Exception{
 		
-		super.doAfterCompose(winIndex);
+		super.doAfterCompose(winAcceso);
 		logger = Logger.getLogger(this.getClass());
+		
 		
 		btnIngresar.setAutodisable("self");
 		
@@ -49,6 +53,9 @@ public class AccesoCnt extends GenericForwardComposer<Window> {
 				
 			}
 		});
+		
+		
+		
 		
 		
 		
@@ -65,8 +72,31 @@ public class AccesoCnt extends GenericForwardComposer<Window> {
 	} 
 	
 	
+	public void onUser$winAcceso(Event evt) throws Exception{
+		ingresar();
+	}
 	
 	public void onClick$btnIngresar() throws Exception{
+		Clients.evalJavaScript("var wTxtUsuario = zk.Widget.$('$txtUsuario');"
+				+ "if(wTxtUsuario != null){"
+				+ "wTxtUsuario.updateChange_();"
+				+ ""
+				+ "}"
+				+ "var wTxtClave = zk.Widget.$('$txtClave');"
+				+ "if(wTxtClave != null){"
+				+ "wTxtClave.updateChange_();"
+				+ ""
+				+ "}"
+				+ "var wWinAcceso = zk.Widget.$('$winAcceso');"
+				+ "zAu.send(new zk.Event(wWinAcceso, 'onUser', null, {toServer:true}));");
+		
+		btnIngresar.setDisabled(true);
+	}
+	
+	
+	
+	public void ingresar() throws Exception{
+		
 		
 		if(validar()){
 			
@@ -74,16 +104,20 @@ public class AccesoCnt extends GenericForwardComposer<Window> {
 			String clave = txtClave.getValue();
 			try{
 				Usuario usuario = usuarioNgc.validarAcceso(login, clave);
-				
+				tmrUpdate.stop();
 				Events.sendEvent(Events.ON_CLOSE,winAcceso,usuario);
 			} catch(PltException ex){
 				Messagebox.show(Labels.getLabel(ex.getCodigo()), "Error", Messagebox.OK, Messagebox.ERROR);
+				btnIngresar.setDisabled(false);
 				logger.error("Error de logueo",ex);
 			} catch(Exception ex){
 				Messagebox.show(ex.getMessage(), "Error", Messagebox.OK, Messagebox.ERROR);
+				btnIngresar.setDisabled(false);
 				logger.error("Error Desconocido de logueo",ex);
 			}
 						
+		} else {
+			btnIngresar.setDisabled(false);
 		}
 		
 		

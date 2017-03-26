@@ -19,9 +19,11 @@
 		
 			<hbox align="center" pack="center" width="100%">
 				<button id="btnIngresar" label="${labels.app.ingresar}"></button>
+				
 			</hbox>
 		
 		
 	</vbox>
+	<timer id="tmrUpdate" delay="250" repeats="true" />
 </window>
 </zk>

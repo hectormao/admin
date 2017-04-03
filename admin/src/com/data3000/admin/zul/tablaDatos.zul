@@ -6,8 +6,10 @@
 
 			<north id="norte" border="none">
 				<div width="100%" hflex="1" vflex="1">
+				<hbox>
 				<toolbar id="herramientas"></toolbar>
 				<checkbox id="chkSiAnulado" label="${labels.app.mostrarAnulados}" sclass="check-sianulado"></checkbox>
+				</hbox>
 				</div>
 			</north>
 			<center vflex="1" border="none">

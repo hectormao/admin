@@ -271,6 +271,7 @@ public class WindowComposer extends GenericForwardComposer<Window>{
 		centro.setBorder("none");
 		borderLayout.appendChild(centro);
 		Textbox txtNota = new Textbox();
+		txtNota.setMaxlength(1024);
 		txtNota.setWidth("250px");
 		txtNota.setRows(3);
 		centro.appendChild(txtNota);

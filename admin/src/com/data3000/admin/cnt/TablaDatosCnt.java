@@ -227,8 +227,8 @@ public class TablaDatosCnt extends WindowComposer {
 
 		tablaDatos = new TablaDatos(clase, listaCampos, argumentos);
 		dvTabla.appendChild(tablaDatos);
-		tablaDatos.setWidth("100%");
-		tablaDatos.setHeight("100%");
+		tablaDatos.setHflex("1");
+		tablaDatos.setVflex("1");
 		tablaDatos.setMold("paging");
 		tablaDatos.setPagingPosition("bottom");
 		tablaDatos.setPageSize(10);
@@ -601,7 +601,15 @@ public class TablaDatosCnt extends WindowComposer {
 			
 			
 		}
-		datos = plataformaNgc.getDatos(clase, where.toString());
+		
+		String orderBy = null;
+		
+		if(clase.isAnnotationPresent(Tabla.class)){
+			Tabla tabla = (Tabla) clase.getAnnotation(Tabla.class);
+			orderBy = tabla.orderBy();
+		}
+		
+		datos = plataformaNgc.getDatos(clase, where.toString(), orderBy);
 		List<Object> datosAMostrar = new ArrayList<>();
 		for(Object dato : datos){
 			

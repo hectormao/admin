@@ -44,7 +44,7 @@ public interface PlataformaNgc {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<Object> getDatos(Class clase, String condicion) throws Exception;
+	public List<Object> getDatos(Class clase, String condicion, String orderBy) throws Exception;
 
 
 	public String getCondicionPadre(Object padre);

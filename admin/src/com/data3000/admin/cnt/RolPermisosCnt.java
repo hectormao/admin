@@ -11,6 +11,7 @@ import org.hibernate.mapping.Array;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
@@ -34,6 +35,7 @@ import com.data3000.admin.exc.PltException;
 import com.data3000.admin.ngc.PlataformaNgc;
 import com.data3000.admin.utl.ConstantesAdmin;
 import com.data3000.admin.utl.WindowComposer;
+import com.data3000.admin.vo.Formulario;
 
 public class RolPermisosCnt extends WindowComposer {
 	
@@ -227,7 +229,9 @@ public class RolPermisosCnt extends WindowComposer {
 			
 		}
 		
-		
+		//si todo salio bien refrescar arbol de permisos en la sesion		
+		Map<String,Formulario> mapaFormularios = plataformaNgc.getFuncionalidadesUsuario(usuario);
+		Executions.getCurrent().getSession().setAttribute(ConstantesAdmin.SESION_MAPA_FORM,mapaFormularios);
 		
 		Events.sendEvent(new Event(Events.ON_CLOSE,this.self,pltRol));
 	}

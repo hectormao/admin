@@ -72,7 +72,7 @@
                 <comment>Checksum del registro con SHA1</comment>
             </column>
         </property>
-        <set name="pltUsuaRols" table="plt_usua_rol" inverse="true" lazy="true" fetch="select">
+        <set name="pltUsuaRols" table="plt_usua_rol" inverse="true" lazy="false" fetch="join">
             <key>
                 <column name="usua_idn" precision="10" scale="0" not-null="true">
                     <comment>identificador del usuario al que se le asigna el rol</comment>

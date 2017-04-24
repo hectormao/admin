@@ -150,17 +150,21 @@ public class PlataformaNgcImpl implements PlataformaNgc {
 	
 	@Override
 	public List<Object> getDatos(Class clase) throws Exception {		
-		return plataformaDAO.getDatos(clase, null);
+		return plataformaDAO.getDatos(clase, null, null);
 	}
 	
 	@Override
-	public List<Object> getDatos(Class clase, String condicion) throws Exception {
+	public List<Object> getDatos(Class clase, String condicion, String orderBy) throws Exception {
 		
 		if(condicion != null && condicion.length() <= 0){
 			condicion = null;
 		}
 		
-		return plataformaDAO.getDatos(clase, condicion);
+		if(orderBy != null && orderBy.length() <= 0){
+			orderBy = null;
+		}
+		
+		return plataformaDAO.getDatos(clase, condicion, orderBy);
 	}
 
 	public PlataformaDAO getPlataformaDAO() {

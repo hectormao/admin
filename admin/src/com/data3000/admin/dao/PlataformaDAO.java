@@ -91,7 +91,7 @@ public class PlataformaDAO extends PltDAO {
 		}
 	}
 	
-	public List<Object> getDatos(Class clase, String condicion) throws Exception{
+	public List<Object> getDatos(Class clase, String condicion, String orderBy) throws Exception{
 		
 		Session sesion = sessionFactory.getCurrentSession();
 		Transaction tx = sesion.getTransaction();
@@ -107,6 +107,11 @@ public class PlataformaDAO extends PltDAO {
 			if(StringUtils.isNotBlank(condicion)){
 				hql.append(" where ");
 				hql.append(condicion);
+			}
+			
+			if(StringUtils.isNotBlank(orderBy)){
+				hql.append(" order by ");
+				hql.append(orderBy);
 			}
 			
 			Query query = sesion.createQuery(hql.toString());

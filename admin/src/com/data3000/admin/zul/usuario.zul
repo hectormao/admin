@@ -25,7 +25,7 @@
 	
 	<groupbox mold="3d">
 		<caption label="${labels.app.datosUsuario}" />
-		<vlayout>	
+		<vlayout id="vlylogin">	
 <!-- 		LOGIN -->
 			<hlayout>
 				<div width="150px">

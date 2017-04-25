@@ -87,6 +87,11 @@ public class ConstantesAdmin {
 	 */
 	public static final String ERR0009 = "error.0009";
 	
+	/**
+	 * No coincide la cotraseña en editar usuario
+	 */
+	public static final String ERR0012 = "error.1012";
+	
 	
 	/**
 	 * Argumentos a los formularios

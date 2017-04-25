@@ -9,16 +9,19 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.zkoss.util.resource.Labels;
+import org.zkoss.zhtml.Div;
 import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Hlayout;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Vlayout;
 import org.zkoss.zul.Window;
 
 import com.data3000.admin.bd.PltFormulario;
@@ -49,6 +52,8 @@ public class UsuarioCnt extends WindowComposer {
 //	private Label lblConfirmarClave;
 	private Listbox lstRolesUsuario;
 	private java.util.List<PltRol> listaRoles;
+	private Vlayout vlylogin;
+	private Textbox txtConfirmarClave;
 	
 	/**
 	 * Objeto a insertar
@@ -94,7 +99,7 @@ public class UsuarioCnt extends WindowComposer {
 				if (usu == null) {
 					throw new PltException(ConstantesAdmin.ERR0007);
 				}
-				
+				construirConfirmarContraseña();
 				//Se diligencia formulario con datos del usuario
 				cargarDatosUsuario(usu);
 				//Se selecciona los roles del listbox que estan asociados al usuario
@@ -114,6 +119,23 @@ public class UsuarioCnt extends WindowComposer {
 
 		}
 
+	}
+	
+	public void construirConfirmarContraseña(){
+		Hlayout hlayout = new Hlayout();
+		txtConfirmarClave = new Textbox();
+		Div div = new Div();
+		Label label = new Label();
+		label.setId("lblConfirmarClave");
+		label.setValue("Confirmar clave");
+		label.setStyle("font-weight:bold;");
+		div.appendChild(label);
+		div.setStyle("width:150px");
+		hlayout.appendChild(div);
+		txtConfirmarClave.setType("password");
+		txtConfirmarClave.setWidth("150px");
+		hlayout.appendChild(txtConfirmarClave);
+		vlylogin.appendChild(hlayout);
 	}
 	
 	public void seleccionarRolesUsuario() throws Exception{
@@ -168,13 +190,15 @@ public class UsuarioCnt extends WindowComposer {
 		txtLogin.setReadonly(true);
 		txtLogin.setStyle("background-color:#D8D8D8");
 		txtClave.setValue(usua.getUsuaClave());
-		txtClave.setReadonly(true);
-		txtClave.setStyle("background-color:#D8D8D8");
+		txtClave.setReadonly(false);
+//		txtClave.setStyle("background-color:#D8D8D8");
 //		txtConfirmarClave.setVisible(Boolean.FALSE);
 //		lblConfirmarClave.setVisible(Boolean.FALSE);
 	}
 	
 	public void onClick$btnAceptar(Event evt) throws Exception{
+		try {
+			
 		
 		establecerDatos();
 		
@@ -182,6 +206,11 @@ public class UsuarioCnt extends WindowComposer {
 			usuarioNgc.crearUsuario(usu, usu.getLogin());
 			asociarRolesUsuario(usu);
 		} else if (formulario.getTipo().equalsIgnoreCase(ConstantesAdmin.FORMULARIO_TIPO_EDITAR)) {
+			String Clave1 = txtConfirmarClave.getValue();
+			String Clave2 = txtClave.getValue();
+			if(!Clave1.equalsIgnoreCase(Clave2)){
+				throw new PltException(ConstantesAdmin.ERR0012);
+			}
 			usuarioNgc.modificarUsuario(usu);
 			
 			//Se eliminan todos los roles asociados anteriormente
@@ -203,6 +232,10 @@ public class UsuarioCnt extends WindowComposer {
 		
 		
 		Events.sendEvent(new Event(Events.ON_CLOSE,this.self,usu));
+		} catch (PltException e) {
+			logger.error(new StringBuilder("Error metodo onClick$btnAceptar usuario").append(e.getClass().getName()).append(": ").append(e.getMessage()), e);
+			Messagebox.show(Labels.getLabel(e.getCodigo()), "Error", Messagebox.OK, Messagebox.ERROR);
+		}
 	}
 	
 	public void onClick$btnCancelar(Event evt) throws Exception{

@@ -15,6 +15,8 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Borderlayout;
 import org.zkoss.zul.Center;
+import org.zkoss.zul.Div;
+import org.zkoss.zul.Image;
 import org.zkoss.zul.Menu;
 import org.zkoss.zul.Menubar;
 import org.zkoss.zul.Menuitem;
@@ -78,8 +80,15 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 	private void lanzarEscritorio() throws Exception {
 		
 		Borderlayout areaTrabajo = new Borderlayout();
+//		Div contenedorLogo = new Div();
+//		contenedorLogo.setWidth("100%");
+//		contenedorLogo.setHeight("70px");
+//		Image image = new Image();
+//		image.setSrc("img/iconos/03.png");
+//		contenedorLogo.appendChild(image);
 		winIndex.setWidth("100%");
 		winIndex.setHeight("100%");
+//		winIndex.appendChild(contenedorLogo);
 		winIndex.appendChild(areaTrabajo);
 		areaTrabajo.setWidth("100%");
 		areaTrabajo.setHeight("100%");
@@ -114,13 +123,13 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 
 			@Override
 			public void onEvent(Event arg0) throws Exception {
-				if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Cerrando sesión"));
+				if(logger.isDebugEnabled()) logger.debug(new StringBuilder("Cerrando sesiï¿½n"));
 				
-				// Eliminar el usuario de los atributos en sesión
+				// Eliminar el usuario de los atributos en sesiï¿½n
 				session.removeAttribute(ConstantesAdmin.SESION_USUARIO);
-				// Invalidar la sesión del usuario actual
+				// Invalidar la sesiï¿½n del usuario actual
 		        session.invalidate();
-		        // Redireccionar la página para volver a la ventana de autenticación
+		        // Redireccionar la pï¿½gina para volver a la ventana de autenticaciï¿½n
 		        Executions.sendRedirect("/index.zul");
 				
 			}

@@ -16,6 +16,7 @@ import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Borderlayout;
 import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
+import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Menu;
 import org.zkoss.zul.Menubar;
@@ -80,12 +81,10 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 	private void lanzarEscritorio() throws Exception {
 		
 		Borderlayout areaTrabajo = new Borderlayout();
-//		Div contenedorLogo = new Div();
-//		contenedorLogo.setWidth("100%");
-//		contenedorLogo.setHeight("70px");
-//		Image image = new Image();
-//		image.setSrc("img/iconos/03.png");
-//		contenedorLogo.appendChild(image);
+		Image image = new Image();
+		image.setSrc("img/iconos/03.png");
+		image.setWidth("50px");
+		image.setHeight("50px");
 		winIndex.setWidth("100%");
 		winIndex.setHeight("100%");
 //		winIndex.appendChild(contenedorLogo);
@@ -98,9 +97,17 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 		Center escritorio = new Center();
 		cargarEscritorio(escritorio);
 		areaTrabajo.appendChild(escritorio);
-
-		Menubar menuBar = new Menubar();		
-		norte.appendChild(menuBar);
+		
+        Hbox areaMenu = new Hbox();
+        areaMenu.appendChild(image);
+		Menubar menuBar = new Menubar();
+		menuBar.setHeight("50px");
+		menuBar.setHflex("1");
+		menuBar.setVflex("1");
+		areaMenu.appendChild(menuBar);
+		norte.appendChild(areaMenu);
+		areaMenu.setHflex("1");
+		areaMenu.setVflex("1");
 		cargarMenu(menuBar);
 		
 		

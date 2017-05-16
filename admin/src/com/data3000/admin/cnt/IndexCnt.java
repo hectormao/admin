@@ -151,7 +151,7 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 		layoutNorte.appendChild(center);
 		
 		East este = new East();
-		este.setSize("100px");
+		este.setSize("200px");
 		este.setBorder("none");
 		
 		

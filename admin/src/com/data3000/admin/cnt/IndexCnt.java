@@ -1,5 +1,6 @@
 package com.data3000.admin.cnt;
 
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Borderlayout;
 import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
+import org.zkoss.zul.East;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Menu;
@@ -82,9 +84,10 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 		
 		Borderlayout areaTrabajo = new Borderlayout();
 		Image image = new Image();
-		image.setSrc("img/iconos/03.png");
-		image.setWidth("50px");
-		image.setHeight("50px");
+		image.setSrc("img/iconos/codex.png");
+		
+		
+		
 		winIndex.setWidth("100%");
 		winIndex.setHeight("100%");
 //		winIndex.appendChild(contenedorLogo);
@@ -92,27 +95,68 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 		areaTrabajo.setWidth("100%");
 		areaTrabajo.setHeight("100%");
 		North norte = new North();
+		norte.setSize("40px");
+		norte.setBorder("none");
 		areaTrabajo.appendChild(norte);
 		
 		Center escritorio = new Center();
 		cargarEscritorio(escritorio);
 		areaTrabajo.appendChild(escritorio);
 		
+		Borderlayout layoutNorte = new Borderlayout();
+		
+		Center center = new Center();
+		center.setBorder("none");
         Hbox areaMenu = new Hbox();
-        areaMenu.appendChild(image);
-		Menubar menuBar = new Menubar();
-		menuBar.setHeight("50px");
-		menuBar.setHflex("1");
-		menuBar.setVflex("1");
-		areaMenu.appendChild(menuBar);
-		norte.appendChild(areaMenu);
+        
+		
+        //Menubar menuBar = new Menubar();
+        //menuBar.setSclass("menuBar");
+        
+        Toolbarbutton tlbApp = new Toolbarbutton();
+        tlbApp.setImage("img/iconos/menu.png");
+        tlbApp.setClass("menuapp");
+        
+        
+        //itemPrincipal.setSclass("menuapp");
+        //menuBar.appendChild(itemPrincipal);
+		areaMenu.appendChild(tlbApp);
+		
 		areaMenu.setHflex("1");
 		areaMenu.setVflex("1");
-		cargarMenu(menuBar);
+		//menuBar.setVflex("1");
+		Menupopup popup = new Menupopup();
+		//itemPrincipal.appendChild(popup);
+		
+		cargarMenu(popup);
+		winIndex.appendChild(popup);
 		
 		
-		South sur = new South();
+		tlbApp.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+
+			@Override
+			public void onEvent(Event arg0) throws Exception {
+				
+				popup.open(self,"after_pointer");
+				
+			}
+		});
+		
+		
+		
+		areaMenu.appendChild(image);
+		
+		
+		center.appendChild(areaMenu);
+		layoutNorte.appendChild(center);
+		
+		East este = new East();
+		este.setSize("100px");
+		este.setBorder("none");
+		
+		
 		Toolbar toolbar = new Toolbar();
+		toolbar.setClass("toolUsuario");
 		
 		//Boton usuario conectado
 		Toolbarbutton btnUsuarioConectado = new Toolbarbutton();
@@ -142,9 +186,9 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 			}
 		});
 		toolbar.appendChild(btnCerrarSesion);
-				
-		sur.appendChild(toolbar);
-		areaTrabajo.appendChild(sur);
+		este.appendChild(toolbar);
+		layoutNorte.appendChild(este);
+		norte.appendChild(layoutNorte);
 		
 		
 	}
@@ -234,11 +278,11 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 		
 	}
 
-	private void cargarMenu(Menubar menuBar) throws Exception{
+	private void cargarMenu(Menupopup menu) throws Exception{
 		List<EstructuraMenu> estructuras = plataformaNgc.getMenu(usuario,mapaFormularios); 
 		
 		for(EstructuraMenu estructura : estructuras ){
-			cargarMenu(menuBar, estructura);
+			cargarMenu(menu, estructura);
 		}
 	}
 	

@@ -41,36 +41,36 @@ public class UsuarioCnt extends WindowComposer {
 	
 	
 //	ATRIBUTOS
-	private Window winUsuario;
-	private Textbox txtNombreCompleto;
-	private Textbox txtCorreo;
-	private Textbox txtLogin;
-	private Textbox txtClave;
+	protected Window winUsuario;
+	protected Textbox txtNombreCompleto;
+	protected Textbox txtCorreo;
+	protected Textbox txtLogin;
+	protected Textbox txtClave;
 //	private Textbox txtConfirmarClave;
-	private Button btnAceptar;
-	private Button btnCancelar;
+	protected Button btnAceptar;
+	protected Button btnCancelar;
 //	private Label lblConfirmarClave;
-	private Listbox lstRolesUsuario;
-	private java.util.List<PltRol> listaRoles;
-	private Vlayout vlylogin;
-	private Textbox txtConfirmarClave;
+	protected Listbox lstRolesUsuario;
+	protected java.util.List<PltRol> listaRoles;
+	protected Vlayout vlylogin;
+	protected Textbox txtConfirmarClave;
 	
 	/**
 	 * Objeto a insertar
 	 */
-	private PltUsuario usu;
+	protected PltUsuario usu;
 	
 	/**
 	 * Negocio Usuario
 	 */
-	private UsuarioNgc usuarioNgc;
+	protected UsuarioNgc usuarioNgc;
 	
 	
 	
 	/**
 	 * Log (log4j)
 	 */
-	private Logger logger = Logger.getLogger(this.getClass());
+	protected Logger logger = Logger.getLogger(this.getClass());
 	
 	
 	public void doAfteCompose(Window winUsuario) throws Exception {
@@ -256,7 +256,7 @@ public class UsuarioCnt extends WindowComposer {
 		}
 	}
 
-	private void establecerDatos() throws WrongValueException, Exception {
+	protected void establecerDatos() throws WrongValueException, Exception {
 		EncriptarClave encriptarClave = new EncriptarClave();
 		usu.setUsuaNombre(txtNombreCompleto.getValue());
 		usu.setUsuaCorreo(txtCorreo.getValue());

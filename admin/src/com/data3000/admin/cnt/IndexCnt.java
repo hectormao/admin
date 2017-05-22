@@ -4,6 +4,8 @@ package com.data3000.admin.cnt;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -33,6 +35,10 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
+import org.zkoss.zul.Tree;
+import org.zkoss.zul.Treechildren;
+import org.zkoss.zul.Treeitem;
+import org.zkoss.zul.West;
 import org.zkoss.zul.Window;
 
 import com.data3000.admin.ngc.PlataformaNgc;
@@ -87,6 +93,16 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 		image.setSrc("img/iconos/codex.png");
 		
 		
+		final West westMenu = new West();
+		westMenu.setSize("20%");
+		westMenu.setOpen(false);
+		westMenu.setCollapsible(true);
+		westMenu.setSplittable(true);
+		westMenu.setVisible(false);
+		areaTrabajo.appendChild(westMenu);
+		
+		
+		
 		
 		winIndex.setWidth("100%");
 		winIndex.setHeight("100%");
@@ -110,34 +126,66 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
         Hbox areaMenu = new Hbox();
         
 		
-        //Menubar menuBar = new Menubar();
-        //menuBar.setSclass("menuBar");
+        
         
         Toolbarbutton tlbApp = new Toolbarbutton();
         tlbApp.setImage("img/iconos/menu.png");
         tlbApp.setClass("menuapp");
         
         
-        //itemPrincipal.setSclass("menuapp");
-        //menuBar.appendChild(itemPrincipal);
+        
 		areaMenu.appendChild(tlbApp);
 		
 		areaMenu.setHflex("1");
 		areaMenu.setVflex("1");
-		//menuBar.setVflex("1");
-		Menupopup popup = new Menupopup();
-		//itemPrincipal.appendChild(popup);
 		
-		cargarMenu(popup);
-		winIndex.appendChild(popup);
+		Tree arbolMenu = new Tree();
+		westMenu.appendChild(arbolMenu);
+		arbolMenu.setVflex("1");
+		arbolMenu.setHeight("100%");
+		arbolMenu.setWidth("100%");
+		arbolMenu.setMultiple(false);
+		arbolMenu.setCheckmark(false);
 		
+		Treechildren raizMenu = new Treechildren();
+		arbolMenu.appendChild(raizMenu);
+		cargarMenu(raizMenu);
 		
 		tlbApp.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 
 			@Override
 			public void onEvent(Event arg0) throws Exception {
 				
-				popup.open(self,"after_pointer");
+				//popup.open(self,"after_pointer");
+				if(westMenu.isOpen()){
+					westMenu.setOpen(false);
+					final org.zkoss.zul.Timer tmr = new org.zkoss.zul.Timer();
+					tmr.setDelay(250);
+					tmr.setRepeats(false);
+					winIndex.appendChild(tmr);
+					tmr.addEventListener(Events.ON_TIMER, new EventListener<Event>() {
+
+						@Override
+						public void onEvent(Event arg0) throws Exception {
+							westMenu.setVisible(false);
+							tmr.stop();
+							winIndex.removeChild(tmr);							
+						}
+					});
+					
+					tmr.start();
+					
+				} else {
+					westMenu.setVisible(true);
+					westMenu.setOpen(true);
+				}
+				
+				
+				
+				
+			
+				
+				
 				
 			}
 		});
@@ -145,8 +193,6 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 		
 		
 		areaMenu.appendChild(image);
-		
-		
 		center.appendChild(areaMenu);
 		layoutNorte.appendChild(center);
 		
@@ -278,15 +324,15 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 		
 	}
 
-	private void cargarMenu(Menupopup menu) throws Exception{
+	private void cargarMenu(Treechildren raizMenu) throws Exception{
 		List<EstructuraMenu> estructuras = plataformaNgc.getMenu(usuario,mapaFormularios); 
 		
 		for(EstructuraMenu estructura : estructuras ){
-			cargarMenu(menu, estructura);
+			cargarMenu(raizMenu, estructura);
 		}
 	}
 	
-	private void cargarMenu(Component padre, EstructuraMenu estructura) throws Exception{
+	private void cargarMenu(Treechildren raizMenu, EstructuraMenu estructura) throws Exception{
 		
 		com.data3000.admin.vo.Menu menu = estructura.getMenu();
 		if(menu != null){
@@ -298,9 +344,13 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 			
 			final Formulario accion = menu.getFormulario();
 			
+			//tree item
+			final Treeitem menuitem = new Treeitem(leyenda);
+			raizMenu.appendChild(menuitem);
+			
+			
 			if(accion != null){
-				//menu item
-				final Menuitem menuitem = new Menuitem(leyenda);
+				
 				menuitem.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 
 					@Override
@@ -310,16 +360,16 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 					}
 					
 				});
-				padre.appendChild(menuitem);
+				
 			} else {
 				
-				Menu menuPadre = new Menu(leyenda);
-				Menupopup popup = new Menupopup();
-				menuPadre.appendChild(popup);
+				Treechildren submenu = new Treechildren();	
+				menuitem.appendChild(submenu);
+				menuitem.getTreerow().setClass("submenu");
 				for(EstructuraMenu hijo : estructura.getHijos()){
-					cargarMenu(popup, hijo);
+					cargarMenu(submenu, hijo);
 				}
-				padre.appendChild(menuPadre);
+				
 				
 			}
 			

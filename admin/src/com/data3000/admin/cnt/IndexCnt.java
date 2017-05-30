@@ -1,6 +1,10 @@
 package com.data3000.admin.cnt;
 
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,14 +13,17 @@ import java.util.TimerTask;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.zkoss.util.media.Media;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.East;
@@ -46,6 +53,7 @@ import com.data3000.admin.utl.ConstantesAdmin;
 import com.data3000.admin.vo.EstructuraMenu;
 import com.data3000.admin.vo.Formulario;
 import com.data3000.admin.vo.Usuario;
+
 
 
 public class IndexCnt extends GenericForwardComposer<Window>  {
@@ -193,6 +201,10 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 		
 		
 		areaMenu.appendChild(image);
+		
+		
+		
+		
 		center.appendChild(areaMenu);
 		layoutNorte.appendChild(center);
 		

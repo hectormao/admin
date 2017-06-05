@@ -263,7 +263,9 @@ public class TablaDatosCnt extends WindowComposer {
 					cerrarDetalle();
 					
 					
-					refrescarTabla(padre, nombreAtributo, filtrarSiPadreNull);
+					String where = (String) datos.get(ConstantesAdmin.ARG_WHERE);
+					
+					refrescarTabla(padre, nombreAtributo, filtrarSiPadreNull, where);
 				}
 
 			}
@@ -550,9 +552,11 @@ public class TablaDatosCnt extends WindowComposer {
 		
 	}
 
+	private void refrescarTabla(Object padre, String nombreAtributo, boolean filtrarSiPadreNull) throws Exception {
+		refrescarTabla(padre, nombreAtributo, filtrarSiPadreNull, null);
+	}
 	
-	
-	private void refrescarTabla(Object padre, String nombreAtributo, boolean filtrarSiPadreNull)
+	private void refrescarTabla(Object padre, String nombreAtributo, boolean filtrarSiPadreNull, String whereRefrescar)
 			throws Exception {
 
 		
@@ -561,12 +565,25 @@ public class TablaDatosCnt extends WindowComposer {
 		List<Object> datos = null;
 		
 		StringBuilder where = new StringBuilder();
+		
+		
+		
 		if(argumentoWhere != null){
 			where.append("(");
 			where.append(argumentoWhere);
 			where.append(")");
 		}
 		
+		if(whereRefrescar != null){
+			
+			if(where.length() > 0){
+				where.append(" and ");
+			}
+			
+			where.append("(");
+			where.append(whereRefrescar);
+			where.append(")");
+		}
 
 		if(padre == null && filtrarSiPadreNull){
 			if(where.length() > 0){

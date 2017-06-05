@@ -1,6 +1,7 @@
 package com.data3000.admin.cnt;
 
 
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -254,8 +255,15 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 	private void abrirFormulario(final Component componenteEvento, final Formulario funcionalidad) throws Exception{
 		
 		
-		if(componenteEvento != null && componenteEvento instanceof Menuitem){
-			((Menuitem) componenteEvento).setDisabled(true);
+		if(componenteEvento != null){
+			
+			try{
+				Method metodo = componenteEvento.getClass().getMethod("setDisabled", boolean.class);
+				metodo.invoke(componenteEvento, true);
+			} catch(Exception ex){
+				;
+			}
+			
 		}
 		
 		Window win;
@@ -309,8 +317,13 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 
 			@Override
 			public void onEvent(Event event) throws Exception {
-				if(componenteEvento != null && componenteEvento instanceof Menuitem){
-					((Menuitem) componenteEvento).setDisabled(false);
+				if(componenteEvento != null){
+					try{
+						Method metodo = componenteEvento.getClass().getMethod("setDisabled", boolean.class);
+						metodo.invoke(componenteEvento, false);
+					} catch(Exception ex){
+						;
+					}
 				}				
 			}
 		});

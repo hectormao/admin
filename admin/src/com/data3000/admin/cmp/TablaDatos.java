@@ -72,7 +72,7 @@ public class TablaDatos extends Listbox implements ListitemRenderer<Object> {
 						
 					}
 				} else {
-					pintarColumnaTabla(cabeceraTabla, nombre, "columna-boton");
+					pintarColumnaTabla(cabeceraTabla, "", "columna-boton");
 				}
 			}
 		} else {

@@ -2,40 +2,25 @@ package com.data3000.admin.cnt;
 
 
 import java.lang.reflect.Method;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.zkoss.util.media.Media;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Borderlayout;
-import org.zkoss.zul.Button;
 import org.zkoss.zul.Center;
-import org.zkoss.zul.Div;
 import org.zkoss.zul.East;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Image;
-import org.zkoss.zul.Menu;
-import org.zkoss.zul.Menubar;
-import org.zkoss.zul.Menuitem;
-import org.zkoss.zul.Menupopup;
 import org.zkoss.zul.North;
-import org.zkoss.zul.South;
 import org.zkoss.zul.Tab;
 import org.zkoss.zul.Tabbox;
 import org.zkoss.zul.Tabpanel;
@@ -108,6 +93,7 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 		westMenu.setCollapsible(true);
 		westMenu.setSplittable(true);
 		westMenu.setVisible(false);
+		westMenu.setBorder("none");
 		areaTrabajo.appendChild(westMenu);
 		
 		
@@ -119,20 +105,24 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 		winIndex.appendChild(areaTrabajo);
 		areaTrabajo.setWidth("100%");
 		areaTrabajo.setHeight("100%");
+		
 		North norte = new North();
 		norte.setSize("40px");
 		norte.setBorder("none");
 		areaTrabajo.appendChild(norte);
 		
 		Center escritorio = new Center();
+		escritorio.setBorder("none");
 		cargarEscritorio(escritorio);
 		areaTrabajo.appendChild(escritorio);
 		
 		Borderlayout layoutNorte = new Borderlayout();
 		
+		
 		Center center = new Center();
 		center.setBorder("none");
-        Hbox areaMenu = new Hbox();
+        
+		Hbox areaMenu = new Hbox();
         
 		
         
@@ -144,7 +134,7 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
         
         
 		areaMenu.appendChild(tlbApp);
-		
+		areaMenu.setSclass("encabezadoPrincipal");
 		areaMenu.setHflex("1");
 		areaMenu.setVflex("1");
 		
@@ -210,6 +200,7 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 		layoutNorte.appendChild(center);
 		
 		East este = new East();
+		este.setSclass("encabezadoPrincipal");
 		este.setSize("200px");
 		este.setBorder("none");
 		
@@ -219,6 +210,7 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 		
 		//Boton usuario conectado
 		Toolbarbutton btnUsuarioConectado = new Toolbarbutton();
+		btnUsuarioConectado.setClass("menuapp");
 		btnUsuarioConectado.setImage("img/iconos/usuario.png");
 		btnUsuarioConectado.setLabel(usuario.getLogin());
 		btnUsuarioConectado.setTooltip(usuario.getLogin());
@@ -226,6 +218,7 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 		
 		//Boton cerrar sesion
 		Toolbarbutton btnCerrarSesion = new Toolbarbutton();
+		btnCerrarSesion.setClass("menuapp");
 		btnCerrarSesion.setTooltiptext("${labels.app.cerrarSesion}");
 		btnCerrarSesion.setImage("img/iconos/cerrarSesion.png");
 		//Evento para cerrar la sesion del usuario
@@ -336,16 +329,23 @@ public class IndexCnt extends GenericForwardComposer<Window>  {
 	private void cargarEscritorio(Center escritorio) {
 		Tabbox tabbox = new Tabbox();
 		tabbox.setOrient("bottom");
-		escritorio.appendChild(tabbox);
 		tabbox.setWidth("100%");
 		tabbox.setHeight("100%");
+		tabbox.setHflex("1");
+		tabbox.setVflex("1");
 		
 		tabs = new Tabs();
-		
 		tabbox.appendChild(tabs);
 		
 		tabpanels = new Tabpanels();
 		tabbox.appendChild(tabpanels);
+		
+		
+		escritorio.appendChild(tabbox);
+		
+		
+		
+		
 		
 	}
 
